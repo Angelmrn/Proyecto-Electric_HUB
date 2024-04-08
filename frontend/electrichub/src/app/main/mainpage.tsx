@@ -229,7 +229,17 @@ function Selector() {
       <button>Add  Proyectos</button>
       </Link>
     </div>
+    <div>
+      <Link to='/compInfo'>
+      <button>Componente-Iformacion</button>
+      </Link>
+      <Link to='/proyInfo'>
+      <button>Proyecto-Informacion</button>
+      </Link>
+    </div>
+      
     </Box>
+    
   
   );
 }

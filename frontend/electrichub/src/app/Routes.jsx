@@ -7,6 +7,8 @@ import LoginCreate from "./login/logincreate"
 import Addcomp from "./forms/componentes"
 import Addproy from "./forms/proyectos"
 import Tools from "./tools/tools"
+import Compinfo from "./informacion/compInfo"
+import Proyinfo from "./informacion/ptoyInfo"
 
 
 const MyRoutes = () => {
@@ -19,6 +21,8 @@ const MyRoutes = () => {
                 <Route path = "/addComp" element = {<Addcomp/>} />
                 <Route path = "/addProy" element = {<Addproy/>} />
                 <Route path = "/tools" element = {<Tools/>} />
+                <Route path = "/compInfo" element = {<Compinfo />} />
+                <Route path = "/proyInfo" element = {<Proyinfo />} />
               
                 
             </Routes>
