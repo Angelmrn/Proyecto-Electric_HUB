@@ -65,7 +65,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8}}>
+     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
      
         <Toolbar disableGutters >
           <button className='botonLOGO'>

@@ -148,12 +148,8 @@
     border-bottom: 1px solid black; 
     color: black;
     
-    }
-  
-  
-  
-  
-  
+  }
+
   /*Apartado para Imagen User*/
   
   .ImgLogin{
@@ -193,7 +189,7 @@
   .SignUP{
     position: absolute;
     padding-top: 15px;
-    padding-left: 34%;
+    padding-left: 25%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -206,7 +202,7 @@
   .EntrysCreate {
     position: absolute;
     padding-top: 150px;
-    padding-left: 28%;
+    padding-left: 20%;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -285,12 +281,13 @@
   }
   
   .ImgCreate{
-    position: relative;
+    position: absolute;
     width: 55%;
     height: 100%;
     left: 45%;
     object-fit: cover;
     object-position: center;
+    align-items: center;
     overflow: hidden;
   }
   
