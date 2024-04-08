@@ -1,0 +1,18 @@
+.TablaMostrarComp{
+    width: 50%;
+    border-collapse: collapse;
+    position: relative;
+    left: 35%;
+  }
+  
+  .TablaMostrarComp th, .TablaMostrarComp td {
+    border: 1px solid #1c3663ff;
+    padding: 8px;
+  }
+  
+  .TablaMostrarComp thead {
+    background-color: #1c3663ff;
+    color : #e3ecfcff;
+    
+  }
+  

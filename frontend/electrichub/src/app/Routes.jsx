@@ -9,13 +9,15 @@ import Addproy from "./forms/proyectos"
 import Tools from "./tools/tools"
 import Compinfo from "./informacion/compInfo"
 import Proyinfo from "./informacion/ptoyInfo"
+import CompMostrar from "./mostrar/compMostrar"
+import ProyMostrar from "./mostrar/proyMostrar"
 
 
 const MyRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path = "/" element = {<Mainpage />} />
+                <Route path = "/" element = {<CompMostrar />} />
                 <Route path = "/login" element = {<Loginpage />} />
                 <Route path = "/create" element = {<LoginCreate/>} />
                 <Route path = "/addComp" element = {<Addcomp/>} />
@@ -23,6 +25,8 @@ const MyRoutes = () => {
                 <Route path = "/tools" element = {<Tools/>} />
                 <Route path = "/compInfo" element = {<Compinfo />} />
                 <Route path = "/proyInfo" element = {<Proyinfo />} />
+                <Route path = "/mostrarComp" elemet = {<CompMostrar />} />
+                <Route path = "/mostrarProy" element = {<ProyMostrar />} />
               
                 
             </Routes>

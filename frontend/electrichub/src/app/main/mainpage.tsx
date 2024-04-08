@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -69,7 +70,7 @@ function ResponsiveAppBar() {
      
         <Toolbar disableGutters >
           <button className='botonLOGO'>
-            <img src={imagen} alt="logo" />
+            <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
           <Typography
             variant="h6"
@@ -137,23 +138,12 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              //botton TOOLS
-              <Link to='/tools'>
-              <Tooltip title="Ajustes">
-                
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: '#e3ecfcff', display: 'block', ml:150 }}
-                >
-                {page}
-               </Button>
-               
-               </Tooltip>
-               </Link>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+            <Link to="/tools">
+              <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
+                TOOLS
+              </Button>
+            </Link>
           </Box>
           
           <Box sx={{ flexGrow: 0 }}>
@@ -266,6 +256,7 @@ const data=[
 ]
 
 
+//----------------CARRUSEL - proyectos----------------
 function Carrusel(){
   const settings = {
     dots: true,
@@ -278,13 +269,13 @@ function Carrusel(){
     
   <div className='w-1/2 m-auto'>
     
-    <div className='mt-20'>
+    <div className='mt-10'> {/* Cambiado de mt-20 a mt-10 */}
     Ultimos Proyectos Agregados
     <Slider {...settings}>
       {data.map((d) => (
-        <div className='bg-customise h-[300px] text-black rounded-xl'> {/* No necesitas el margen aquí */}
+        <div className='bg-customise h-[400px] text-black rounded-xl'> {/* No necesitas el margen aquí */}
           <div className='rounded-t-xl flex justify-center items-center'>
-            <img src={d.image} alt='' className='h-44 w-44'/>
+            <img src={d.image} alt='' className='h-44 w-64'/>
           </div>
 
           <div className='flex flex-col justify-center items-center gap-4 p-2'>
