@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -36,9 +36,13 @@ export default function Mainpage(){
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
+              MOSTRAR COMPONENTES
         <BuscarComp />
-        <TablaComp />
-        <CheckboxComp />
+        <div className='flex flex-row justify-between'>
+          <CeckboxComponentes />
+          <TablaComp />
+        </div>
+        <BotonesPrueba />
       </div>
     </main>
   );
@@ -235,27 +239,28 @@ function TablaComp() {
   );
 }
 
-//----------------CHECKBOX - componentes----------------
+function CeckboxComponentes() {
+  return (
+    <div>
+      <h2>Categorias</h2>
+      <input type="checkbox" id="componente1" name="componente1" value="componente1" />
+      <label htmlFor="componente1"> Componente 1</label><br />
+      <input type="checkbox" id="componente2" name="componente2" value="componente2" />
+      <label htmlFor="componente2"> Componente 2</label><br />
+      <input type="checkbox" id="componente3" name="componente3" value="componente3" />
+      <label htmlFor="componente3"> Componente 3</label><br />
+    </div>
+  );
+}
 
-function CheckboxComp() {
-    const [checked, setChecked] = useState(false);
-  
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked(event.target.checked);
-    };
-  
-    return (
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={handleChange}
-          />
-          Check me
-          
-        </label>
-        
-      </div>
-    );
-  }
+//----------------BOTONES - PRUEBAS----------------
+
+function BotonesPrueba() {
+  return(
+  <div>
+  <Link to='/Compinfo'>
+    <button>, Mostrar-InfoComponentes</button>
+    </Link>
+  </div>
+  );
+}
