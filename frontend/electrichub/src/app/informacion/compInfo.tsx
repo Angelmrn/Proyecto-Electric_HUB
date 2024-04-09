@@ -35,7 +35,7 @@ export default function Mainpage(){
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
-        <BuscarComp/>
+       Informacion de componentes 
       </div>
     </main>
   );
@@ -65,12 +65,12 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8}}>
+     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
      
         <Toolbar disableGutters >
           <Link to='/'>
           <button className='botonLOGO'>
-            <img src={imagen} alt="logo" />
+            <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
           </Link>
           <Typography
@@ -139,23 +139,12 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              //botton TOOLS
-              <Link to='/tools'>
-              <Tooltip title="Ajustes">
-                
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: '#e3ecfcff', display: 'block', ml:150 }}
-                >
-                {page}
-               </Button>
-               
-               </Tooltip>
-               </Link>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+            <Link to="/tools">
+              <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
+                TOOLS
+              </Button>
+            </Link>
           </Box>
           
           <Box sx={{ flexGrow: 0 }}>
@@ -192,19 +181,6 @@ function ResponsiveAppBar() {
         </Toolbar>
       
     </AppBar>
-  );
-}
-
-//----------------INPUT - componentes----------------
-
-function BuscarComp() {
-  return (
-    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '30%' }} />
-      <button className='botonBUSCAR'>Buscar
-        <img src={imagen2} />
-      </button>
-    </Box>
   );
 }
 

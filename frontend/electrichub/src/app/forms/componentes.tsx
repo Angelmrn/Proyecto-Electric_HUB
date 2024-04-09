@@ -66,12 +66,12 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8}}>
+     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
      
         <Toolbar disableGutters >
-            <Link to='/'>
+          <Link to="/">
           <button className='botonLOGO'>
-            <img src={imagen} alt="logo" />
+            <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
           </Link>
           <Typography
@@ -140,25 +140,16 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              //botton TOOLS
-              <Link to='/tools'>
-              <Tooltip title="Ajustes">
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: '#e3ecfcff', display: 'block', ml:150 }}
-                >
-                {page}
-               </Button>
-               </Tooltip>
-               </Link>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+            <Link to="/tools">
+              <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
+                TOOLS
+              </Button>
+            </Link>
           </Box>
           
           <Box sx={{ flexGrow: 0 }}>
-            <Link to="/login">
+          <Link to="/login">
             <Tooltip title="Sign-Up">
               <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
                 LOGIN
