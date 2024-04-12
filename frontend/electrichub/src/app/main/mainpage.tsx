@@ -36,6 +36,7 @@ export default function Mainpage(){
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
         <Selector/>
+        <Botones />
         <Carrusel/>
       </div>
     </main>
@@ -210,24 +211,6 @@ function Selector() {
       <button className='botonBUSCAR'>Buscar
         <img src={imagen2} />
       </button>
-      
-      <div>
-        <Link to='/addComp'>
-      <button >Add Componentes</button>
-      </Link>
-      <Link to='/addProy'>
-      <button>Add  Proyectos</button>
-      </Link>
-    </div>
-    <div>
-      <Link to='/compInfo'>
-      <button>Componente-Iformacion</button>
-      </Link>
-      <Link to='/proyInfo'>
-      <button>Proyecto-Informacion</button>
-      </Link>
-    </div>
-      
     </Box>
     
   
@@ -288,6 +271,32 @@ function Carrusel(){
     </Slider>
     </div>
   </div>
+  );
+}
+
+//----------------BOTONES-PRUEBAS----------------
+function Botones(){
+  return(
+    <div>
+        <div>
+            <Link to='/addComp'>
+          <button >Add Componentes</button>
+          </Link>
+          <Link to='/addProy'>
+          <button>, Add  Proyectos</button>
+          </Link>
+        </div>
+        <div>
+          <Link to='/mostrarProy'>
+          <button>, Mostrar-Proyectos</button>
+          </Link>
+          <Link to='/mostrarComp'>
+          <button>, Mostrar-Componentes</button>
+          </Link>
+        </div>
+       
+
+</div>
   );
 }
 
