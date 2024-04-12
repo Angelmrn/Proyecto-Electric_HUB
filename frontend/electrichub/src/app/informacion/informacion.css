@@ -1,0 +1,16 @@
+.TablaComponentesParecidos{
+    width: 100%;
+    border-collapse: collapse;
+    position: relative;
+}
+
+  .TablaComponentesParecidos th, .TablaComponentesParecidos td {
+    border: 1px solid #1c3663ff;
+    padding: 8px;
+  }
+  
+  .TablaComponentesParecidos thead {
+    background-color: #1c3663ff;
+    color : #e3ecfcff;
+    
+  }

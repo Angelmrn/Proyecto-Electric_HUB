@@ -16,12 +16,16 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import "./informacion.css";
 import { Link } from "react-router-dom"
 
 
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
+const imagen2 = '/cont_binario.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -32,15 +36,21 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-        <BuscarProy/>
+      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 w-full'>
+            <ImagenProyecto />
+            <MostrarInformacionProyecto />
+          </div>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 w-full'>
+            <TablacomponentesElavoracionProyecto />
+          </div>
       </div>
     </main>
   );
 }
-
-
 
 //----------------APPBAR----------------
 function ResponsiveAppBar() {
@@ -184,18 +194,72 @@ function ResponsiveAppBar() {
 }
 
 
-//----------------INPUT - proyecto----------------
+//----------------- IMAGEN-componentesINFO----------------
 
-function BuscarProy() {
-  
-  return (
-    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <button className='botonBUSCAR'>Buscar
-        <img src={imagen2} />
-      </button>
-    </Box>
-  
+function ImagenProyecto(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+      <label className='NombreProyecto'>Nombre del Proyecto</label>
+      <img src={imagen2} alt="imagenComponente" />
+    </div>
   );
 }
+
+
+//----------------- MOSTRAR InformacionComponente ----------------
+
+function MostrarInformacionProyecto(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '300px' }}>
+      <Card style={{ marginTop: '-60px', width: '100%', height: 'auto' }}>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Informacion del Proyecto
+          </Typography>
+          <Typography variant="body2" color="text.secondary" style={{ wordWrap: 'break-word' }}>
+            Informacion 
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+//----------------- TABLA - componentesElavoracionProyecto ----------------
+
+function TablacomponentesElavoracionProyecto(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
+
+      <table className='TablaComponentesParecidos' style={{ marginTop: '-300px' }}>
+      <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nombre 1</td>
+          <td>Imagen 2</td>
+        </tr>
+        <tr>
+          <td>Nombre 2</td>
+          <td>Imagen 2</td>
+        </tr>
+        <tr>
+          <td>Nombre 3</td>
+          <td>Imagen 3</td>
+        </tr>  
+      </tbody>
+      </table>
+    </div>
+  );
+}
+
 
 

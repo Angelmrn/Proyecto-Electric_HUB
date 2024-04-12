@@ -232,4 +232,20 @@ function FormularioComp (){
 
 
 
+function FileUploadComponent() {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      console.log(file);
+      // Aquí puedes manejar la carga del archivo, por ejemplo, enviándolo a un servidor
+    }
+  };
+
+  return (
+    <input type="file" accept=".png" onChange={handleFileUpload} />
+  );
+}
+
+
+
 

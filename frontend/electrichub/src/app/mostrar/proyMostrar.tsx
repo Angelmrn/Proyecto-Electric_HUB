@@ -242,8 +242,8 @@ function TablaComp() {
 function BotonesPrueba() {
   return(
   <div>
-  <Link to='/Compinfo'>
-    <button>, Mostrar-InfoComponentes</button>
+  <Link to='/Proyinfo'>
+    <button>, Mostrar-InfoProyectos</button>
     </Link>
   </div>
   );
