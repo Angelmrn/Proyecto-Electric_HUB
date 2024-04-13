@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,13 +17,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Link } from "react-router-dom"
-import { Label } from '@mui/icons-material';
 
 
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
+const imagen2 = '/cont_binario.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -34,14 +35,21 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-       <FormularioProy />
+      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 ' style={{  marginLeft:'100px'}}>
+             <FormularioComp />
+          </div>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 '>
+             <TablaCompN />
+            <FileUploadComponent />
+          </div>
       </div>
     </main>
   );
 }
-
 
 //----------------APPBAR----------------
 function ResponsiveAppBar() {
@@ -68,7 +76,7 @@ function ResponsiveAppBar() {
      width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
      
         <Toolbar disableGutters >
-          <Link to="/">
+          <Link to='/'>
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
@@ -184,9 +192,72 @@ function ResponsiveAppBar() {
   );
 }
 
+
+//----------------- IMAGEN-componentesINFO----------------
+
+function ImagenComponentes(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+      <img src={imagen2} alt="imagenComponente" />
+    </div>
+  );
+}
+
+
+//----------------- TABLA - componentesparecidos ----------------
+
+function TablaComponentesparecidos(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+      Componentes Parecidos
+      <table className='TablaComponentesParecidos'>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nombre 1</td>
+        </tr>
+        <tr>
+          <td>Nombre 2</td>
+        </tr>
+        <tr>
+          <td>Nombre 3</td>
+        </tr>  
+      </tbody>
+      </table>
+    </div>
+  );
+
+}
+
+//----------------- MOSTRAR InformacionComponente ----------------
+
+function MostrarInformacionComponente(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
+      <Card style={{ marginTop: '-300px' }}>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Informacion del componente
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Aquí puedes poner información extensa sobre el componente. Puedes agregar tantas líneas de texto como necesites.
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 //----------------FORMULARIO----------------
 
-function FormularioProy (){
+function FormularioComp (){
     return (
         <Box
           component="form"
@@ -195,31 +266,20 @@ function FormularioProy (){
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            marginTop: '-200px',
           }}
           noValidate
           autoComplete="off"
         >
-           <div><h1> Formulario para agregar Proyectos </h1></div>
-          <div>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+           <div ><h1> Formulario para agregar Proyectos </h1></div>
+          <div style={{height:'300px' ,paddingRight:'50px'}} >
+            <Box sx={{ display: 'flex', justifyContent: 'center',height: '100px', width: '300px' }}>
               <TextField label="Nombre" id="outlined-size-normal"/>
-              <TextField
-                id="outlined-multiline-static"
-                label="Lista de componentes"
-                multiline
-                rows={4}
-              />
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center',  height: 'auto', width: '300px', marginTop:'50px' }}>
               <TextField
                 id="outlined-multiline-static"
                 label="Descripcion"
-                multiline
-                rows={4}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Img proyecto"
                 multiline
                 rows={4}
               />
@@ -227,6 +287,72 @@ function FormularioProy (){
           </div>
         </Box>
       );
+}
+
+//----------------TABLA-ComponentesNecesarios----------------
+function TablaCompN (){
+  return (
+    <div style={{ margin: '10px', width: '400px', height: '250px', marginRight:'100px' }}>
+      <table className='TablaMostrarComp' style={{ width: '80%', height: 'auto%', marginLeft: '80px' }}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ID 1</td>
+            <td>Nombre 1</td>
+            <td>Categoria 1</td>
+          </tr>
+          <tr>
+            <td>ID 2</td>
+            <td>Nombre 2</td>
+            <td>Categoria 2</td>
+          </tr>
+          <tr>
+            <td>ID 3</td>
+            <td>Nombre 3</td>
+            <td>Categoria 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+//----------------SUBIR IMAGEN----------------
+
+function FileUploadComponent() {
+  const [image1, setImage1] = useState<string | null>(null);
+
+  const handleFileUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImage1(imageUrl);
+    }
+  };
+
+  const handleRemoveImage1 = () => {
+    setImage1(null);
+  };
+
+  return (
+
+      <div style={{ margin: '10px', width: '400px', height: '250px', marginTop:'-30px'}}>
+        <input type="file" accept=".png" onChange={handleFileUpload1} />
+        {image1 && (
+          <>
+            <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
+            <button onClick={handleRemoveImage1}>Eliminar imagen</button>
+          </>
+        )}
+      
+    </div>
+  );
 }
 
 

@@ -38,7 +38,7 @@ export default function Mainpage(){
             px-6 py-10 md:px-20 w-full'>
               MOSTRAR COMPONENTES
         <BuscarComp />
-        <div className='flex flex-row justify-between'>
+        <div className='flex flex-row justify-between' style={{ height:'auto'}}>
           <CeckboxComponentes />
           <TablaComp />
         </div>
@@ -241,14 +241,23 @@ function TablaComp() {
 
 function CeckboxComponentes() {
   return (
-    <div>
-      <h2>Categorias</h2>
-      <input type="checkbox" id="componente1" name="componente1" value="componente1" />
-      <label htmlFor="componente1"> Componente 1</label><br />
-      <input type="checkbox" id="componente2" name="componente2" value="componente2" />
-      <label htmlFor="componente2"> Componente 2</label><br />
-      <input type="checkbox" id="componente3" name="componente3" value="componente3" />
-      <label htmlFor="componente3"> Componente 3</label><br />
+    <div style={{marginLeft:'50px'}}>
+      <h2 style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', backgroundColor:'#1c3663ff', color:'#e3ecfcff', textAlign:'center'}}>
+        Categorias</h2>
+      <div style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', height:'auto', width:'auto'}}>
+        <div style={{margin: '10px 0',  width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente1" name="componente1" value="componente1" />
+          <label htmlFor="componente1"> Componente 1</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente2" name="componente2" value="componente2" />
+          <label htmlFor="componente2"> Componente 2</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente3" name="componente3" value="componente3" />
+          <label htmlFor="componente3"> Componente 3</label>
+        </div>
+      </div>
     </div>
   );
 }

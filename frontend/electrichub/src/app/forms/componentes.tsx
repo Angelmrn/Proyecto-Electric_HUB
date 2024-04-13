@@ -1,6 +1,5 @@
 "use client";
-
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -34,14 +33,18 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+      <div className='flex justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
-       <FormularioComp />
+        <div className='flex flex-col justify-center'>
+          <FormularioComp />
+        </div>
+        <div className='flex flex-col justify-center'>
+          <FileUploadComponent />
+        </div>
       </div>
     </main>
   );
 }
-
 
 
 //----------------APPBAR----------------
@@ -204,23 +207,11 @@ function FormularioComp (){
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField label="Nombre" id="outlined-size-normal"/>
-              <TextField
-                id="outlined-multiline-static"
-                label="img1"
-                multiline
-                rows={4}
-              />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField
                 id="outlined-multiline-static"
                 label="Descripcion"
-                multiline
-                rows={4}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Img2"
                 multiline
                 rows={4}
               />
@@ -230,19 +221,57 @@ function FormularioComp (){
       );
 }
 
-
+//----------------SUBIR IMAGEN----------------
 
 function FileUploadComponent() {
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [image1, setImage1] = useState<string | null>(null);
+  const [image2, setImage2] = useState<string | null>(null);
+
+  const handleFileUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      console.log(file);
-      // Aquí puedes manejar la carga del archivo, por ejemplo, enviándolo a un servidor
+      const imageUrl = URL.createObjectURL(file);
+      setImage1(imageUrl);
     }
   };
 
+  const handleFileUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImage2(imageUrl);
+    }
+  };
+
+  const handleRemoveImage1 = () => {
+    setImage1(null);
+  };
+
+  const handleRemoveImage2 = () => {
+    setImage2(null);
+  };
+
   return (
-    <input type="file" accept=".png" onChange={handleFileUpload} />
+    <div style={{ width: '250px', height: '250px' }}>
+      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
+        <input type="file" accept=".png" onChange={handleFileUpload1} />
+        {image1 && (
+          <>
+            <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
+            <button onClick={handleRemoveImage1}>Eliminar imagen</button>
+          </>
+        )}
+      </div>
+      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
+        <input type="file" accept=".png" onChange={handleFileUpload2} />
+        {image2 && (
+          <>
+            <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
+            <button onClick={handleRemoveImage2}>Eliminar imagen</button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
