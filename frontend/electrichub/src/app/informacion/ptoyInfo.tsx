@@ -50,14 +50,14 @@ export default function Mainpage(){
           </div>
       </div>
   */}
-    <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
-             px-6 py-10 md:px-10 w-full' style={{ marginTop: '-15vh', boxSizing: 'border-box' }}>
+    <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-10 w-full' style={{ marginTop: '-15vh', boxSizing: 'border-box' }}>
         <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-          w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+            w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
           <ImagenProyecto />
           <MostrarInformacionProyecto />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10' style={{ width: '100vw', height: '100vh', 
+             boxSizing: 'border-box' }}>
           <TablacomponentesElavoracionProyecto />
         </div>
 </div>
@@ -214,7 +214,7 @@ function ResponsiveAppBar() {
 function ImagenProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-5 md:py-5 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+    px-6 py-20 md:px-5 md:py-5 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px', marginTop:'-13vh' }}>
       <label className='NombreProyecto'>Nombre del Proyecto</label>
       <img src={imagen2} alt="imagenComponente" />
     </div>
@@ -247,7 +247,7 @@ function MostrarInformacionProyecto(){
 function TablacomponentesElavoracionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-20vh' }}>
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-35vh' }}>
 
       <table className='TablaComponentesParecidos' style={{marginTop:'-5vh'}}>
       <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>
