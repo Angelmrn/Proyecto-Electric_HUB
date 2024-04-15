@@ -50,17 +50,17 @@ export default function Mainpage(){
           </div>
       </div>
   */}
-      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
-             px-6 py-10 md:px-10 w-full' style={{ marginTop: '-10px' }}>
+    <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+             px-6 py-10 md:px-10 w-full' style={{ marginTop: '-15vh', boxSizing: 'border-box' }}>
         <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-          w-full md:px-20'>
+          w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
           <ImagenProyecto />
           <MostrarInformacionProyecto />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-20'>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
           <TablacomponentesElavoracionProyecto />
         </div>
-      </div>
+</div>
 
 
     </main>
