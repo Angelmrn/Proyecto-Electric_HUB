@@ -36,6 +36,7 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
+      {/*}
       <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
           <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
@@ -48,6 +49,20 @@ export default function Mainpage(){
             <TablacomponentesElavoracionProyecto />
           </div>
       </div>
+  */}
+      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+             px-6 py-10 md:px-10 w-full' style={{ marginTop: '-10px' }}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
+          w-full'>
+          <ImagenProyecto />
+          <MostrarInformacionProyecto />
+        </div>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full'>
+          <TablacomponentesElavoracionProyecto />
+        </div>
+      </div>
+
+
     </main>
   );
 }
@@ -199,7 +214,7 @@ function ResponsiveAppBar() {
 function ImagenProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+    px-6 py-20 md:px-5 md:py-5 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
       <label className='NombreProyecto'>Nombre del Proyecto</label>
       <img src={imagen2} alt="imagenComponente" />
     </div>
@@ -232,9 +247,10 @@ function MostrarInformacionProyecto(){
 function TablacomponentesElavoracionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-150px' }}>
 
-      <table className='TablaComponentesParecidos' style={{ marginTop: '-300px' }}>
+      <table className='TablaComponentesParecidos' //</div>style={{ marginTop: '-300px' }}
+      >
       <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>
       <thead>
         <tr>

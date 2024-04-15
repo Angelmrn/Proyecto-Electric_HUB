@@ -36,6 +36,7 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
+      {/*
       <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
           <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
@@ -48,6 +49,21 @@ export default function Mainpage(){
             <MostrarInformacionComponente />
           </div>
       </div>
+    */}
+
+<div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+             px-6 py-10 md:px-10 w-full' style={{ marginTop: '-10px' }}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
+          w-full'>
+          <ImagenComponentes />
+          <TablaComponentesparecidos />
+        </div>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full'>
+          <MostrarInformacionComponente />
+        </div>
+      </div>
+
+
     </main>
   );
 }

@@ -36,8 +36,9 @@ export default function Mainpage(){
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
         <Selector/>
-        <Botones />
         <Carrusel/>
+        <Botones />
+
       </div>
     </main>
   );
