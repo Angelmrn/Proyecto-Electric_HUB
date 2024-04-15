@@ -53,11 +53,11 @@ export default function Mainpage(){
       <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
              px-6 py-10 md:px-10 w-full' style={{ marginTop: '-10px' }}>
         <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-          w-full'>
+          w-full md:px-20'>
           <ImagenProyecto />
           <MostrarInformacionProyecto />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full'>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-20'>
           <TablacomponentesElavoracionProyecto />
         </div>
       </div>
@@ -247,10 +247,9 @@ function MostrarInformacionProyecto(){
 function TablacomponentesElavoracionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-150px' }}>
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-20vh' }}>
 
-      <table className='TablaComponentesParecidos' //</div>style={{ marginTop: '-300px' }}
-      >
+      <table className='TablaComponentesParecidos' style={{marginTop:'-5vh'}}>
       <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>
       <thead>
         <tr>

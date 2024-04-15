@@ -54,11 +54,11 @@ export default function Mainpage(){
 <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
              px-6 py-10 md:px-10 w-full' style={{ marginTop: '-10px' }}>
         <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-          w-full'>
+          w-full md:px-20'>
           <ImagenComponentes />
           <TablaComponentesparecidos />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full'>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-20'>
           <MostrarInformacionComponente />
         </div>
       </div>
@@ -258,7 +258,7 @@ function MostrarInformacionComponente(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
     px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
-      <Card style={{ marginTop: '-300px' }}>
+      <Card style={{ marginTop:'-35vh' }}>
         <CardContent>
           <Typography variant="h5" component="div">
             Informacion del componente
