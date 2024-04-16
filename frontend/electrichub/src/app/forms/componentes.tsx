@@ -30,7 +30,7 @@ const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 export default function Mainpage(){
   return (
     <main className='flex min-h-screen flex-col w-full'>
-      <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
+      <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
       <div className='flex justify-center gap-6 rounded-lg bg-customise
@@ -68,10 +68,10 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1c3663ff', padding: 0,
+     width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
      
-        <Toolbar disableGutters >
+     <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
           <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
