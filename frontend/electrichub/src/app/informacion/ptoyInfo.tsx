@@ -227,8 +227,8 @@ function ImagenProyecto(){
 function MostrarInformacionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: 'auto', width: '300px' }}>
-      <Card style={{ marginTop: '-60px', width: '100%', height: 'auto' }}>
+    px-6 py-20 md:px-5 w-full' style={{  height: 'auto', width: '300px' }}>
+      <Card style={{ marginTop: '-60px', width: '150%', height: 'auto' }}>
         <CardContent>
           <Typography variant="h5" component="div">
             Informacion del Proyecto
