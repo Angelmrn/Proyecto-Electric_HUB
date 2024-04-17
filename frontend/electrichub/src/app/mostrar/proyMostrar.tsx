@@ -36,8 +36,13 @@ export default function Mainpage(){
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full'>
+              MOSTRAR PROYECTOS
         <BuscarComp />
-        <TablaComp />
+        <div className='flex flex-row justify-between'>
+          
+          <TablaComp />
+        </div>
+        <BotonesPrueba />
       </div>
     </main>
   );
@@ -190,8 +195,8 @@ function ResponsiveAppBar() {
 
 function BuscarComp() {
   return (
-    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', ml:33 }}>
-      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '46%' }} />
+    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', ml:13 }}>
+      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '36%' }} />
       <button className='botonBUSCAR'>Buscar
         <img src={imagen2} />
       </button>
@@ -204,29 +209,25 @@ function BuscarComp() {
 
 function TablaComp() {  
   return (
-    <table className='TablaMostrarComp'>
+    <table className='TablaMostrarProy'>
       <thead>
         <tr>
           <th>ID</th>
           <th>Nombre</th>
-          <th>Categoria</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>ID 1</td>
           <td>Nombre 1</td>
-          <td>Categoria 1</td>
         </tr>
         <tr>
           <td>ID 2</td>
           <td>Nombre 2</td>
-          <td>Categoria 2</td>
         </tr>
         <tr>
           <td>ID 3</td>
           <td>Nombre 3</td>
-          <td>Categoria 3</td>
         </tr>
         
       </tbody>
@@ -235,3 +236,15 @@ function TablaComp() {
 }
 
 
+
+//----------------BOTONES - PRUEBAS----------------
+
+function BotonesPrueba() {
+  return(
+  <div>
+  <Link to='/Proyinfo'>
+    <button>, Mostrar-InfoProyectos</button>
+    </Link>
+  </div>
+  );
+}

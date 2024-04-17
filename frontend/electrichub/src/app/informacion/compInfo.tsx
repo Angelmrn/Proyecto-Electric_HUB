@@ -17,12 +17,15 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import "./informacion.css";
 import { Link } from "react-router-dom"
 
 
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
+const imagen2 = '/cont_binario.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -33,15 +36,21 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-       Informacion de componentes 
+      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
+            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 w-full'>
+            <ImagenComponentes />
+            <TablaComponentesparecidos />
+          </div>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 w-full'>
+            <MostrarInformacionComponente />
+          </div>
       </div>
     </main>
   );
 }
-
-
 
 //----------------APPBAR----------------
 function ResponsiveAppBar() {
@@ -184,4 +193,66 @@ function ResponsiveAppBar() {
   );
 }
 
+
+//----------------- IMAGEN-componentesINFO----------------
+
+function ImagenComponentes(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+      <img src={imagen2} alt="imagenComponente" />
+    </div>
+  );
+}
+
+
+//----------------- TABLA - componentesparecidos ----------------
+
+function TablaComponentesparecidos(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+      Componentes Parecidos
+      <table className='TablaComponentesParecidos'>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nombre 1</td>
+        </tr>
+        <tr>
+          <td>Nombre 2</td>
+        </tr>
+        <tr>
+          <td>Nombre 3</td>
+        </tr>  
+      </tbody>
+      </table>
+    </div>
+  );
+
+}
+
+//----------------- MOSTRAR InformacionComponente ----------------
+
+function MostrarInformacionComponente(){
+  return(
+    <div className='flex flex-col justify-center gap-6 rounded-lg
+    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
+      <Card style={{ marginTop: '-300px' }}>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Informacion del componente
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Aquí puedes poner información extensa sobre el componente. Puedes agregar tantas líneas de texto como necesites.
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
