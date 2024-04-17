@@ -214,7 +214,7 @@ function ResponsiveAppBar() {
 function ImagenProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-5 md:py-5 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px', marginTop:'-13vh' }}>
+    px-6 py-20 md:px-5 md:py-5 w-full' style={{  height: '250px', width: '300px', marginTop:'-13vh' }}>
       <label className='NombreProyecto'>Nombre del Proyecto</label>
       <img src={imagen2} alt="imagenComponente" />
     </div>
@@ -227,7 +227,7 @@ function ImagenProyecto(){
 function MostrarInformacionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '300px' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: 'auto', width: '300px' }}>
       <Card style={{ marginTop: '-60px', width: '100%', height: 'auto' }}>
         <CardContent>
           <Typography variant="h5" component="div">
@@ -247,7 +247,7 @@ function MostrarInformacionProyecto(){
 function TablacomponentesElavoracionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: 'auto', width: '1000px', marginTop:'-35vh' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: 'auto', width: '1000px', marginTop:'-35vh' }}>
 
       <table className='TablaComponentesParecidos' style={{marginTop:'-10vh'}}>
       <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>

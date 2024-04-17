@@ -215,7 +215,8 @@ function ResponsiveAppBar() {
 function ImagenComponentes(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px' }}>
+      <label>Imagen del componente</label>
       <img src={imagen2} alt="imagenComponente" />
     </div>
   );
@@ -227,7 +228,7 @@ function ImagenComponentes(){
 function TablaComponentesparecidos(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px' }}>
       Componentes Parecidos
       <table className='TablaComponentesParecidos'>
       <thead>
@@ -257,7 +258,7 @@ function TablaComponentesparecidos(){
 function MostrarInformacionComponente(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: '500px', width: '1000px' }}>
       <Card style={{ marginTop:'-35vh' }}>
         <CardContent>
           <Typography variant="h5" component="div">

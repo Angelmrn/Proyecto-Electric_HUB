@@ -348,6 +348,7 @@ function FileUploadComponent() {
           <>
             <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
             <button onClick={handleRemoveImage1}>Eliminar imagen</button>
+            <button style={{marginLeft:'2vh'}}>Subir imagen</button>
           </>
         )}
       
