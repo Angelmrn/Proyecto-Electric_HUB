@@ -25,3 +25,4 @@ urlpatterns = [
     re_path('create', views.create),
     re_path('profile', views.profile),
 ]
+
