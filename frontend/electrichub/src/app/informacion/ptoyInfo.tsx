@@ -89,14 +89,14 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-    width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
-    
-    <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
-          <Link to='/'>
+     width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
+     
+     <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
+        <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
-          </Link>
+        </Link>
           <Typography
             variant="h6"
             noWrap
@@ -143,8 +143,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          
           <Typography
             variant="h5"
             noWrap
@@ -163,21 +161,18 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, justifyContent: 'flex-end', flexDirection: { xs: 'column', md: 'row' } }}>
             <Link to="/tools">
               <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
                 TOOLS
               </Button>
             </Link>
-          </Box>
-          
-          <Box sx={{ flexGrow: 0 }}>
-          <Link to="/login">
-            <Tooltip title="Sign-Up">
-              <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
-                LOGIN
-              </Button>
-            </Tooltip>
+            <Link to="/login">
+              <Tooltip title="Sign-Up">
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                  LOGIN
+                </Button>
+              </Tooltip>
             </Link>
             <Menu
               sx={{ mt: '45px' }}

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,14 +16,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { Link } from "react-router-dom"
+import { Label } from '@mui/icons-material';
 
 
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/cont_binario.png';
+const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -35,21 +33,20 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 ' style={{  marginLeft:'100px'}}>
-             <FormularioComp />
-          </div>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-0 md:px-20 '>
-             <TablaCompN />
-            <FileUploadComponent />
-          </div>
+      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
+            px-6 py-10 md:px-20 w-full'>
+        <div className='flex flex-col justify-center' style={{ height:'29vh'}}>
+          <FormularioProy />
+        </div>
+        <div className='flex flex-col justify-center' >
+          <TablaCompN />
+          <FileUploadComponent />
+        </div>
       </div>
     </main>
   );
 }
+
 
 //----------------APPBAR----------------
 function ResponsiveAppBar() {
@@ -76,11 +73,11 @@ function ResponsiveAppBar() {
      width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
      
      <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
-          <Link to='/'>
+        <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
-          </Link>
+        </Link>
           <Typography
             variant="h6"
             noWrap
@@ -127,8 +124,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          
           <Typography
             variant="h5"
             noWrap
@@ -147,21 +142,18 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, justifyContent: 'flex-end', flexDirection: { xs: 'column', md: 'row' } }}>
             <Link to="/tools">
               <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
                 TOOLS
               </Button>
             </Link>
-          </Box>
-          
-          <Box sx={{ flexGrow: 0 }}>
-          <Link to="/login">
-            <Tooltip title="Sign-Up">
-              <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
-                LOGIN
-              </Button>
-            </Tooltip>
+            <Link to="/login">
+              <Tooltip title="Sign-Up">
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                  LOGIN
+                </Button>
+              </Tooltip>
             </Link>
             <Menu
               sx={{ mt: '45px' }}
@@ -192,72 +184,9 @@ function ResponsiveAppBar() {
   );
 }
 
-
-//----------------- IMAGEN-componentesINFO----------------
-
-function ImagenComponentes(){
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
-      <img src={imagen2} alt="imagenComponente" />
-    </div>
-  );
-}
-
-
-//----------------- TABLA - componentesparecidos ----------------
-
-function TablaComponentesparecidos(){
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '250px', width: '300px' }}>
-      Componentes Parecidos
-      <table className='TablaComponentesParecidos'>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Nombre 1</td>
-        </tr>
-        <tr>
-          <td>Nombre 2</td>
-        </tr>
-        <tr>
-          <td>Nombre 3</td>
-        </tr>  
-      </tbody>
-      </table>
-    </div>
-  );
-
-}
-
-//----------------- MOSTRAR InformacionComponente ----------------
-
-function MostrarInformacionComponente(){
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ backgroundColor: 'gray', height: '500px', width: '1000px' }}>
-      <Card style={{ marginTop: '-300px' }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Informacion del componente
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Aquí puedes poner información extensa sobre el componente. Puedes agregar tantas líneas de texto como necesites.
-          </Typography>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
 //----------------FORMULARIO----------------
 
-function FormularioComp (){
+function FormularioProy (){
     return (
         <Box
           component="form"
@@ -266,17 +195,17 @@ function FormularioComp (){
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginTop: '-200px',
+           
           }}
           noValidate
           autoComplete="off"
         >
-           <div ><h1> Formulario para agregar Proyectos </h1></div>
-          <div style={{height:'300px' ,paddingRight:'50px'}} >
-            <Box sx={{ display: 'flex', justifyContent: 'center',height: '100px', width: '300px' }}>
+           <div><h1> Formulario para agregar Componentes </h1></div>
+          <div>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField label="Nombre" id="outlined-size-normal"/>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center',  height: 'auto', width: '300px', marginTop:'50px' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField
                 id="outlined-multiline-static"
                 label="Descripcion"
@@ -292,8 +221,8 @@ function FormularioComp (){
 //----------------TABLA-ComponentesNecesarios----------------
 function TablaCompN (){
   return (
-    <div style={{ margin: '10px', width: '400px', height: '250px', marginRight:'100px' }}>
-      <table className='TablaMostrarComp' style={{ width: '80%', height: 'auto%', marginLeft: '80px' }}>
+    <div style={{ margin: '10px', width: '400px', height: '250px', marginRight:'100px', marginLeft:'5vw' }}>
+      <table className='TablaMostrarComp' style={{ width: '80%', height: 'auto%', marginTop:'0', marginLeft:'5vh' }}>
         <thead>
           <tr>
             <th>ID</th>
@@ -323,7 +252,8 @@ function TablaCompN (){
   );
 }
 
-//----------------SUBIR IMAGEN----------------
+
+//----------------SUBIR IMAGEN ----------------
 
 function FileUploadComponent() {
   const [image1, setImage1] = useState<string | null>(null);
@@ -342,7 +272,7 @@ function FileUploadComponent() {
 
   return (
 
-      <div style={{ margin: '10px', width: '400px', height: '250px', marginTop:'-30px'}}>
+      <div style={{ margin: '10px', width: '400px', height: '250px', marginTop:'5vh'}}>
         <input type="file" accept=".png" onChange={handleFileUpload1} />
         {image1 && (
           <>
@@ -355,6 +285,10 @@ function FileUploadComponent() {
     </div>
   );
 }
+
+
+
+
 
 
 
