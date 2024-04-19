@@ -33,35 +33,20 @@ const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 export default function Mainpage(){
   return (
     <main className='flex min-h-screen flex-col w-full'>
-      <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-        <ResponsiveAppBar />
-      </div>
-      {/*
-      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 w-full'>
-            <ImagenComponentes />
-            <TablaComponentesparecidos />
+          <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
+            <ResponsiveAppBar />
           </div>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 w-full'>
-            <MostrarInformacionComponente />
-          </div>
-      </div>
-    */}
-
-<div className='flex flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-            w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
-          <ImagenComponentes />
-          <TablaComponentesparecidos />
-        </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10' style={{ width: '100vw', height: '100vh', 
-             boxSizing: 'border-box' }}>
-          <MostrarInformacionComponente />
-        </div>
-      </div>
+          <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
+    <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
+        w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+      <ImagenComponentes />
+      <TablaComponentesparecidos />
+    </div>
+    <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 order-first' style={{ width: '100vw', height: '50vh', 
+         boxSizing: 'border-box', marginTop:'10vh'}}>
+      <MostrarInformacionComponente />
+    </div>
+</div>
 
 
     </main>
@@ -90,14 +75,14 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-    width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
-    
-    <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
-          <Link to='/'>
+     width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
+     
+     <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
+        <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
-          </Link>
+        </Link>
           <Typography
             variant="h6"
             noWrap
@@ -144,8 +129,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          
           <Typography
             variant="h5"
             noWrap
@@ -164,21 +147,18 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, justifyContent: 'flex-end', flexDirection: { xs: 'column', md: 'row' } }}>
             <Link to="/tools">
               <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
                 TOOLS
               </Button>
             </Link>
-          </Box>
-          
-          <Box sx={{ flexGrow: 0 }}>
-          <Link to="/login">
-            <Tooltip title="Sign-Up">
-              <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
-                LOGIN
-              </Button>
-            </Tooltip>
+            <Link to="/login">
+              <Tooltip title="Sign-Up">
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                  LOGIN
+                </Button>
+              </Tooltip>
             </Link>
             <Menu
               sx={{ mt: '45px' }}
@@ -215,7 +195,7 @@ function ResponsiveAppBar() {
 function ImagenComponentes(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px'}}>
       <label>Imagen del componente</label>
       <img src={imagen2} alt="imagenComponente" />
     </div>
@@ -258,8 +238,8 @@ function TablaComponentesparecidos(){
 function MostrarInformacionComponente(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: '500px', width: '1000px' }}>
-      <Card style={{ marginTop:'-35vh' }}>
+    px-6 py-20 md:px-10 w-full mt-0' style={{  height: 'auto', width: '1000px'}}>
+      <Card >
         <CardContent>
           <Typography variant="h5" component="div">
             Informacion del componente
