@@ -37,16 +37,16 @@ export default function Mainpage(){
             <ResponsiveAppBar />
           </div>
           <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
-    <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-        w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
-      <ImagenComponentes />
-      <TablaComponentesparecidos />
-    </div>
-    <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 order-first' style={{ width: '100vw', height: '50vh', 
-         boxSizing: 'border-box', marginTop:'10vh'}}>
-      <MostrarInformacionComponente />
-    </div>
-</div>
+            <div className='flex flex-col sm:items-center sm:text-center md:items-start md:text-left justify-center gap-6 rounded-lg bg-customise 
+                w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+              <ImagenComponentes />
+              <TablaComponentesparecidos />
+            </div>
+            <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10  md:mt-10' style={{ width: '100vw', height: '50vh', 
+                boxSizing: 'border-box'}}>
+              <MostrarInformacionComponente />
+            </div>
+          </div>
 
 
     </main>

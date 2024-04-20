@@ -17,6 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom"
+import "./forms.css";
 import { Label } from '@mui/icons-material';
 
 
@@ -200,7 +201,7 @@ function FormularioProy (){
           noValidate
           autoComplete="off"
         >
-           <div><h1> Formulario para agregar Componentes </h1></div>
+           <div><h1> Formulario para agregar Proyectos </h1></div>
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField label="Nombre" id="outlined-size-normal"/>
@@ -222,7 +223,7 @@ function FormularioProy (){
 function TablaCompN (){
   return (
     <div style={{ margin: '10px', width: '400px', height: '250px', marginRight:'100px', marginLeft:'5vw' }}>
-      <table className='TablaMostrarComp' style={{ width: '80%', height: 'auto%', marginTop:'0', marginLeft:'5vh' }}>
+      <table className='TablaMostrarComp' style={{ width: 'auto', height: 'auto', marginTop:'0', marginLeft:'5vh' }}>
         <thead>
           <tr>
             <th>ID</th>
@@ -232,19 +233,19 @@ function TablaCompN (){
         </thead>
         <tbody>
           <tr>
-            <td>ID 1</td>
-            <td>Nombre 1</td>
-            <td>Categoria 1</td>
+            <td><input type="text" defaultValue="ID 1" /></td>
+            <td><input type="text" defaultValue="Nombre 1" /></td>
+            <td><input type="text" defaultValue="Categoria 1" /></td>
           </tr>
           <tr>
-            <td>ID 2</td>
-            <td>Nombre 2</td>
-            <td>Categoria 2</td>
+            <td><input type="text" defaultValue="ID 2" /></td>
+            <td><input type="text" defaultValue="Nombre 2" /></td>
+            <td><input type="text" defaultValue="Categoria 2" /></td>
           </tr>
           <tr>
-            <td>ID 3</td>
-            <td>Nombre 3</td>
-            <td>Categoria 3</td>
+            <td><input type="text" defaultValue="ID 3" /></td>
+            <td><input type="text" defaultValue="Nombre 3" /></td>
+            <td><input type="text" defaultValue="Categoria 3" /></td>
           </tr>
         </tbody>
       </table>

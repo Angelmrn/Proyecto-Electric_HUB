@@ -36,31 +36,17 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      {/*}
-      <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full' style={{ marginTop: '-30px' }}>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 w-full'>
+      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full md:mt-[-15vh]' style={{ boxSizing: 'border-box'}}>
+        <div className={`flex flex-col justify-center gap-6 rounded-lg bg-customise 
+              w-full md:px-10 md:mt-[-15vh] sm:mt-[10vh] sm:items-center sm:text-center md:items-start md:text-left`} style={{ width: '100vw', height: 'auto', boxSizing: 'border-box'}}>
             <ImagenProyecto />
             <MostrarInformacionProyecto />
-          </div>
-          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 w-full'>
+        </div>
+          <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 ' style={{ width: '100vw', height: '100vh', 
+              boxSizing: 'border-box' }}>
             <TablacomponentesElavoracionProyecto />
           </div>
-      </div>
-  */}
-    <div className='flex flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-15vh', boxSizing: 'border-box' }}>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise 
-            w-full md:px-10' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
-          <ImagenProyecto />
-          <MostrarInformacionProyecto />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10' style={{ width: '100vw', height: '100vh', 
-             boxSizing: 'border-box' }}>
-          <TablacomponentesElavoracionProyecto />
-        </div>
-</div>
 
 
     </main>
@@ -242,7 +228,7 @@ function MostrarInformacionProyecto(){
 function TablacomponentesElavoracionProyecto(){
   return(
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: 'auto', width: '1000px', marginTop:'-35vh' }}>
+    px-6 py-20 md:px-10 w-full' style={{  height: 'auto', width: 'auto', marginTop:'-35vh' }}>
 
       <table className='TablaComponentesParecidos' style={{marginTop:'-10vh'}}>
       <caption style={{captionSide: 'top'}}>Componentes para elaborar el Proyecto</caption>
