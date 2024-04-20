@@ -38,7 +38,7 @@ export default function Mainpage(){
       </div>
       <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full md:mt-[-15vh]' style={{ boxSizing: 'border-box'}}>
         <div className={`flex flex-col justify-center gap-6 rounded-lg bg-customise 
-              w-full md:px-10 md:mt-[-15vh] sm:mt-[10vh] sm:items-center sm:text-center md:items-start md:text-left`} style={{ width: '100vw', height: 'auto', boxSizing: 'border-box'}}>
+              w-full md:px-10 md:mt-[-10vh] sm:mt-[10vh] sm:items-center sm:text-center md:items-start md:text-left`} style={{ width: '100vw', height: 'auto', boxSizing: 'border-box'}}>
             <ImagenProyecto />
             <MostrarInformacionProyecto />
         </div>
