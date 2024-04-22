@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import './login.css'
@@ -8,6 +10,7 @@ const Login = () => {
     const [UserPassword, setUserPassword] = useState('');
     const [UserPassword2, setUserPassword2] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleUser = async (e: React.MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault();
@@ -21,13 +24,13 @@ const Login = () => {
         setErrorMessage('');
 
         // Si las contraseñas coinciden, proceder con la lógica de envío del formulario
-        console.log(UserName, UserEmail, UserPassword, UserPassword2);
-        const res = await fetch('${process.env.NEXT_PUBLIC_BACKEND_URL}/djapi/users/', {
+        console.log(UserName, UserEmail, UserPassword);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/djapi/`, {
             method: 'POST',
             body: JSON.stringify({
-                username: UserName,
-                email: UserEmail,
-                password: UserPassword
+                UserName,
+                UserEmail,
+                UserPassword
             }),
 
             headers: {
@@ -37,11 +40,7 @@ const Login = () => {
         });
 
         const data = await res.json();
-        if (res.ok){
-            localStorage.setItem('token', data.token)
-        }else{
-            console.error(data.error)
-        }
+        console.log(data);
     }
 
     return (

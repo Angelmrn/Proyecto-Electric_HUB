@@ -20,9 +20,9 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('djapi/v1', include('djapi.urls')),
-    re_path('login', views.login),
-    re_path('create', views.create),
-    re_path('profile', views.profile),
+    path('', include('djapi.urls')),
+    # re_path('login', views.login),
+    # re_path('create', views.create),
+    # re_path('profile', views.profile),
 ]
 
