@@ -33,15 +33,18 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-        <div className='flex flex-col justify-center'>
-          <FormularioComp />
+      
+        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 ' >
+          <div className='flex flex-col justify-center'>
+            <FormularioComp />
+            <button >Subir Componente</button>
+          </div>
+          <div className='flex flex-col justify-center'>
+            <FileUploadComponent />
+          </div>
         </div>
-        <div className='flex flex-col justify-center'>
-          <FileUploadComponent />
-        </div>
-      </div>
+      
     </main>
   );
 }
@@ -254,7 +257,7 @@ function FileUploadComponent() {
           <>
             <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
             <button onClick={handleRemoveImage1}>Eliminar imagen</button>
-            <button style={{marginLeft:'2vh'}}>Subir imagen</button>
+           
           </>
         )}
       </div>
@@ -264,7 +267,7 @@ function FileUploadComponent() {
           <>
             <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
             <button onClick={handleRemoveImage2}>Eliminar imagen</button>
-            <button style={{marginLeft:'2vh'}}>Subir imagen</button>
+            
           </>
         )}
       </div>

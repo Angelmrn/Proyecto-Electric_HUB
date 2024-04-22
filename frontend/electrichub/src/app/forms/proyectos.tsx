@@ -268,6 +268,9 @@ function FileUploadComponent() {
   };
 
   const handleRemoveImage1 = () => {
+    if (image1) {
+      URL.revokeObjectURL(image1);
+    }
     setImage1(null);
   };
 

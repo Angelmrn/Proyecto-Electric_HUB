@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -184,11 +185,19 @@ function ResponsiveAppBar() {
 
 function Selector() {
   const [Buscar, setBuscar] = React.useState('');
+  const navigate = useNavigate();
 
   const handleChange = (event: SelectChangeEvent) => {
     setBuscar(event.target.value as string);
   };
 
+  const handleSearch = () => {
+    if (Buscar === 'componentes') {
+      navigate('/mostrarComp');
+    } else if (Buscar === 'proyectos') {
+      navigate('/mostrarProy');
+    }
+  };
   return (
     <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <FormControl sx={{ width: '40%' }}>
@@ -201,15 +210,13 @@ function Selector() {
           onChange={handleChange}
         >
           <MenuItem value='componentes'>Componentes</MenuItem>
-          <MenuItem value='poryectos'>Proyectos</MenuItem>
+          <MenuItem value='proyectos'>Proyectos</MenuItem>
         </Select>
       </FormControl>
-      <button className='botonBUSCAR'>Buscar
+      <button className='botonBUSCAR' onClick={handleSearch}>Buscar
         <img src={imagen2} />
       </button>
     </Box>
-    
-  
   );
 }
 
@@ -297,17 +304,7 @@ function Botones(){
           <Link to='/addProy'>
           <button>, Add  Proyectos</button>
           </Link>
-        </div>
-        <div>
-          <Link to='/mostrarProy'>
-          <button>, Mostrar-Proyectos</button>
-          </Link>
-          <Link to='/mostrarComp'>
-          <button>, Mostrar-Componentes</button>
-          </Link>
-        </div>
-       
-
+        </div>   
 </div>
   );
 }

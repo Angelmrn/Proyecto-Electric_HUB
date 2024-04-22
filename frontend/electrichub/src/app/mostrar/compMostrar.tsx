@@ -235,7 +235,7 @@ function TablaComp() {
 
 function CeckboxComponentes() {
   return (
-    <div style={{marginLeft:'5vh', maxWidth:'26vh'}}>
+    <div style={{marginLeft:'5vh', maxWidth:'27vh'}}>
       <h2 style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', backgroundColor:'#1c3663ff', color:'#e3ecfcff', textAlign:'center'}}>
         Categorias</h2>
       <div style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', height:'auto', width:'auto'}}>
