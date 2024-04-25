@@ -4,17 +4,29 @@ body{
 }
 
 .botonLOGO{
-  width:350px;
-  height: 150px;
+  width:40vh;
+  height: 20vh;
   background-color: transparent;
   border: none;
   padding-left: 10px;
- 
 }
 
 .botonLOGO img{
   width: 100%;
   height: 100%;
+}
+@media (max-width: 768px) {
+  .botonLOGO {
+    width: 30vh; /* Cambia esto al tamaño que quieras */
+    height: 12vh; /* Cambia esto al tamaño que quieras */
+  }
+}
+
+@media (max-width: 640px) {
+  .botonLOGO {
+    width: 20vh; /* Cambia esto al tamaño que quieras */
+    height: 10vh; /* Cambia esto al tamaño que quieras */
+  }
 }
 
 .Barra{
@@ -67,6 +79,5 @@ body{
   width: 70%;
   height: 50%;
 }
-
 
 

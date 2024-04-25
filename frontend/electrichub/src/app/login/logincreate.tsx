@@ -98,7 +98,7 @@ const Login = () => {
                     </div>   
                 </div>    
             </div>
-            <div className="ImgCreate">
+            <div className="ImgCreate" >
                 <img src="FondoComponentes.jpg" alt="Imagen de Fondo" className="ImgFondo"/>
             </div>
         </div>
