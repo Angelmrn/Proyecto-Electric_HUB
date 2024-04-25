@@ -21,8 +21,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('djapi.urls')),
-    # re_path('login', views.login),
-    # re_path('create', views.create),
-    # re_path('profile', views.profile),
+    re_path('login', views.login),
+    re_path('register', views.register),
+    re_path('profile', views.profile),
 ]
 

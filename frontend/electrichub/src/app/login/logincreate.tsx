@@ -25,12 +25,12 @@ const Login = () => {
 
         // Si las contraseñas coinciden, proceder con la lógica de envío del formulario
         console.log(UserName, UserEmail, UserPassword);
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/djapi/`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
             method: 'POST',
             body: JSON.stringify({
-                UserName,
-                UserEmail,
-                UserPassword
+                username : UserName,
+                email : UserEmail,
+                password: UserPassword
             }),
 
             headers: {
@@ -41,6 +41,11 @@ const Login = () => {
 
         const data = await res.json();
         console.log(data);
+
+        setUserName('');
+        setUserEmail('');
+        setUserPassword('');
+        setUserPassword2('');
     }
 
     return (
