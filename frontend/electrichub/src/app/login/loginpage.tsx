@@ -36,7 +36,7 @@ const Login = () => {
                 </div>
 
                 <div className='EntrysLogin'>
-                    <div>
+                    <div className='w-full'>
                         <label className='lblLogin'>Email</label>
                         <input placeholder='zaCodigo@zapopan.tecmm.edu.mx'/>
                     </div>

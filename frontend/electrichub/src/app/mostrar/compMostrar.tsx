@@ -31,17 +31,16 @@ const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 export default function Mainpage(){
   return (
     <main className='flex min-h-screen flex-col w-full'>
-      <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
+      <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-              MOSTRAR COMPONENTES
+      <div className='flex flex-col  justify-center gap-6 rounded-lg bg-customise
+            px-6 py-0 md:px-20 w-full'>
         <BuscarComp />
-        <div className='flex flex-row justify-between' style={{ height:'auto'}}>
-          <CeckboxComponentes />
-          <TablaComp />
-        </div>
+      <div className='flex flex-col md:flex-row justify-between items-center' style={{ height:'auto'}}>
+        <CeckboxComponentes />
+        <TablaComp />
+      </div>
         <BotonesPrueba />
       </div>
     </main>
@@ -71,15 +70,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1c3663ff', padding: 0,
+     width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
      
-        <Toolbar disableGutters >
-          <Link to='/'>
+     <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
+        <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
-          </Link>
+        </Link>
           <Typography
             variant="h6"
             noWrap
@@ -126,8 +125,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          
           <Typography
             variant="h5"
             noWrap
@@ -146,21 +143,18 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, justifyContent: 'flex-end', flexDirection: { xs: 'column', md: 'row' } }}>
             <Link to="/tools">
               <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
                 TOOLS
               </Button>
             </Link>
-          </Box>
-          
-          <Box sx={{ flexGrow: 0 }}>
-          <Link to="/login">
-            <Tooltip title="Sign-Up">
-              <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
-                LOGIN
-              </Button>
-            </Tooltip>
+            <Link to="/login">
+              <Tooltip title="Sign-Up">
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                  LOGIN
+                </Button>
+              </Tooltip>
             </Link>
             <Menu
               sx={{ mt: '45px' }}
@@ -195,8 +189,8 @@ function ResponsiveAppBar() {
 
 function BuscarComp() {
   return (
-    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', ml:33 }}>
-      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '46%' }} />
+    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft:'26vh' }}>
+      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '42%' }} />
       <button className='botonBUSCAR'>Buscar
         <img src={imagen2} />
       </button>
@@ -209,7 +203,7 @@ function BuscarComp() {
 
 function TablaComp() {  
   return (
-    <table className='TablaMostrarComp'>
+    <table className='TablaMostrarComp' style={{marginLeft:'20vh'}}>
       <thead>
         <tr>
           <th>ID</th>
@@ -241,11 +235,11 @@ function TablaComp() {
 
 function CeckboxComponentes() {
   return (
-    <div style={{marginLeft:'50px'}}>
+    <div style={{marginLeft:'5vh', maxWidth:'27vh'}}>
       <h2 style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', backgroundColor:'#1c3663ff', color:'#e3ecfcff', textAlign:'center'}}>
         Categorias</h2>
       <div style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', height:'auto', width:'auto'}}>
-        <div style={{margin: '10px 0',  width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+        <div  style={{margin: '10px 0',  width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
           <input type="checkbox" id="componente1" name="componente1" value="componente1" />
           <label htmlFor="componente1"> Componente 1</label>
         </div>

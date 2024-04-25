@@ -30,18 +30,21 @@ const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 export default function Mainpage(){
   return (
     <main className='flex min-h-screen flex-col w-full'>
-      <div className="flex h-40 shrink-0 items-end rounded-lg bg-custom md:h-80 w-full">
+      <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
         <ResponsiveAppBar />
       </div>
-      <div className='flex justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-        <div className='flex flex-col justify-center'>
-          <FormularioComp />
+      
+        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 ' >
+          <div className='flex flex-col justify-center'>
+            <FormularioComp />
+            <button >Subir Componente</button>
+          </div>
+          <div className='flex flex-col justify-center'>
+            <FileUploadComponent />
+          </div>
         </div>
-        <div className='flex flex-col justify-center'>
-          <FileUploadComponent />
-        </div>
-      </div>
+      
     </main>
   );
 }
@@ -68,15 +71,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1c3663ff', padding: 0,
-     width: '100%', height:'100%', paddingTop: 8, position: 'relative'}}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1c3663ff', padding: 0,
+     width: '100%', height:'80%', paddingTop: 8, position: 'relative'}}>
      
-        <Toolbar disableGutters >
-          <Link to="/">
+     <Toolbar disableGutters sx={{ marginTop:'-5vh'  }}>
+        <Link to="/">
           <button className='botonLOGO'>
             <img className = 'imagenlogo' src={imagen} alt="logo" />
           </button>
-          </Link>
+        </Link>
           <Typography
             variant="h6"
             noWrap
@@ -123,8 +126,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          
           <Typography
             variant="h5"
             noWrap
@@ -143,21 +144,18 @@ function ResponsiveAppBar() {
           >
           </Typography>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, justifyContent: 'flex-end', flexDirection: { xs: 'column', md: 'row' } }}>
             <Link to="/tools">
               <Button style={{color: '#e3ecfcff',  marginRight: '50px'}} className='TOOLSBUTTON'>
                 TOOLS
               </Button>
             </Link>
-          </Box>
-          
-          <Box sx={{ flexGrow: 0 }}>
-          <Link to="/login">
-            <Tooltip title="Sign-Up">
-              <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10}}>
-                LOGIN
-              </Button>
-            </Tooltip>
+            <Link to="/login">
+              <Tooltip title="Sign-Up">
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                  LOGIN
+                </Button>
+              </Tooltip>
             </Link>
             <Menu
               sx={{ mt: '45px' }}
@@ -259,6 +257,7 @@ function FileUploadComponent() {
           <>
             <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
             <button onClick={handleRemoveImage1}>Eliminar imagen</button>
+           
           </>
         )}
       </div>
@@ -268,6 +267,7 @@ function FileUploadComponent() {
           <>
             <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
             <button onClick={handleRemoveImage2}>Eliminar imagen</button>
+            
           </>
         )}
       </div>
