@@ -188,7 +188,6 @@
   /*Titulo del rectangulo*/
   .SignUP{
     position: absolute;
-    padding-top: 15px;
     padding-left: 25%;
     display: flex;
     align-items: center;
@@ -201,7 +200,7 @@
   /*Molde de registro*/
   .EntrysCreate {
     position: absolute;
-    padding-top: 150px;
+    padding-top: 90px;
     padding-left: 20%;
     flex-direction: column;
     align-items: flex-start;
@@ -210,7 +209,7 @@
   }
   
   .EntrysCreate div{
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   
   /*Molde de Inpputs*/
@@ -243,7 +242,7 @@
   
   .BottonLog{
     position: relative;
-    padding-top: 5%;
+    padding-top: 12%;
     padding-left: 25%;
   }
   
@@ -263,7 +262,7 @@
   
   .BottonBack{
     position: relative;
-    padding-top: 12%;
+    padding-top: 18%;
     padding-left: 40%;
   }
   
@@ -279,11 +278,7 @@
     border-bottom: 1px solid black;
     color: black;
   }
-  
 
-
-
-  
   .ImgCreate {
     position: absolute;
     width: 55%;
@@ -299,6 +294,24 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
+}
+
+.errorMessage{
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  right: 1%;
+  color : black;
+  overflow: hidden;
+}
+
+/* Estilo para resaltar campos faltantes */
+.EntrysCreate input.missingField {
+  border-bottom: 1px solid red;
+}
+
+.EntrysCreate .lblCreate.missingLabel {
+  color: red; 
 }
 
 /* Estilos para pantallas de tamaño grande (por ejemplo, laptops, monitores) */
@@ -352,3 +365,4 @@
         font-size: 30px;
     }
 }
+

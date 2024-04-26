@@ -28,16 +28,22 @@ def register(request):
     serializer = UserSerializer(data=request.data)
 
     if serializer.is_valid():
-        serializer.save()
+        email = serializer.validated_data['email']
 
-        user = User.objects.get(username=serializer.data['username'])
-        user.set_password(serializer.data['password'])
+        # Verificar si el correo electrónico ya existe
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'El correo electrónico ya está en uso'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Si el nombre de usuario y el correo electrónico no existen, guardar el usuario
+        user = serializer.save()
+        user.set_password(serializer.validated_data['password'])
         user.save()
 
+        # Crear el token de autenticación
         # pylint: disable=no-member
-        token = Token.objects.create(user=user)
+        token, created = Token.objects.get_or_create(user=user)
         
-        return Response({'token': token.key, "user": serializer.data }, status=status.HTTP_201_CREATED)
+        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
