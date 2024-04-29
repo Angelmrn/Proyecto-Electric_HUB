@@ -110,7 +110,7 @@ const Login = () => {
                         <label className="lblCreate">
                             <span className="SpanCreate">Primer Apellido</span>
                         </label>
-                        <input type="text" placeholder="Materno"
+                        <input type="text" placeholder="Paterno"
                         value={FirstName}
                         onChange={e => setFirstName(e.target.value)}
                         className={errorMessage && !FirstName ? 'missingField' : ''}/>
@@ -119,7 +119,7 @@ const Login = () => {
                         <label className="lblCreate">
                             <span className="SpanCreate">Segundo Apellido</span>
                         </label>
-                        <input type="text" placeholder="Paterno"
+                        <input type="text" placeholder="Materno"
                         value={LastName}
                         onChange={e => setLastName(e.target.value)}
                         className={errorMessage && !LastName ? 'missingField' : ''}/>
