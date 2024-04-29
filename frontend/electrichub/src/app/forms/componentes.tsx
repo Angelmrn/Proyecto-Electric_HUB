@@ -189,7 +189,13 @@ function ResponsiveAppBar() {
 //----------------FORMULARIO----------------
 
 function FormularioComp (){
+  const [tipo, setTipo] = React.useState('');
+
+      const handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>, child: React.ReactNode) => {
+        setTipo(event.target.value as string);
+      };
     return (
+      
         <Box
           component="form"
           sx={{
@@ -201,6 +207,7 @@ function FormularioComp (){
           noValidate
           autoComplete="off"
         >
+          
            <div><h1> Formulario para agregar Componentes </h1></div>
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -213,6 +220,28 @@ function FormularioComp (){
                 multiline
                 rows={4}
               />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <FormControl sx={{ minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={tipo}
+                  label="Tipo"
+                  onChange={handleChange}
+                >
+                  <MenuItem value='componente3'>Electronica Analogica</MenuItem>
+                  <MenuItem value='componente4'>Electronica Digital</MenuItem>
+                  <MenuItem value='componente7'>Opto Electronica</MenuItem>
+                  <MenuItem value='componente1'>Accesorios</MenuItem>
+                  <MenuItem value='componente2'>Buzzers</MenuItem>
+                  <MenuItem value='componente5'>Modulos</MenuItem>
+                  <MenuItem value='componente6'>Motores</MenuItem>
+                  <MenuItem value='componente8'>Sensores</MenuItem>
+                  <MenuItem value='componente9'>Switch</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
           </div>
         </Box>
