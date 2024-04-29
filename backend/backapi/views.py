@@ -8,20 +8,26 @@ from django.shortcuts import get_list_or_404
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.exceptions import ValidationError
 
 @api_view(['POST'])
 def login(request):
 
-    user = User.objects.get(username=request.data['username'])
+    try:
+        user = User.objects.get(email=request.data.get('email'))
+    except User.DoesNotExist: # pylint: disable=no-member
+        return Response({'error': 'No existe el Usuario'}, status=status.HTTP_404_NOT_FOUND)
 
     if not user.check_password(request.data['password']):
-        return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Contraseña Incorrecta'}, status=status.HTTP_400_BAD_REQUEST)
+
     
     # pylint: disable=no-member
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(instance=user)
 
-    return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
+    return Response({}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def register(request):
@@ -43,7 +49,7 @@ def register(request):
         # pylint: disable=no-member
         token, created = Token.objects.get_or_create(user=user)
         
-        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({}, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

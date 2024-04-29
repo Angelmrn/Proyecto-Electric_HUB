@@ -145,7 +145,7 @@
   
   .Go_Back:hover{ 
     bottom: 0; 
-    border-bottom: 1px solid black; 
+    border-bottom: 6px solid black; 
     color: black;
     
   }
@@ -169,6 +169,20 @@
     border: 2px solid #e3ecfcff;
     border-color: #e3ecfcff;
   }
+
+  .errorMessage2{
+    padding-top: 1%;
+    position: absolute;
+    color : black;
+    overflow: hidden;
+    left: 4%;
+  }
+
+  /* Estilo para resaltar campos faltantes */
+  .EntrysLogin input.missingField2 {
+    border-bottom: 1px solid red;
+  }
+
   
   /*------------------TODO SOBRE CREAR CUENTA------------------*/
   .IntCreate{
@@ -262,7 +276,7 @@
   
   .BottonBack{
     position: relative;
-    padding-top: 18%;
+    padding-top: 15%;
     padding-left: 40%;
   }
   

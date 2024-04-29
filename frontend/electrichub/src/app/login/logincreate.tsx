@@ -66,7 +66,7 @@ const Login = () => {
 
         const data = await res.json();
 
-          // Verificar si hay errores en la respuesta del backend
+        // Verificar si hay errores en la respuesta del backend
         if (res.status === 400) {
 
             setErrorMessage(data.error); // Mostrar el mensaje de error al usuario
@@ -91,6 +91,9 @@ const Login = () => {
                     <h1 className= "SignUP" color="#e3ecfcff">SIGN UP</h1>
                 </div>
                 <div className="EntrysCreate">
+
+                    {/*INPUT NOMBRE*/}
+
                     <div>
                         <label className="lblCreate">
                             <span className="SpanCreate">Nombre</span>
@@ -100,6 +103,9 @@ const Login = () => {
                         onChange={e => setUserName(e.target.value)}
                         className={errorMessage && !UserName ? 'missingField' : ''}/>
                     </div>  
+
+                    {/*INPUT APELLIDOS*/}
+
                     <div>
                         <label className="lblCreate">
                             <span className="SpanCreate">Primer Apellido</span>
@@ -118,6 +124,9 @@ const Login = () => {
                         onChange={e => setLastName(e.target.value)}
                         className={errorMessage && !LastName ? 'missingField' : ''}/>
                     </div>
+
+                    {/*INPUT EMAIL*/}
+
                     <div>
                         <label className="lblCreate">
                             <span className="SpanCreate">Email</span>
@@ -127,6 +136,9 @@ const Login = () => {
                         onChange={e => setUserEmail(e.target.value)}
                         className={errorMessage && !UserEmail ? 'missingField' : ''}/>
                     </div>
+
+                    {/*INPUT PASSWORD*/}
+
                     <div>
                         <label className="lblCreate">
                             <span className="SpanCreate">Password</span>
@@ -148,14 +160,22 @@ const Login = () => {
 
                     {errorMessage && <div className="errorMessage">{errorMessage}</div>}
 
+
+                    {/*BOTON CREAR CUENTA*/}
+
                     <div className="BottonLog">
                         <button className="btnCreate" onClick={handleUser}>Create Account</button>
                     </div>
+
+                    {/*BOTON REGRESAR*/}
+                    
                     <div className="BottonBack">
                         <Link to='/login'>
                             <button className="btnBack">Back</button>
                         </Link>
                     </div>   
+
+
                 </div>    
             </div>
             <div className="ImgCreate" >
