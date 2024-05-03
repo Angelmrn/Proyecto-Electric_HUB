@@ -17,7 +17,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom"
-
+import ResponsiveAppBar from '../responsiveappbar';
 
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
@@ -90,7 +90,7 @@ export default function Mainpage({}){
   );
 }
 
-
+/*
 //----------------APPBAR----------------
 function ResponsiveAppBar({ isLoggedIn, username, first_name, handl}: { isLoggedIn: boolean, username: string, first_name: string, handl: () => void}) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -192,8 +192,8 @@ function ResponsiveAppBar({ isLoggedIn, username, first_name, handl}: { isLogged
               </Button>
             </Link>
 
-            {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/}
-
+            {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/
+/*
             {isLoggedIn ? (
 
             <Box>
@@ -228,8 +228,8 @@ function ResponsiveAppBar({ isLoggedIn, username, first_name, handl}: { isLogged
             
             ):( <Link to="/login">
 
-              {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/}
-
+              {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/
+/*
                 <Tooltip title="Sign-Up">
                   <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
                     LOGIN
@@ -242,6 +242,7 @@ function ResponsiveAppBar({ isLoggedIn, username, first_name, handl}: { isLogged
     </AppBar>
   );
 }
+*/
 
 //----------------SELECTOR - componentes/proyectos----------------
 
