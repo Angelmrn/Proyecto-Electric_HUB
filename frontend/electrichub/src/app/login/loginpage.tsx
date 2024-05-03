@@ -55,9 +55,11 @@ const Login = () => {
         // Verificar si hay errores en la respuesta del backend
         if (res.ok) {
             // El inicio de sesión fue exitoso, redirigir al usuario
+            localStorage.setItem('token', data.token);
             setEmail('');
             setPassword('');
             Navigate('/MainPage');
+
         } else {
             // Hubo un error en el inicio de sesión, mostrar el mensaje de error del backend
             setErrorMessage(data.error);

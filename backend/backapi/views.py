@@ -25,9 +25,10 @@ def login(request):
     
     # pylint: disable=no-member
     token, created = Token.objects.get_or_create(user=user)
+    
     serializer = UserSerializer(instance=user)
 
-    return Response({}, status=status.HTTP_200_OK)
+    return Response({"token": token.key, "user": serializer.data}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def register(request):
@@ -48,7 +49,8 @@ def register(request):
         # Crear el token de autenticación
         # pylint: disable=no-member
         token, created = Token.objects.get_or_create(user=user)
-        
+
+
         return Response({}, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -57,5 +59,5 @@ def register(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profile(request):
-    
-    return Response("You are login with {}".format(request.user.username), status=status.HTTP_200_OK)
+    serialzier = UserSerializer(request.user)
+    return Response({'user': serialzier.data}, status=status.HTTP_200_OK)

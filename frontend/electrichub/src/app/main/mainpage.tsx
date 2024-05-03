@@ -26,11 +26,58 @@ const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
 
-export default function Mainpage(){
+
+export default function Mainpage({}){
+
+  const [username, setUsername] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+
+    if (localStorage.getItem('token')) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('token')}`, // O cualquier otro método para enviar el token al backend
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setIsLoggedIn(true);
+            setUsername(data.user.username);
+            setFirstName(data.user.first_name);
+          } else {
+            setIsLoggedIn(false);
+            setUsername('');
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      };
+
+      fetchProfile();
+    }else{
+      setIsLoggedIn(false);
+    }
+    }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    setIsLoggedIn(false);
+    setUsername('');
+    setFirstName('');
+    navigate('/login');
+  };
+
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-        <ResponsiveAppBar />
+        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-0 md:px-20 w-full'>
@@ -44,9 +91,8 @@ export default function Mainpage(){
 }
 
 
-
 //----------------APPBAR----------------
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ isLoggedIn, username, first_name, handl}: { isLoggedIn: boolean, username: string, first_name: string, handl: () => void}) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -63,6 +109,7 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    handl();
   };
 
   return (
@@ -116,10 +163,9 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+
             </Menu>
           </Box>
-          
-          
           
           <Typography
             variant="h5"
@@ -145,13 +191,16 @@ function ResponsiveAppBar() {
                 TOOLS
               </Button>
             </Link>
-            <Link to="/login">
-              <Tooltip title="Sign-Up">
-                <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
-                  LOGIN
-                </Button>
-              </Tooltip>
-            </Link>
+
+            {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/}
+
+            {isLoggedIn ? (
+
+            <Box>
+              <Button sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}} onClick={handleOpenUserMenu}>
+                {username} {first_name}
+              </Button>
+
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -173,10 +222,23 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+
             </Menu>
           </Box>
+            
+            ):( <Link to="/login">
+
+              {/*Si el usuario esta logeado muestra el nombre y las opciones de configuracion*/}
+
+                <Tooltip title="Sign-Up">
+                  <Button onClick={handleOpenUserMenu} sx={{ p: 0 , color:'#e3ecfcff', mr:10, mt:0.8}}>
+                    LOGIN
+                  </Button>
+                </Tooltip>
+              </Link>
+            )}
+          </Box>
         </Toolbar>
-      
     </AppBar>
   );
 }

@@ -14,11 +14,12 @@ import ProyMostrar from "./mostrar/proyMostrar"
 
 
 const MyRoutes = () => {
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path = "/" element = {<Mainpage/>} />
-                <Route path="/MainPage" element={<Mainpage />} />
+                <Route path="/" element={<Mainpage/>} />
+                <Route path="/MainPage" element={<Mainpage/>} />
                 <Route path = "/login" element = {<Loginpage />} />
                 <Route path = "/create" element = {<LoginCreate/>} />
                 <Route path = "/addComp" element = {<Addcomp/>} />
