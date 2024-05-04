@@ -23,11 +23,24 @@ import { Link } from "react-router-dom"
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
 const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
-const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
+const settings = [
+  { name: 'Agregar Componente', route: '/addComp' },
+  { name: 'Agregar Proyecto', route: '/addProy' },
+  { name: 'Logout', route: '/login' },
+];
 
 function responsiveappbar({ isLoggedIn, username, first_name, handl}: { isLoggedIn: boolean, username: string, first_name: string, handl: () => void}) {
+    const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const handleMenuClick = (route: string) => {
+      if (route === '/login') {
+        handleCloseUserMenu();
+        handl(); // Solo cierra la sesión si la ruta es '/logout'
+      }
+       navigate(route); // Navega a la ruta especificadas
+  };
   
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorElNav(event.currentTarget);
@@ -153,8 +166,8 @@ function responsiveappbar({ isLoggedIn, username, first_name, handl}: { isLogged
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem key={setting.name} onClick={() => handleMenuClick(setting.route)}>
+                    <Typography textAlign="center">{setting.name}</Typography>
                   </MenuItem>
                 ))}
   

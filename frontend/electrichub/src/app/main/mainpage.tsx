@@ -83,8 +83,6 @@ export default function Mainpage({}){
             px-6 py-0 md:px-20 w-full'>
         <Selector/>
         <Carrusel/>
-        <Botones />
-
       </div>
     </main>
   );
@@ -356,19 +354,4 @@ function Carrusel(){
   );
 }
 
-//----------------BOTONES-PRUEBAS----------------
-function Botones(){
-  return(
-    <div>
-        <div>
-            <Link to='/addComp'>
-          <button >Add Componentes</button>
-          </Link>
-          <Link to='/addProy'>
-          <button>, Add  Proyectos</button>
-          </Link>
-        </div>   
-</div>
-  );
-}
 
