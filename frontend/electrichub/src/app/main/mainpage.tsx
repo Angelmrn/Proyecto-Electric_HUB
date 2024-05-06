@@ -26,7 +26,6 @@ const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
 
-
 export default function Mainpage({}){
 
   const [username, setUsername] = useState('');
