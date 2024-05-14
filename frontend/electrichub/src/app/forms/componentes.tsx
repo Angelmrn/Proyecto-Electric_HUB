@@ -148,7 +148,6 @@ function FormularioComp ({}){
     setTipo(event.target.value as string);
   };
 
-
   const handleChangeNombre = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setNombre(event.target.value);
   };
@@ -183,6 +182,7 @@ function FormularioComp ({}){
               label="Nombre"
               id="outlined-size-normal"
               value={nombre}
+              onChange={handleChangeNombre}
               />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -192,6 +192,7 @@ function FormularioComp ({}){
                 multiline
                 value={descripcion}
                 rows={4}
+                onChange={handleChangeDescripcion}
               />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
