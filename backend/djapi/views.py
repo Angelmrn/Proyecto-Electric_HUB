@@ -1,4 +1,4 @@
-from .models import User
+from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
 from .serializer import UserSerializer
 from rest_framework.decorators import action

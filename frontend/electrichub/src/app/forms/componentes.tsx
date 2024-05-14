@@ -35,6 +35,9 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [tipo, setTipo] = useState('');
 
   useEffect(() => {
 
@@ -76,6 +79,38 @@ export default function Mainpage(){
     navigate('/login');
   };
 
+  const handleSubirComponente = async () => {
+    try{
+      
+      const componenteData = {
+        nombre: nombre,
+        descripcion: descripcion,
+        tipo: tipo
+      };
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      },
+
+      body: JSON.stringify(componenteData)
+
+    });
+
+    if (response.ok) {
+      console.log('Componente subido exitosamente');
+    }else{
+      console.log('Error al subir componente', response.statusText);
+    }
+
+    }catch (error) {
+      console.error('Error subiendo componente:', error);
+    }
+  };
+
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
@@ -85,12 +120,14 @@ export default function Mainpage(){
         <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
               px-6 py-10 md:px-20 ' >
           <div className='flex flex-col justify-center'>
-            <FormularioComp />
-            <button >Subir Componente</button>
+            <FormularioComp/>
+            <button onClick={handleSubirComponente}>Subir Componente</button>
           </div>
+
           <div className='flex flex-col justify-center'>
             <FileUploadComponent />
           </div>
+          
         </div>
       
     </main>
@@ -100,12 +137,30 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-function FormularioComp (){
+function FormularioComp ({}){
+
+  const [nombre, setNombre] = React.useState('');
+  const [descripcion, setDescripcion] = React.useState('');
   const [tipo, setTipo] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
   };
+
+
+  const handleChangeNombre = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setNombre(event.target.value);
+  };
+  
+  const handleChangeDescripcion = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setDescripcion(event.target.value);
+  };
+  
+  const handleChangeTipo = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setTipo(event.target.value);
+  };
+
+  
     return (
       
         <Box
@@ -123,13 +178,18 @@ function FormularioComp (){
            <div><h1> Formulario para agregar Componentes </h1></div>
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField label="Nombre" id="outlined-size-normal"/>
+              <TextField 
+              label="Nombre"
+              id="outlined-size-normal"
+              value={nombre}
+              />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField
                 id="outlined-multiline-static"
                 label="Descripcion"
                 multiline
+                value={descripcion}
                 rows={4}
               />
             </Box>
@@ -143,15 +203,17 @@ function FormularioComp (){
                   label="Tipo"
                   onChange={handleChange}
                 >
-                  <MenuItem value='componente3'>Electronica Analogica</MenuItem>
-                  <MenuItem value='componente4'>Electronica Digital</MenuItem>
-                  <MenuItem value='componente7'>Opto Electronica</MenuItem>
-                  <MenuItem value='componente1'>Accesorios</MenuItem>
-                  <MenuItem value='componente2'>Buzzers</MenuItem>
-                  <MenuItem value='componente5'>Modulos</MenuItem>
-                  <MenuItem value='componente6'>Motores</MenuItem>
-                  <MenuItem value='componente8'>Sensores</MenuItem>
-                  <MenuItem value='componente9'>Switch</MenuItem>
+
+                  <MenuItem value='Componente1'>Accesorio</MenuItem>
+                  <MenuItem value='Componente2'>Buzzer</MenuItem>
+                  <MenuItem value='Componente3'>Electronica Analogica</MenuItem>
+                  <MenuItem value='Componente4'>Electronica Digital</MenuItem>
+                  <MenuItem value='Componente5'>Modulo</MenuItem>
+                  <MenuItem value='Componente6'>Motor</MenuItem>
+                  <MenuItem value='Componente7'>Opto Electronica</MenuItem>
+                  <MenuItem value='Componente8'>Sensor</MenuItem>
+                  <MenuItem value='Componente9'>Switch</MenuItem>
+
                 </Select>
               </FormControl>
             </Box>
