@@ -47,7 +47,8 @@ export default function Mainpage(){
           const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
             method: 'POST',
             headers: {
-              'Authorization': `Token ${localStorage.getItem('token')}`, // O cualquier otro método para enviar el token al backend
+              'Authorization': `Token ${localStorage.getItem('token')}`,
+              
             }
           });
 
@@ -82,11 +83,11 @@ export default function Mainpage(){
   const handleSubirComponente = async () => {
     try{
       
-      const componenteData = {
-        nombre: nombre,
-        descripcion: descripcion,
-        tipo: tipo
-      };
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('descripcion', descripcion);
+      formData.append('tipo', tipo);
+
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
@@ -96,7 +97,7 @@ export default function Mainpage(){
         'Authorization': `Token ${localStorage.getItem('token')}`
       },
 
-      body: JSON.stringify(componenteData)
+      body: JSON.stringify(formData)
 
     });
 
@@ -277,7 +278,3 @@ function FileUploadComponent() {
     </div>
   );
 }
-
-
-
-
