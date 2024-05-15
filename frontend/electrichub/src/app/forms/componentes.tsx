@@ -44,8 +44,7 @@ export default function Mainpage(){
           const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
             method: 'POST',
             headers: {
-              'Authorization': `Token ${localStorage.getItem('token')}`,
-              
+              'Authorization': `Token ${localStorage.getItem('token')}`, // O cualquier otro método para enviar el token al backend
             }
           });
 
@@ -77,23 +76,36 @@ export default function Mainpage(){
     navigate('/login');
   };
 
+
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
       <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
+      
+        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 ' >
+          <div className='flex flex-col justify-center'>
+          <FormularioComp/> 
+          </div>
+          <div className='flex flex-col justify-center'>
+            <FileUploadComponent />
+          </div>
+          
+        </div>
+      
     </main>
   );
-
 }
+
 
 //----------------FORMULARIO----------------
 
-function FormularioComp (){
+const FormularioComp= () => {
 
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [tipo, setTipo] = useState('');
+  const [nombre, setNombre] = React.useState('');
+  const [descripcion, setDescripcion] = React.useState('');
+  const [tipo, setTipo] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -111,22 +123,28 @@ function FormularioComp (){
     setTipo(event.target.value);
   };
 
-  
   const handleSubirComponente = async () => {
-
-    const formData = new FormData();
-    formData.append('nombre', nombre);
-    formData.append('descripcion', descripcion);
-    formData.append('tipo', tipo);
-  
     try{
+
+      if (!nombre || !descripcion || !tipo) {
+        console.log('Faltan datos');
+        return;
+      }else{
+        console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
+      }
+
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('descripcion', descripcion);
+      formData.append('tipo', tipo);
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
       method: 'POST',
       headers: {
-        'Authorization': `Token ${localStorage.getItem('token')}`,
+        'Authorization': `Token ${localStorage.getItem('token')}`
       },
+
       body: formData
 
     });
@@ -140,8 +158,9 @@ function FormularioComp (){
     }catch (error) {
       console.error('Error subiendo componente:', error);
     }
-};
+  };
 
+  
     return (
       
         <Box
@@ -156,7 +175,7 @@ function FormularioComp (){
           autoComplete="off"
         >
           
-          <div><h1> Formulario para agregar Componentes </h1></div>
+           <div><h1> Formulario para agregar Componentes </h1></div>
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField 
@@ -201,7 +220,7 @@ function FormularioComp (){
               </FormControl>
             </Box>
           </div>
-          <button onClick={handleSubirComponente}>Subir Componente</button>
+          <button type='button' onClick={handleSubirComponente}>Subir Componente</button>
         </Box>
       );
 }
@@ -261,3 +280,7 @@ function FileUploadComponent() {
     </div>
   );
 }
+
+
+
+
