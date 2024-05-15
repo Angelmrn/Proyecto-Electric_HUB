@@ -82,21 +82,6 @@ export default function Mainpage(){
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
       <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
-<<<<<<< HEAD
-=======
-      
-        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 ' >
-          <div className='flex flex-col justify-center'>
-          <FormularioComp handleSubirComponente={handleSubirComponente} /> 
-          </div>
-          <div className='flex flex-col justify-center'>
-            <FileUploadComponent />
-          </div>
-          
-        </div>
-      
->>>>>>> main
     </main>
   );
 
@@ -104,15 +89,7 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-<<<<<<< HEAD
 function FormularioComp (){
-=======
-type FormularioCompProps = {
-  handleSubirComponente: () => Promise<void>;
-};
-
-const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }) => {
->>>>>>> main
 
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -222,9 +199,6 @@ const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }
 
                 </Select>
               </FormControl>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={handleSubirComponente}>Subir Componente</Button>
             </Box>
           </div>
           <button onClick={handleSubirComponente}>Subir Componente</button>
