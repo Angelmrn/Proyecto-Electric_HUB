@@ -1,0 +1,8 @@
+.botonCalcularResistencia button {
+    background-color: #1c3663ff;
+    color: #e3ecfcff;
+    border: 1px solid;
+    padding: 10px;
+    margin: 5px;
+    width: 26vh;
+}
