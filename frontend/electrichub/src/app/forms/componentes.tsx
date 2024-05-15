@@ -120,10 +120,8 @@ export default function Mainpage(){
         <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
               px-6 py-10 md:px-20 ' >
           <div className='flex flex-col justify-center'>
-            <FormularioComp/>
-            <button onClick={handleSubirComponente}>Subir Componente</button>
+          <FormularioComp handleSubirComponente={handleSubirComponente} /> 
           </div>
-
           <div className='flex flex-col justify-center'>
             <FileUploadComponent />
           </div>
@@ -137,7 +135,11 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-function FormularioComp ({}){
+type FormularioCompProps = {
+  handleSubirComponente: () => Promise<void>;
+};
+
+const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }) => {
 
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
@@ -219,6 +221,7 @@ function FormularioComp ({}){
               </FormControl>
             </Box>
           </div>
+          <button onClick={handleSubirComponente}>Subir Componente</button>
         </Box>
       );
 }
