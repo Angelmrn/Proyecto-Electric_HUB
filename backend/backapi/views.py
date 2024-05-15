@@ -8,6 +8,8 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from djapi.models import Accesorios, Buzzers ,ElectroAnalogica, ElectroDigital, Modulos, Motores, OptoElectronica, Sensores, Switches
+from rest_framework.parsers import MultiPartParser
+from rest_framework.decorators import parser_classes
 
 
 # ------------ INGRESAR USUARIO ------------
@@ -72,16 +74,18 @@ def profile(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser])
 def upload(request):
 
     if request.method == 'POST':
         print(request.user)
+
         usuario_id = request.user.id
         nombre = request.data.get('nombre')
         descripcion = request.data.get('descripcion')
         tipo = request.data.get('tipo')
-        imagen1 = request.data.get('imagen1')
-        imagen2 = request.data.get('imagen2')
+        imagen1 = request.FILES.get('imagen1') if 'imagen1' in request.FILES else None
+        imagen2 = request.FILES.get('imagen2') if 'imagen2' in request.FILES else None
 
         print(nombre, descripcion, tipo, imagen1, imagen2)
 

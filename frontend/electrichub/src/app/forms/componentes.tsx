@@ -35,9 +35,6 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [tipo, setTipo] = useState('');
 
   useEffect(() => {
 
@@ -80,69 +77,23 @@ export default function Mainpage(){
     navigate('/login');
   };
 
-  const handleSubirComponente = async () => {
-    try{
-      
-      const formData = new FormData();
-      formData.append('nombre', nombre);
-      formData.append('descripcion', descripcion);
-      formData.append('tipo', tipo);
-
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
-
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${localStorage.getItem('token')}`
-      },
-
-      body: JSON.stringify(formData)
-
-    });
-
-    if (response.ok) {
-      console.log('Componente subido exitosamente');
-    }else{
-      console.log('Error al subir componente', response.statusText);
-    }
-
-    }catch (error) {
-      console.error('Error subiendo componente:', error);
-    }
-  };
-
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
       <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
-      
-        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 ' >
-          <div className='flex flex-col justify-center'>
-            <FormularioComp/>
-            <button onClick={handleSubirComponente}>Subir Componente</button>
-          </div>
-
-          <div className='flex flex-col justify-center'>
-            <FileUploadComponent />
-          </div>
-          
-        </div>
-      
     </main>
   );
-}
 
+}
 
 //----------------FORMULARIO----------------
 
-function FormularioComp ({}){
+function FormularioComp (){
 
-  const [nombre, setNombre] = React.useState('');
-  const [descripcion, setDescripcion] = React.useState('');
-  const [tipo, setTipo] = React.useState('');
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [tipo, setTipo] = useState('');
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -161,6 +112,36 @@ function FormularioComp ({}){
   };
 
   
+  const handleSubirComponente = async () => {
+
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('tipo', tipo);
+  
+    try{
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
+
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('token')}`,
+      },
+      body: formData
+
+    });
+
+    if (response.ok) {
+      console.log('Componente subido exitosamente');
+    }else{
+      console.log('Error al subir componente', response.statusText);
+    }
+
+    }catch (error) {
+      console.error('Error subiendo componente:', error);
+    }
+};
+
     return (
       
         <Box
@@ -175,7 +156,7 @@ function FormularioComp ({}){
           autoComplete="off"
         >
           
-           <div><h1> Formulario para agregar Componentes </h1></div>
+          <div><h1> Formulario para agregar Componentes </h1></div>
           <div>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <TextField 
@@ -218,6 +199,9 @@ function FormularioComp ({}){
 
                 </Select>
               </FormControl>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button onClick={handleSubirComponente}>Subir Componente</Button>
             </Box>
           </div>
         </Box>
