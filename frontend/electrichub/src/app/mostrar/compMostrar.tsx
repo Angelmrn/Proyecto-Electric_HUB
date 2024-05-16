@@ -35,6 +35,8 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
 
@@ -83,12 +85,11 @@ export default function Mainpage(){
       </div>
       <div className='flex flex-col  justify-center gap-6 rounded-lg bg-customise
             px-6 py-0 md:px-20 w-full'>
-        <BuscarComp />
+        <BuscarComp setSearchTerm={setSearchTerm} />
       <div className='flex flex-col md:flex-row justify-between items-center' style={{ height:'auto'}}>
-        <CeckboxComponentes />
-        <TablaComp />
+        <CeckboxComponentes setSelectedCategories={setSelectedCategories}/>
+        <TablaComp selectedCategories={selectedCategories} searchTerm={searchTerm}/>
       </div>
-        <BotonesPrueba />
       </div>
     </main>
   );
@@ -99,10 +100,15 @@ export default function Mainpage(){
 
 //----------------INPUT - componentes----------------
 
-function BuscarComp() {
+function BuscarComp({ setSearchTerm }: { setSearchTerm: React.Dispatch<React.SetStateAction<string>> }) {
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft:'26vh' }}>
-      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '42%' }} />
+      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '42%' }} onChange={handleSearchChange} />
       <button className='botonBUSCAR'>Buscar
         <img src={imagen2} />
       </button>
@@ -113,7 +119,51 @@ function BuscarComp() {
 
 //----------------TABLA - COMPONENTES----------------
 
-function TablaComp() {  
+function TablaComp({ selectedCategories , searchTerm}: { selectedCategories: string[] ,  searchTerm: string}) {  
+
+  const [componentes, setComponentes] = useState<any[]>([]); // Aquí guardamos los componentes
+  const [filteredComponents, setFilteredComponents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const ObtenerComponentes = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes`, {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const allComponents = Object.values(data).flat();
+          setComponentes(allComponents);
+        } else {
+          console.error('Error fetching componentes:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching componentes:', error);
+      }
+    };
+
+    ObtenerComponentes();
+  }, [selectedCategories]);
+
+  useEffect(() => {
+    // Filtrar componentes cuando cambian las categorías seleccionadas o el término de búsqueda
+    const filtrarComponentes = () => {
+      const filteredByName = componentes.filter(componente =>
+        componente.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      const filteredByCategory = filteredByName.filter(componente =>
+        selectedCategories.length === 0 || selectedCategories.includes(componente.tipo)
+      );
+
+      setFilteredComponents(filteredByCategory);
+    };
+
+    filtrarComponentes();
+
+  }, [selectedCategories, componentes, searchTerm]);
+
   return (
     <table className='TablaMostrarComp' style={{marginLeft:'20vh'}}>
       <thead>
@@ -124,58 +174,79 @@ function TablaComp() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>ID 1</td>
-          <td>Nombre 1</td>
-          <td>Categoria 1</td>
-        </tr>
-        <tr>
-          <td>ID 2</td>
-          <td>Nombre 2</td>
-          <td>Categoria 2</td>
-        </tr>
-        <tr>
-          <td>ID 3</td>
-          <td>Nombre 3</td>
-          <td>Categoria 3</td>
-        </tr>
-        
+        {filteredComponents.length > 0 ? (
+          filteredComponents.map((componente) => (
+            <tr key={componente.id}>
+              <td><Link to={`/compInfo/${componente.id}/${componente.tipo}/${componente.nombre}`}>{componente.id}</Link></td>
+              <td><Link to={`/compInfo/${componente.id}/${componente.tipo}/${componente.nombre}`}>{componente.nombre}</Link></td>
+              <td><Link to={`/compInfo/${componente.id}/${componente.tipo}/${componente.nombre}`}>{componente.tipo}</Link></td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={3}>No hay componentes disponibles</td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
 }
 
-function CeckboxComponentes() {
+function CeckboxComponentes({ setSelectedCategories }: { setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>> }) {
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSelectedCategories((prevCategories) => {
+      if (prevCategories.includes(value)) {
+        return prevCategories.filter((Categoria) => Categoria !== value);
+      } else {
+        return [...prevCategories, value];
+      }
+    });
+  };
+
   return (
     <div style={{marginLeft:'5vh', maxWidth:'27vh'}}>
       <h2 style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', backgroundColor:'#1c3663ff', color:'#e3ecfcff', textAlign:'center'}}>
         Categorias</h2>
       <div style={{border: '2px solid #1c3663ff', padding: '10px', margin: '5px', height:'auto', width:'auto'}}>
         <div  style={{margin: '10px 0',  width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
-          <input type="checkbox" id="componente1" name="componente1" value="componente1" />
-          <label htmlFor="componente1"> Componente 1</label>
+          <input type="checkbox" id="componente1" name="componente1" value="Accesorio" onChange={handleCheckboxChange}/>
+          <label htmlFor="componente1">Accesorios</label>
         </div>
         <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
-          <input type="checkbox" id="componente2" name="componente2" value="componente2" />
-          <label htmlFor="componente2"> Componente 2</label>
+          <input type="checkbox" id="componente2" name="componente2" value="Buzzer" onChange={handleCheckboxChange}/>
+          <label htmlFor="componente2">Buzzers</label>
         </div>
         <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
-          <input type="checkbox" id="componente3" name="componente3" value="componente3" />
-          <label htmlFor="componente3"> Componente 3</label>
+          <input type="checkbox" id="componente3" name="componente3" value="Electro Analogica" onChange={handleCheckboxChange} />
+          <label htmlFor="componente3">Electro Analogica</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente4" name="componente4" value="Electro Digital" onChange={handleCheckboxChange}/>
+          <label htmlFor="componente4">Electro Digital</label>  
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente5" name="componente5" value="Modulo"onChange={handleCheckboxChange} />
+          <label htmlFor="componente5">Modulos</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente6" name="componente6" value="Motor" onChange={handleCheckboxChange} />
+          <label htmlFor="componente6">Motores</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente7" name="componente7" value="Opto Electronica" onChange={handleCheckboxChange} />
+          <label htmlFor="componente7">Opto Electronica</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente8" name="componente8" value="Sensor" onChange={handleCheckboxChange} />
+          <label htmlFor="componente8">Sensores</label>
+        </div>
+        <div style={{margin: '10px 0', width:'auto', paddingLeft:'10px', paddingRight:'10px'}}>
+          <input type="checkbox" id="componente9" name="componente9" value="Switch" onChange={handleCheckboxChange} />
+          <label htmlFor="componente9">Switches</label>
         </div>
       </div>
     </div>
-  );
-}
-
-//----------------BOTONES - PRUEBAS----------------
-
-function BotonesPrueba() {
-  return(
-  <div>
-  <Link to='/Compinfo'>
-    <button>, Mostrar-InfoComponentes</button>
-    </Link>
-  </div>
   );
 }

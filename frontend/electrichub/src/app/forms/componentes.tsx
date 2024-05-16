@@ -35,9 +35,6 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [tipo, setTipo] = useState('');
 
   useEffect(() => {
 
@@ -79,37 +76,6 @@ export default function Mainpage(){
     navigate('/login');
   };
 
-  const handleSubirComponente = async () => {
-    try{
-      
-      const componenteData = {
-        nombre: nombre,
-        descripcion: descripcion,
-        tipo: tipo
-      };
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
-
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${localStorage.getItem('token')}`
-      },
-
-      body: JSON.stringify(componenteData)
-
-    });
-
-    if (response.ok) {
-      console.log('Componente subido exitosamente');
-    }else{
-      console.log('Error al subir componente', response.statusText);
-    }
-
-    }catch (error) {
-      console.error('Error subiendo componente:', error);
-    }
-  };
 
   return (
     <main className='flex min-h-screen flex-col w-full'>
@@ -120,7 +86,7 @@ export default function Mainpage(){
         <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
               px-6 py-10 md:px-20 ' >
           <div className='flex flex-col justify-center'>
-          <FormularioComp handleSubirComponente={handleSubirComponente} /> 
+          <FormularioComp/> 
           </div>
           <div className='flex flex-col justify-center'>
             <FileUploadComponent />
@@ -135,11 +101,7 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-type FormularioCompProps = {
-  handleSubirComponente: () => Promise<void>;
-};
-
-const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }) => {
+const FormularioComp= () => {
 
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
@@ -159,6 +121,43 @@ const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }
   
   const handleChangeTipo = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setTipo(event.target.value);
+  };
+
+  const handleSubirComponente = async () => {
+    try{
+
+      if (!nombre || !descripcion || !tipo) {
+        console.log('Faltan datos');
+        return;
+      }else{
+        console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
+      }
+
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('descripcion', descripcion);
+      formData.append('tipo', tipo);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
+
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      },
+
+      body: formData
+
+    });
+
+    if (response.ok) {
+      console.log('Componente subido exitosamente');
+    }else{
+      console.log('Error al subir componente', response.statusText);
+    }
+
+    }catch (error) {
+      console.error('Error subiendo componente:', error);
+    }
   };
 
   
@@ -221,7 +220,7 @@ const FormularioComp: React.FC<FormularioCompProps> = ({ handleSubirComponente }
               </FormControl>
             </Box>
           </div>
-          <button onClick={handleSubirComponente}>Subir Componente</button>
+          <button type='button' onClick={handleSubirComponente}>Subir Componente</button>
         </Box>
       );
 }

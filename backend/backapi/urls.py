@@ -25,6 +25,7 @@ urlpatterns = [
     re_path('register', views.register),
     re_path('profile', views.profile),
     re_path('upload', views.upload),
-
+    path('componentes', views.componentes),
+    path('componentes/<int:id>/<str:tipo>/<str:nombre>/', views.obtener_informacion_componente),
 ]
 
