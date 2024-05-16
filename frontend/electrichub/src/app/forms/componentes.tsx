@@ -106,6 +106,8 @@ const FormularioComp= () => {
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
   const [tipo, setTipo] = React.useState('');
+  const [imagen1, setimagen1] = React.useState('');
+  const [imagen2, setimagen2] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -127,7 +129,6 @@ const FormularioComp= () => {
     try{
 
       if (!nombre || !descripcion || !tipo) {
-        console.log('Faltan datos');
         return;
       }else{
         console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
@@ -137,6 +138,19 @@ const FormularioComp= () => {
       formData.append('nombre', nombre);
       formData.append('descripcion', descripcion);
       formData.append('tipo', tipo);
+      formData.append('imagen1', imagen1);
+      formData.append('imagen2', imagen2);
+
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
@@ -151,6 +165,11 @@ const FormularioComp= () => {
 
     if (response.ok) {
       console.log('Componente subido exitosamente');
+      setNombre('');
+      setDescripcion('');
+      setTipo('');
+      setimagen1('');
+      setimagen2('');
     }else{
       console.log('Error al subir componente', response.statusText);
     }
@@ -232,7 +251,7 @@ function FileUploadComponent() {
   const [image2, setImage2] = useState<string | null>(null);
 
   const handleFileUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
+    if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const imageUrl = URL.createObjectURL(file);
       setImage1(imageUrl);
@@ -240,7 +259,7 @@ function FileUploadComponent() {
   };
 
   const handleFileUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
+    if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const imageUrl = URL.createObjectURL(file);
       setImage2(imageUrl);
@@ -272,8 +291,7 @@ function FileUploadComponent() {
         {image2 && (
           <>
             <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
-            <button onClick={handleRemoveImage2}>Eliminar imagen</button>
-            
+            <button onClick={handleRemoveImage2}>Eliminar imagen</button>  
           </>
         )}
       </div>
