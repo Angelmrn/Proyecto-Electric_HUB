@@ -1,7 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,8 +23,8 @@ import ResponsiveAppBar from '../responsiveappbar';
 
 
 
-const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
+const imagenInicio = '/Electric-HUB_BotonInicio_SinFondo.png';
+const imagenLupa = '/Lupa.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -35,6 +34,8 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [image1, setImage1] = useState<File | null>(null);
+  const [image2, setImage2] = useState<File | null>(null);
 
   useEffect(() => {
 
@@ -76,24 +77,32 @@ export default function Mainpage(){
     navigate('/login');
   };
 
+  function handleImage1(value: SetStateAction<File | null>): void {
+    throw new Error('Function not implemented.');
+  }
+
+  function handleImage2(value: SetStateAction<File | null>): void {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-      <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
+        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
       
-        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
-              px-6 py-10 md:px-20 ' >
-          <div className='flex flex-col justify-center'>
-          <FormularioComp/> 
-          </div>
-          <div className='flex flex-col justify-center'>
-            <FileUploadComponent />
-          </div>
-          
+      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20'>
+        <div className='flex flex-col justify-center'>
+          <FormularioComp handleImage1={handleImage1} handleImage2={handleImage2} />
         </div>
-      
+        <div className='flex flex-col justify-center'>
+          <FileUploadComponent image1={image1} image2={image2} handleImage1={function (value: React.SetStateAction<File | null>): void {
+            throw new Error('Function not implemented.');
+          } } handleImage2={function (value: React.SetStateAction<File | null>): void {
+            throw new Error('Function not implemented.');
+          } } />
+        </div>
+      </div>
     </main>
   );
 }
@@ -101,11 +110,13 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-const FormularioComp= () => {
+const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch<SetStateAction<File | null>>, handleImage2: Dispatch<SetStateAction<File | null>> }) => {
 
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
   const [tipo, setTipo] = React.useState('');
+  const [image1, setImage1] = useState<File | null>(null);
+  const [image2, setImage2] = useState<File | null>(null);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -123,6 +134,18 @@ const FormularioComp= () => {
     setTipo(event.target.value);
   };
 
+  const handleImageChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    handleImage1(file);
+  };
+  
+  const handleImageChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    handleImage2(file);
+  };
+
+  const navigate = useNavigate();
+
   const handleSubirComponente = async () => {
     try{
 
@@ -138,6 +161,18 @@ const FormularioComp= () => {
       formData.append('descripcion', descripcion);
       formData.append('tipo', tipo);
 
+      // Subir la primera imagen
+      if (image1) {
+        formData.append('imagen1', image1);
+      }
+  
+      // Subir la segunda imagen
+      if (image2) {
+        formData.append('imagen2', image2);
+      }
+
+      console.log('Subiendo componente: ', formData.get('nombre'), formData.get('descripcion'), formData.get('tipo'), formData.get('imagen1'), formData.get('imagen2'));
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
       method: 'POST',
@@ -150,7 +185,7 @@ const FormularioComp= () => {
     });
 
     if (response.ok) {
-      console.log('Componente subido exitosamente');
+      navigate('/mostrarComp');
     }else{
       console.log('Error al subir componente', response.statusText);
     }
@@ -227,60 +262,33 @@ const FormularioComp= () => {
 
 //----------------SUBIR IMAGEN----------------
 
-function FileUploadComponent() {
-  const [image1, setImage1] = useState<string | null>(null);
-  const [image2, setImage2] = useState<string | null>(null);
+function FileUploadComponent({ image1, image2, handleImage1, handleImage2 }: { image1: File | null, image2: File | null, handleImage1: Dispatch<SetStateAction<File | null>>, handleImage2: Dispatch<SetStateAction<File | null>> }) {
 
-  const handleFileUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setImage1(imageUrl);
-    }
+  const handleFileChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    handleImage1(file);
   };
-
-  const handleFileUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setImage2(imageUrl);
-    }
-  };
-
-  const handleRemoveImage1 = () => {
-    setImage1(null);
-  };
-
-  const handleRemoveImage2 = () => {
-    setImage2(null);
+  
+  const handleFileChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    handleImage2(file);
   };
 
   return (
-    <div style={{ width: '250px', height: '250px' }}>
-      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-        <input type="file" accept=".png" onChange={handleFileUpload1} />
+    <div>
+      <div>
+        <input type="file" accept=".png" onChange={handleFileChange1} />
         {image1 && (
-          <>
-            <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
-            <button onClick={handleRemoveImage1}>Eliminar imagen</button>
-           
-          </>
+          <img src={URL.createObjectURL(image1)} alt="Selected" style={{ width: '80%', height: '80%' }} />
         )}
       </div>
-      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-        <input type="file" accept=".png" onChange={handleFileUpload2} />
+      <div>
+        <input type="file" accept=".png" onChange={handleFileChange2} />
         {image2 && (
-          <>
-            <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
-            <button onClick={handleRemoveImage2}>Eliminar imagen</button>
-            
-          </>
+          <img src={URL.createObjectURL(image2)} alt="Selected" style={{ width: '80%', height: '80%' }} />
         )}
       </div>
     </div>
   );
 }
-
-
-
 
