@@ -18,14 +18,14 @@ const MyRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Addcomp/>} />
+                <Route path="/" element={<CompMostrar/>} />
                 <Route path="/MainPage" element={<Mainpage/>} />
                 <Route path = "/login" element = {<Loginpage />} />
                 <Route path = "/create" element = {<LoginCreate/>} />
                 <Route path = "/addComp" element = {<Addcomp/>} />
                 <Route path = "/addProy" element = {<Addproy/>} />
                 <Route path = "/tools" element = {<Tools/>} />
-                <Route path = "/compInfo" element = {<Compinfo />} />
+                <Route path="/compInfo/:id/:tipo/:nombre" element={<Compinfo />} />
                 <Route path = "/proyInfo" element = {<Proyinfo />} />
                 <Route path = "/mostrarComp" element = {<CompMostrar />} />
                 <Route path = "/mostrarProy" element = {<ProyMostrar />} />

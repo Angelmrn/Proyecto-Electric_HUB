@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -146,21 +147,68 @@ function TablaComponentesparecidos(){
 
 //----------------- MOSTRAR InformacionComponente ----------------
 
+
+interface ComponenteInfo {
+  nombre: string;
+  descripcion: string;
+  tipo: string;
+  // Agrega otras propiedades si es necesario
+}
+
 function MostrarInformacionComponente(){
+
+  const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
+  const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
+
+  useEffect(() => {
+    console.log('ID:', id);
+    console.log('Tipo:', tipo);
+    console.log('Nombre:', nombre);
+    const obtenerInformacionComponente = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
+          method: 'GET',
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Información del componente:', data);
+          setComponenteInfo(data);
+        } else {
+          console.error('Error al obtener información del componente:', response.statusText);
+        }
+
+      } catch (error) {
+        console.error('Error al obtener información del componente:', error);
+      }
+    };
+
+    obtenerInformacionComponente();
+  }, [id, tipo, nombre] );
+
+  
   return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full mt-0' style={{  height: 'auto', width: '1000px'}}>
-      <Card >
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{  height: 'auto', width: '1000px'}}>
+      <Card>
         <CardContent>
-          <Typography variant="h5" component="div">
-            Informacion del componente
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Aquí puedes poner información extensa sobre el componente. Puedes agregar tantas líneas de texto como necesites.
-          </Typography>
+          {componenteInfo ? (
+            <>
+              <Typography variant="h5" component="div">
+                {componenteInfo.nombre}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {componenteInfo.descripcion}
+              </Typography>
+            </>
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              Cargando información del componente...
+            </Typography>
+          )}
         </CardContent>
       </Card>
     </div>
   );
 }
+
 

@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import UserSerializer, ElectroAnalogicaSerializer
@@ -10,7 +11,6 @@ from rest_framework.authentication import TokenAuthentication
 from djapi.models import Accesorios, Buzzers ,ElectroAnalogica, ElectroDigital, Modulos, Motores, OptoElectronica, Sensores, Switches
 from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import parser_classes
-
 
 # ------------ INGRESAR USUARIO ------------
 @api_view(['POST'])
@@ -91,7 +91,7 @@ def upload(request):
 
         if tipo == 'Componente1':
             # pylint: disable=no-member
-            tipo = 'Accesorios'
+            tipo = 'Accesorio'
             accesorios = Accesorios.objects.create(
                 usuario_id=usuario_id,
                 nombre=nombre,
@@ -105,7 +105,7 @@ def upload(request):
             serializer = ElectroAnalogicaSerializer(accesorios)
         elif tipo == 'Componente2':
             # pylint: disable=no-member
-            tipo = 'Buzzers'
+            tipo = 'Buzzer'
             buzzers = Buzzers.objects.create(
                 usuario_id=usuario_id,
                 nombre=nombre,
@@ -149,7 +149,7 @@ def upload(request):
             serializer = ElectroAnalogicaSerializer(electro_digital)
         elif tipo == 'Componente5':
             # pylint: disable=no-member
-            tipo = 'Modulos'
+            tipo = 'Modulo'
             modulos = Modulos.objects.create(
                 usuario_id=usuario_id,
                 nombre=nombre,
@@ -163,7 +163,7 @@ def upload(request):
             serializer = ElectroAnalogicaSerializer(modulos)
         elif tipo == 'Componente6':
             # pylint: disable=no-member
-            tipo = 'Motores'
+            tipo = 'Motor'
             motores = Motores.objects.create(
                 usuario_id=usuario_id,
                 nombre=nombre,
@@ -191,7 +191,7 @@ def upload(request):
             serializer = ElectroAnalogicaSerializer(opto_electronica)
         elif tipo == 'Componente8':
             # pylint: disable=no-member
-            tipo = 'Sensores'
+            tipo = 'Sensor'
             sensores = Sensores.objects.create(
                 usuario_id=usuario_id,
                 nombre=nombre,
@@ -239,3 +239,74 @@ def delete(request):
 
     return Response({}, status=status.HTTP_200_OK)
 
+
+# ------------ OBTENER COMPONENTES ------------
+@api_view(['GET'])
+def componentes(request):
+
+    try:
+        # pylint: disable=no-member
+        accesorios = Accesorios.objects.all()
+        buzzers = Buzzers.objects.all()
+        electro_analogica = ElectroAnalogica.objects.all()
+        electro_digital = ElectroDigital.objects.all()
+        modulos = Modulos.objects.all()
+        motores = Motores.objects.all()
+        opto_electronica = OptoElectronica.objects.all()
+        sensores = Sensores.objects.all()
+        switches = Switches.objects.all()
+
+        accesorios_serializer = ElectroAnalogicaSerializer(accesorios, many=True)
+        buzzers_serializer = ElectroAnalogicaSerializer(buzzers, many=True)
+        electro_analogica_serializer = ElectroAnalogicaSerializer(electro_analogica, many=True)
+        electro_digital_serializer = ElectroAnalogicaSerializer(electro_digital, many=True)
+        modulos_serializer = ElectroAnalogicaSerializer(modulos, many=True)
+        motores_serializer = ElectroAnalogicaSerializer(motores, many=True)
+        opto_electronica_serializer = ElectroAnalogicaSerializer(opto_electronica, many=True)
+        sensores_serializer = ElectroAnalogicaSerializer(sensores, many=True)
+        switches_serializer = ElectroAnalogicaSerializer(switches, many=True)
+
+        componentes = {
+            'accesorios': accesorios_serializer.data,
+            'buzzers': buzzers_serializer.data,
+            'electro_analogica': electro_analogica_serializer.data,
+            'electro_digital': electro_digital_serializer.data,
+            'modulos': modulos_serializer.data,
+            'motores': motores_serializer.data,
+            'opto_electronica': opto_electronica_serializer.data,
+            'sensores': sensores_serializer.data,
+            'switches': switches_serializer.data,
+        } 
+
+        return Response(componentes, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'ERROR', str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def obtener_informacion_componente(request, id, tipo, nombre):
+    try:
+        if tipo == 'Accesorio':
+            componente = get_object_or_404(Accesorios, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Buzzer':
+            componente = get_object_or_404(Buzzers, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Electro Analogica':
+            componente = get_object_or_404(ElectroAnalogica, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Electro Digital':
+            componente = get_object_or_404(ElectroDigital, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Modulo':
+            componente = get_object_or_404(Modulos, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Motor':
+            componente = get_object_or_404(Motores, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Opto Electronica':
+            componente = get_object_or_404(OptoElectronica, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Sensor':
+            componente = get_object_or_404(Sensores, id=id, tipo=tipo, nombre=nombre)
+        elif tipo == 'Switch':
+            componente = get_object_or_404(Switches, id=id, tipo=tipo, nombre=nombre)
+        else:
+            return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ElectroAnalogicaSerializer(componente)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
