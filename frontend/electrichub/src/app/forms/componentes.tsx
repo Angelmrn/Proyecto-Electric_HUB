@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -89,7 +89,7 @@ export default function Mainpage(){
           <FormularioComp/> 
           </div>
           <div className='flex flex-col justify-center'>
-            <FileUploadComponent />
+           
           </div>
           
         </div>
@@ -106,8 +106,12 @@ const FormularioComp= () => {
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
   const [tipo, setTipo] = React.useState('');
-  const [imagen1, setimagen1] = React.useState('');
-  const [imagen2, setimagen2] = React.useState('');
+  const [img1, setFileimg1] = useState<File | string | null>(null);
+  const [img2, setFileimg2] = useState<File | string | null>(null);
+
+  // Referencias para los campos de archivo
+  const fileInputRef1 = useRef<HTMLInputElement>(null);
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -128,18 +132,18 @@ const FormularioComp= () => {
   const handleSubirComponente = async () => {
     try{
 
-      if (!nombre || !descripcion || !tipo) {
+      if (!nombre || !descripcion || !tipo ||!img1||!img2) {
+        alert('Por favor llene todos los campos')
         return;
       }else{
         console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
       }
-
       const formData = new FormData();
       formData.append('nombre', nombre);
       formData.append('descripcion', descripcion);
       formData.append('tipo', tipo);
-      formData.append('imagen1', imagen1);
-      formData.append('imagen2', imagen2);
+      formData.append('imagen1', img1);
+      formData.append('imagen2', img2);
 
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
         method: 'POST',
@@ -149,8 +153,7 @@ const FormularioComp= () => {
       .then(data => console.log(data))
       .catch((error) => {
         console.error('Error:', error);
-      });
-      
+      }); 
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
@@ -168,8 +171,10 @@ const FormularioComp= () => {
       setNombre('');
       setDescripcion('');
       setTipo('');
-      setimagen1('');
-      setimagen2('');
+      setFileimg1(null);
+      setFileimg2(null);
+      if (fileInputRef1.current) fileInputRef1.current.value = '';
+        if (fileInputRef2.current) fileInputRef2.current.value = '';
     }else{
       console.log('Error al subir componente', response.statusText);
     }
@@ -179,126 +184,127 @@ const FormularioComp= () => {
     }
   };
 
+  //----------------IMAGENES----------------
   
-    return (
-      
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          
-           <div><h1> Formulario para agregar Componentes </h1></div>
-          <div>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField 
-              label="Nombre"
-              id="outlined-size-normal"
-              value={nombre}
-              onChange={handleChangeNombre}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField
-                id="outlined-multiline-static"
-                label="Descripcion"
-                multiline
-                value={descripcion}
-                rows={4}
-                onChange={handleChangeDescripcion}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <FormControl sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={tipo}
-                  label="Tipo"
-                  onChange={handleChange}
-                >
+  const selectedHandlerimg1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFileimg1(event.target.files ? event.target.files[0] : 'No file selected');
+  }
 
-                  <MenuItem value='Componente1'>Accesorio</MenuItem>
-                  <MenuItem value='Componente2'>Buzzer</MenuItem>
-                  <MenuItem value='Componente3'>Electronica Analogica</MenuItem>
-                  <MenuItem value='Componente4'>Electronica Digital</MenuItem>
-                  <MenuItem value='Componente5'>Modulo</MenuItem>
-                  <MenuItem value='Componente6'>Motor</MenuItem>
-                  <MenuItem value='Componente7'>Opto Electronica</MenuItem>
-                  <MenuItem value='Componente8'>Sensor</MenuItem>
-                  <MenuItem value='Componente9'>Switch</MenuItem>
+  
+  const selectedHandlerimg2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFileimg2(event.target.files ? event.target.files[0] : 'No file selected');
+  }
 
-                </Select>
-              </FormControl>
-            </Box>
-          </div>
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div><h1> Formulario para agregar Componentes </h1></div>
+        <div>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField 
+            label="Nombre"
+            id="outlined-size-normal"
+            value={nombre}
+            onChange={handleChangeNombre}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Descripcion"
+              multiline
+              value={descripcion}
+              rows={4}
+              onChange={handleChangeDescripcion}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={tipo}
+                label="Tipo"
+                onChange={handleChange}
+              >
+  
+                <MenuItem value='Componente1'>Accesorio</MenuItem>
+                <MenuItem value='Componente2'>Buzzer</MenuItem>
+                <MenuItem value='Componente3'>Electronica Analogica</MenuItem>
+                <MenuItem value='Componente4'>Electronica Digital</MenuItem>
+                <MenuItem value='Componente5'>Modulo</MenuItem>
+                <MenuItem value='Componente6'>Motor</MenuItem>
+                <MenuItem value='Componente7'>Opto Electronica</MenuItem>
+                <MenuItem value='Componente8'>Sensor</MenuItem>
+                <MenuItem value='Componente9'>Switch</MenuItem>
+  
+              </Select>
+            </FormControl>
+          </Box>
           <button type='button' onClick={handleSubirComponente}>Subir Componente</button>
-        </Box>
-      );
-}
+        </div>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '5vh'
+        }}
+      >
+        <input ref={fileInputRef1} onChange={selectedHandlerimg1} className="form-control" type="file" />
+        
 
+        <input style={{marginTop:'10vh'}} ref={fileInputRef2} onChange={selectedHandlerimg2} className="form-control" type="file" />
+        
+      </Box>
+    </Box>
+  );
+}
+/*
 //----------------SUBIR IMAGEN----------------
 
 function FileUploadComponent() {
-  const [image1, setImage1] = useState<string | null>(null);
-  const [image2, setImage2] = useState<string | null>(null);
-
-  const handleFileUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setImage1(imageUrl);
-    }
-  };
-
-  const handleFileUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setImage2(imageUrl);
-    }
-  };
-
-  const handleRemoveImage1 = () => {
-    setImage1(null);
-  };
-
-  const handleRemoveImage2 = () => {
-    setImage2(null);
-  };
-
+  const [file, setFile] = useState<File | string | null>(null);
+  const selectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(event.target.files ? event.target.files[0] : 'No file selected');
+  }
   return (
     <div style={{ width: '250px', height: '250px' }}>
       <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-        <input type="file" accept=".png" onChange={handleFileUpload1} />
-        {image1 && (
-          <>
-            <img src={image1} alt="Selected" style={{ width: '80%', height: '80%' }} />
-            <button onClick={handleRemoveImage1}>Eliminar imagen</button>
-           
-          </>
-        )}
+        <input onChange={selectedHandler} className="form-control" type="file" />
+        <button type='button'>Subir Imagen</button>
       </div>
+
+
+
+
+
+
       <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-        <input type="file" accept=".png" onChange={handleFileUpload2} />
-        {image2 && (
-          <>
-            <img src={image2} alt="Selected" style={{ width: '80%', height: '80%' }} />
-            <button onClick={handleRemoveImage2}>Eliminar imagen</button>  
-          </>
-        )}
+       
+        
       </div>
     </div>
   );
 }
-
+*/
 
 
 

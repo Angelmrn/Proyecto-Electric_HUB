@@ -18,7 +18,7 @@ const MyRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Mainpage/>} />
+                <Route path="/" element={<Addcomp/>} />
                 <Route path="/MainPage" element={<Mainpage/>} />
                 <Route path = "/login" element = {<Loginpage />} />
                 <Route path = "/create" element = {<LoginCreate/>} />
