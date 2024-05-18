@@ -18,7 +18,11 @@ const MyRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
+<<<<<<< HEAD
                 <Route path="/" element={<Mainpage/>} />
+=======
+                <Route path="/" element={<Addcomp/>} />
+>>>>>>> main
                 <Route path="/MainPage" element={<Mainpage/>} />
                 <Route path = "/login" element = {<Loginpage />} />
                 <Route path = "/create" element = {<LoginCreate/>} />

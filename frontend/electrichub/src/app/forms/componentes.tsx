@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef, SetStateAction  } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -91,16 +92,15 @@ export default function Mainpage(){
         <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
       
-      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20'>
-        <div className='flex flex-col justify-center'>
-          <FormularioComp handleImage1={handleImage1} handleImage2={handleImage2} />
-        </div>
-        <div className='flex flex-col justify-center'>
-          <FileUploadComponent image1={image1} image2={image2} handleImage1={function (value: React.SetStateAction<File | null>): void {
-            throw new Error('Function not implemented.');
-          } } handleImage2={function (value: React.SetStateAction<File | null>): void {
-            throw new Error('Function not implemented.');
-          } } />
+        <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
+              px-6 py-10 md:px-20 ' >
+          <div className='flex flex-col justify-center'>
+          <FormularioComp/> 
+          </div>
+          <div className='flex flex-col justify-center'>
+           
+          </div>
+          
         </div>
       </div>
     </main>
@@ -115,8 +115,12 @@ const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
   const [tipo, setTipo] = React.useState('');
-  const [image1, setImage1] = useState<File | null>(null);
-  const [image2, setImage2] = useState<File | null>(null);
+  const [img1, setFileimg1] = useState<File | string | null>(null);
+  const [img2, setFileimg2] = useState<File | string | null>(null);
+
+  // Referencias para los campos de archivo
+  const fileInputRef1 = useRef<HTMLInputElement>(null);
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTipo(event.target.value as string);
@@ -149,29 +153,28 @@ const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch
   const handleSubirComponente = async () => {
     try{
 
-      if (!nombre || !descripcion || !tipo) {
-        console.log('Faltan datos');
+      if (!nombre || !descripcion || !tipo ||!img1||!img2) {
+        alert('Por favor llene todos los campos')
         return;
       }else{
         console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
       }
-
       const formData = new FormData();
       formData.append('nombre', nombre);
       formData.append('descripcion', descripcion);
       formData.append('tipo', tipo);
+      formData.append('imagen1', img1);
+      formData.append('imagen2', img2);
 
-      // Subir la primera imagen
-      if (image1) {
-        formData.append('imagen1', image1);
-      }
-  
-      // Subir la segunda imagen
-      if (image2) {
-        formData.append('imagen2', image2);
-      }
-
-      console.log('Subiendo componente: ', formData.get('nombre'), formData.get('descripcion'), formData.get('tipo'), formData.get('imagen1'), formData.get('imagen2'));
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch((error) => {
+        console.error('Error:', error);
+      }); 
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
 
@@ -185,7 +188,14 @@ const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch
     });
 
     if (response.ok) {
-      navigate('/mostrarComp');
+      console.log('Componente subido exitosamente');
+      setNombre('');
+      setDescripcion('');
+      setTipo('');
+      setFileimg1(null);
+      setFileimg2(null);
+      if (fileInputRef1.current) fileInputRef1.current.value = '';
+        if (fileInputRef2.current) fileInputRef2.current.value = '';
     }else{
       console.log('Error al subir componente', response.statusText);
     }
@@ -195,100 +205,127 @@ const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch
     }
   };
 
+  //----------------IMAGENES----------------
   
-    return (
-      
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          
-           <div><h1> Formulario para agregar Componentes </h1></div>
-          <div>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField 
-              label="Nombre"
-              id="outlined-size-normal"
-              value={nombre}
-              onChange={handleChangeNombre}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField
-                id="outlined-multiline-static"
-                label="Descripcion"
-                multiline
-                value={descripcion}
-                rows={4}
-                onChange={handleChangeDescripcion}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <FormControl sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={tipo}
-                  label="Tipo"
-                  onChange={handleChange}
-                >
+  const selectedHandlerimg1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFileimg1(event.target.files ? event.target.files[0] : 'No file selected');
+  }
 
-                  <MenuItem value='Componente1'>Accesorio</MenuItem>
-                  <MenuItem value='Componente2'>Buzzer</MenuItem>
-                  <MenuItem value='Componente3'>Electronica Analogica</MenuItem>
-                  <MenuItem value='Componente4'>Electronica Digital</MenuItem>
-                  <MenuItem value='Componente5'>Modulo</MenuItem>
-                  <MenuItem value='Componente6'>Motor</MenuItem>
-                  <MenuItem value='Componente7'>Opto Electronica</MenuItem>
-                  <MenuItem value='Componente8'>Sensor</MenuItem>
-                  <MenuItem value='Componente9'>Switch</MenuItem>
-
-                </Select>
-              </FormControl>
-            </Box>
-          </div>
-          <button type='button' onClick={handleSubirComponente}>Subir Componente</button>
-        </Box>
-      );
-}
-
-//----------------SUBIR IMAGEN----------------
-
-function FileUploadComponent({ image1, image2, handleImage1, handleImage2 }: { image1: File | null, image2: File | null, handleImage1: Dispatch<SetStateAction<File | null>>, handleImage2: Dispatch<SetStateAction<File | null>> }) {
-
-  const handleFileChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    handleImage1(file);
-  };
   
-  const handleFileChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    handleImage2(file);
-  };
+  const selectedHandlerimg2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFileimg2(event.target.files ? event.target.files[0] : 'No file selected');
+  }
 
   return (
-    <div>
-      <div>
-        <input type="file" accept=".png" onChange={handleFileChange1} />
-        {image1 && (
-          <img src={URL.createObjectURL(image1)} alt="Selected" style={{ width: '80%', height: '80%' }} />
-        )}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div><h1> Formulario para agregar Componentes </h1></div>
+        <div>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField 
+            label="Nombre"
+            id="outlined-size-normal"
+            value={nombre}
+            onChange={handleChangeNombre}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Descripcion"
+              multiline
+              value={descripcion}
+              rows={4}
+              onChange={handleChangeDescripcion}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={tipo}
+                label="Tipo"
+                onChange={handleChange}
+              >
+  
+                <MenuItem value='Componente1'>Accesorio</MenuItem>
+                <MenuItem value='Componente2'>Buzzer</MenuItem>
+                <MenuItem value='Componente3'>Electronica Analogica</MenuItem>
+                <MenuItem value='Componente4'>Electronica Digital</MenuItem>
+                <MenuItem value='Componente5'>Modulo</MenuItem>
+                <MenuItem value='Componente6'>Motor</MenuItem>
+                <MenuItem value='Componente7'>Opto Electronica</MenuItem>
+                <MenuItem value='Componente8'>Sensor</MenuItem>
+                <MenuItem value='Componente9'>Switch</MenuItem>
+  
+              </Select>
+            </FormControl>
+          </Box>
+          <button type='button' onClick={handleSubirComponente}>Subir Componente</button>
+        </div>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '5vh'
+        }}
+      >
+        <input ref={fileInputRef1} onChange={selectedHandlerimg1} className="form-control" type="file" />
+        
+
+        <input style={{marginTop:'10vh'}} ref={fileInputRef2} onChange={selectedHandlerimg2} className="form-control" type="file" />
+        
+      </Box>
+    </Box>
+  );
+}
+/*
+//----------------SUBIR IMAGEN----------------
+
+function FileUploadComponent() {
+  const [file, setFile] = useState<File | string | null>(null);
+  const selectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(event.target.files ? event.target.files[0] : 'No file selected');
+  }
+  return (
+    <div style={{ width: '250px', height: '250px' }}>
+      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
+        <input onChange={selectedHandler} className="form-control" type="file" />
+        <button type='button'>Subir Imagen</button>
       </div>
-      <div>
-        <input type="file" accept=".png" onChange={handleFileChange2} />
-        {image2 && (
-          <img src={URL.createObjectURL(image2)} alt="Selected" style={{ width: '80%', height: '80%' }} />
-        )}
+
+
+
+
+
+
+      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
+       
+        
       </div>
     </div>
   );
 }
+*/
+
+
 
