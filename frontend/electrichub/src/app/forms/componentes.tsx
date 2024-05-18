@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef, SetStateAction  } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -24,8 +24,8 @@ import ResponsiveAppBar from '../responsiveappbar';
 
 
 
-const imagenInicio = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagenLupa = '/Lupa.png';
+const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
+const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
 const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
@@ -35,8 +35,6 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [image1, setImage1] = useState<File | null>(null);
-  const [image2, setImage2] = useState<File | null>(null);
 
   useEffect(() => {
 
@@ -78,18 +76,11 @@ export default function Mainpage(){
     navigate('/login');
   };
 
-  function handleImage1(value: SetStateAction<File | null>): void {
-    throw new Error('Function not implemented.');
-  }
-
-  function handleImage2(value: SetStateAction<File | null>): void {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <main className='flex min-h-screen flex-col w-full'>
       <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
+      <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
       
         <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
@@ -102,7 +93,7 @@ export default function Mainpage(){
           </div>
           
         </div>
-      </div>
+      
     </main>
   );
 }
@@ -110,7 +101,7 @@ export default function Mainpage(){
 
 //----------------FORMULARIO----------------
 
-const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch<SetStateAction<File | null>>, handleImage2: Dispatch<SetStateAction<File | null>> }) => {
+const FormularioComp= () => {
 
   const [nombre, setNombre] = React.useState('');
   const [descripcion, setDescripcion] = React.useState('');
@@ -137,18 +128,6 @@ const FormularioComp = ({ handleImage1, handleImage2 }: { handleImage1: Dispatch
   const handleChangeTipo = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setTipo(event.target.value);
   };
-
-  const handleImageChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    handleImage1(file);
-  };
-  
-  const handleImageChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    handleImage2(file);
-  };
-
-  const navigate = useNavigate();
 
   const handleSubirComponente = async () => {
     try{
