@@ -29,9 +29,5 @@ urlpatterns = [
     re_path('upload', views.upload),
     path('componentes', views.componentes),
     path('componentes/<int:id>/<str:tipo>/<str:nombre>/', views.obtener_informacion_componente),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -153,9 +153,6 @@ function MostrarInformacionComponente() {
   const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
 
   useEffect(() => {
-    console.log('ID:', id);
-    console.log('Tipo:', tipo);
-    console.log('Nombre:', nombre);
 
     const obtenerInformacionComponente = async () => {
       try {
@@ -165,7 +162,9 @@ function MostrarInformacionComponente() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('Información del componente:', data);
+          console.log('Nombre:' , data.nombre);
+          console.log('Descripcion:', data.descripcion);
+          console.log('Tipo:', data.tipo);
           setComponenteInfo(data);
         } else {
           console.error('Error al obtener información del componente:', response.statusText);
@@ -190,7 +189,9 @@ function MostrarInformacionComponente() {
               <Typography variant="body2" color="text.secondary">
                 {componenteInfo.descripcion}
               </Typography>
-              <ImagenComponentes imagen1={componenteInfo.imagen1} />
+              <Typography>
+                <ImagenComponentes imagen1={componenteInfo.imagen1} />
+              </Typography>
             </>
           ) : (
             <Typography variant="body2" color="text.secondary">
