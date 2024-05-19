@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,32 +20,28 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import "./informacion.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import ResponsiveAppBar from '../responsiveappbar';
-
-
 
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
 const imagen2 = '/cont_binario.png';
 const pages = ['Tools'];
-const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
+const settings = ['Agregar Componente', 'Agregar Proyecto', 'Logout'];
 
-
-export default function Mainpage(){
+export default function Mainpage() {
   const [username, setUsername] = useState('');
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-
     if (localStorage.getItem('token')) {
       const fetchProfile = async () => {
         try {
           const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
             method: 'POST',
             headers: {
-              'Authorization': `Token ${localStorage.getItem('token')}`, // O cualquier otro método para enviar el token al backend
+              'Authorization': `Token ${localStorage.getItem('token')}`,
             }
           });
 
@@ -65,13 +60,13 @@ export default function Mainpage(){
       };
 
       fetchProfile();
-    }else{
+    } else {
       setIsLoggedIn(false);
     }
-    }, []);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
     setUsername('');
     setFirstName('');
@@ -80,83 +75,80 @@ export default function Mainpage(){
 
   return (
     <main className='flex min-h-screen flex-col w-full'>
-          <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-          <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
-          </div>
-          <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
-            <div className='flex flex-col sm:items-center sm:text-center md:items-start md:text-left justify-center gap-6 rounded-lg bg-customise 
-                w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
-              <ImagenComponentes />
-              <TablaComponentesparecidos />
-            </div>
-            <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10  md:mt-10' style={{ width: '100vw', height: '50vh', 
-                boxSizing: 'border-box'}}>
-              <MostrarInformacionComponente />
-            </div>
-          </div>
-
-
+      <div className="flex h-40 shrink-0 items-start rounded-lg md:h-80 w-full">
+        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout} />
+      </div>
+      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
+        <div className='flex flex-col sm:items-center sm:text-center md:items-start md:text-left justify-center gap-6 rounded-lg bg-customise w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+          <TablaComponentesparecidos />
+        </div>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box' }}>
+          <MostrarInformacionComponente />
+        </div>
+      </div>
     </main>
   );
 }
 
-
-
 //----------------- IMAGEN-componentesINFO----------------
 
-function ImagenComponentes(){
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px'}}>
+const ImagenComponentes = ({ imagen1 }: { imagen1: string }) => {
+  const getImageUrl = (imagePath: string) => {
+    // Remove leading slash from imagePath if it exists
+    const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${normalizedPath}`;
+  };
+
+  return (
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       <label>Imagen del componente</label>
-      <img src={imagen2} alt="imagenComponente" />
+      {imagen1 ? (
+        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+      ) : (
+        <p>No hay imagen disponible</p>
+      )}
     </div>
   );
-}
-
+};
 
 //----------------- TABLA - componentesparecidos ----------------
 
-function TablaComponentesparecidos(){
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{  height: '250px', width: '300px' }}>
+function TablaComponentesparecidos() {
+  return (
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       Componentes Parecidos
       <table className='TablaComponentesParecidos'>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Nombre 1</td>
-        </tr>
-        <tr>
-          <td>Nombre 2</td>
-        </tr>
-        <tr>
-          <td>Nombre 3</td>
-        </tr>  
-      </tbody>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nombre 1</td>
+          </tr>
+          <tr>
+            <td>Nombre 2</td>
+          </tr>
+          <tr>
+            <td>Nombre 3</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   );
-
 }
 
 //----------------- MOSTRAR InformacionComponente ----------------
-
 
 interface ComponenteInfo {
   nombre: string;
   descripcion: string;
   tipo: string;
-  // Agrega otras propiedades si es necesario
+  imagen1: string;
 }
 
-function MostrarInformacionComponente(){
-
+function MostrarInformacionComponente() {
   const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
   const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
 
@@ -164,12 +156,13 @@ function MostrarInformacionComponente(){
     console.log('ID:', id);
     console.log('Tipo:', tipo);
     console.log('Nombre:', nombre);
+
     const obtenerInformacionComponente = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
           method: 'GET',
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           console.log('Información del componente:', data);
@@ -177,18 +170,16 @@ function MostrarInformacionComponente(){
         } else {
           console.error('Error al obtener información del componente:', response.statusText);
         }
-
       } catch (error) {
         console.error('Error al obtener información del componente:', error);
       }
     };
 
     obtenerInformacionComponente();
-  }, [id, tipo, nombre] );
+  }, [id, tipo, nombre]);
 
-  
-  return(
-    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{  height: 'auto', width: '1000px'}}>
+  return (
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px' }}>
       <Card>
         <CardContent>
           {componenteInfo ? (
@@ -199,6 +190,7 @@ function MostrarInformacionComponente(){
               <Typography variant="body2" color="text.secondary">
                 {componenteInfo.descripcion}
               </Typography>
+              <ImagenComponentes imagen1={componenteInfo.imagen1} />
             </>
           ) : (
             <Typography variant="body2" color="text.secondary">
@@ -210,5 +202,3 @@ function MostrarInformacionComponente(){
     </div>
   );
 }
-
-
