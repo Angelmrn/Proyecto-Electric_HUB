@@ -142,8 +142,8 @@ const FormularioComp= () => {
       formData.append('nombre', nombre);
       formData.append('descripcion', descripcion);
       formData.append('tipo', tipo);
-      formData.append('imagen1', img1);
-      formData.append('imagen2', img2);
+      formData.append('imagen1', img1 as File);
+      formData.append('imagen2', img2 as File);
 
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
         method: 'POST',
@@ -174,7 +174,7 @@ const FormularioComp= () => {
       setFileimg1(null);
       setFileimg2(null);
       if (fileInputRef1.current) fileInputRef1.current.value = '';
-        if (fileInputRef2.current) fileInputRef2.current.value = '';
+      if (fileInputRef2.current) fileInputRef2.current.value = '';
     }else{
       console.log('Error al subir componente', response.statusText);
     }
@@ -277,34 +277,7 @@ const FormularioComp= () => {
     </Box>
   );
 }
-/*
-//----------------SUBIR IMAGEN----------------
 
-function FileUploadComponent() {
-  const [file, setFile] = useState<File | string | null>(null);
-  const selectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(event.target.files ? event.target.files[0] : 'No file selected');
-  }
-  return (
-    <div style={{ width: '250px', height: '250px' }}>
-      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-        <input onChange={selectedHandler} className="form-control" type="file" />
-        <button type='button'>Subir Imagen</button>
-      </div>
-
-
-
-
-
-
-      <div style={{ margin: '10px', width: '400px', height: '250px' }}>
-       
-        
-      </div>
-    </div>
-  );
-}
-*/
 
 
 
