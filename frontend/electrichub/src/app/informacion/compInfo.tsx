@@ -33,6 +33,8 @@ export default function Mainpage() {
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
+  const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -65,6 +67,28 @@ export default function Mainpage() {
     }
   }, []);
 
+  useEffect(() => {
+
+    const obtenerInformacionComponente = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setComponenteInfo(data);
+        } else {
+          console.error('Error al obtener información del componente:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error al obtener información del componente:', error);
+      }
+    };
+
+    obtenerInformacionComponente();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
@@ -80,19 +104,53 @@ export default function Mainpage() {
       </div>
       <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-10 w-full' style={{ marginTop: '-20vh', boxSizing: 'border-box' }}>
         <div className='flex flex-col sm:items-center sm:text-center md:items-start md:text-left justify-center gap-6 rounded-lg bg-customise w-full md:px-10 order-last md:order-first' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
-          <TablaComponentesparecidos />
+          <Typography variant="h4" component="div">
+            {componenteInfo && <ImagenComponentes1 imagen1={componenteInfo.imagen1} />}
+          </Typography>
+          <div>
+            <TablaComponentesparecidos />
+          </div>
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box' }}>
-          <MostrarInformacionComponente />
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box',marginTop: '10rem'}}>
+          <MostrarInformacionComponente componenteInfo={componenteInfo} />
         </div>
       </div>
     </main>
   );
 }
 
+//----------------- MOSTRAR InformacionComponente ----------------
+
+interface ComponenteInfo {
+  nombre: string;
+  descripcion: string;
+  tipo: string;
+  imagen1: string;
+  imagen2: string;
+}
+
+
 //----------------- IMAGEN-componentesINFO----------------
 
-const ImagenComponentes = ({ imagen1 }: { imagen1: string }) => {
+const ImagenComponentes1 = ({ imagen1 }: { imagen1: string }) => {
+  const getImageUrl = (imagePath: string) => {
+    // Remove leading slash from imagePath if it exists
+    const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${normalizedPath}`;
+  };
+
+  return (
+    <div className='Img1' style={{ height: '250px', width: '300px' }}>
+      {imagen1 ? (
+        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+      ) : (
+        <p>No hay imagen disponible</p>
+      )}
+    </div>
+  );
+};
+
+const ImagenComponentes2 = ({ imagen2 }: { imagen2: string }) => {
   const getImageUrl = (imagePath: string) => {
     // Remove leading slash from imagePath if it exists
     const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
@@ -101,9 +159,8 @@ const ImagenComponentes = ({ imagen1 }: { imagen1: string }) => {
 
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
-      <label>Imagen del componente</label>
-      {imagen1 ? (
-        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+      {imagen2 ? (
+        <img src={getImageUrl(imagen2)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
       ) : (
         <p>No hay imagen disponible</p>
       )}
@@ -139,43 +196,9 @@ function TablaComponentesparecidos() {
   );
 }
 
-//----------------- MOSTRAR InformacionComponente ----------------
 
-interface ComponenteInfo {
-  nombre: string;
-  descripcion: string;
-  tipo: string;
-  imagen1: string;
-}
-
-function MostrarInformacionComponente() {
-  const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
-  const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
-
-  useEffect(() => {
-
-    const obtenerInformacionComponente = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
-          method: 'GET',
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Nombre:' , data.nombre);
-          console.log('Descripcion:', data.descripcion);
-          console.log('Tipo:', data.tipo);
-          setComponenteInfo(data);
-        } else {
-          console.error('Error al obtener información del componente:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error al obtener información del componente:', error);
-      }
-    };
-
-    obtenerInformacionComponente();
-  }, [id, tipo, nombre]);
+function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: ComponenteInfo | null }) {
+  
 
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px' }}>
@@ -190,7 +213,7 @@ function MostrarInformacionComponente() {
                 {componenteInfo.descripcion}
               </Typography>
               <Typography>
-                <ImagenComponentes imagen1={componenteInfo.imagen1} />
+                <ImagenComponentes2 imagen2={componenteInfo.imagen2} />
               </Typography>
             </>
           ) : (
