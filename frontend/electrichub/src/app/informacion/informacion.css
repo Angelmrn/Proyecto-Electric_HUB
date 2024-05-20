@@ -14,3 +14,15 @@
     color : #e3ecfcff;
     
   }
+
+  
+.img1 {
+  position: absolute;
+  padding-left: -190px; /* Ajusta este valor según sea necesario */
+  top: 0;
+  width: 300px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  background-color: white; /* O el color de fondo que desees */
+  padding: 10px; /* Opcional: para añadir espacio alrededor de la imagen */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: para añadir sombra */
+}

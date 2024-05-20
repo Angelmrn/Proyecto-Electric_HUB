@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef  } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -108,6 +108,7 @@ const FormularioComp= () => {
   const [tipo, setTipo] = React.useState('');
   const [img1, setFileimg1] = useState<File | string | null>(null);
   const [img2, setFileimg2] = useState<File | string | null>(null);
+  const navigate = useNavigate(); 
 
   // Referencias para los campos de archivo
   const fileInputRef1 = useRef<HTMLInputElement>(null);
@@ -175,6 +176,7 @@ const FormularioComp= () => {
       setFileimg2(null);
       if (fileInputRef1.current) fileInputRef1.current.value = '';
       if (fileInputRef2.current) fileInputRef2.current.value = '';
+      navigate('/mostrarComp');
     }else{
       console.log('Error al subir componente', response.statusText);
     }
