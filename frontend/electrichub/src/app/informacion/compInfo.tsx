@@ -142,7 +142,7 @@ const ImagenComponentes1 = ({ imagen1 }: { imagen1: string }) => {
   return (
     <div className='Img1' style={{ height: '250px', width: '300px' }}>
       {imagen1 ? (
-        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{  width:'250px' , height:'250px'}} />
       ) : (
         <p>No hay imagen disponible</p>
       )}
@@ -160,7 +160,7 @@ const ImagenComponentes2 = ({ imagen2 }: { imagen2: string }) => {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       {imagen2 ? (
-        <img src={getImageUrl(imagen2)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+        <img src={getImageUrl(imagen2)} alt="imagenComponente" style={{  height:'200px', width:'200px',marginLeft:'30vh' }} />
       ) : (
         <p>No hay imagen disponible</p>
       )}
@@ -198,10 +198,8 @@ function TablaComponentesparecidos() {
 
 
 function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: ComponenteInfo | null }) {
-  
-
   return (
-    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px' }}>
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px', marginRight:'20vh' }}>
       <Card>
         <CardContent>
           {componenteInfo ? (
@@ -209,8 +207,11 @@ function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: Comp
               <Typography variant="h5" component="div">
                 {componenteInfo.nombre}
               </Typography>
+              <br></br>
               <Typography variant="body2" color="text.secondary">
+              <pre style={{ whiteSpace: 'pre-wrap' }}> 
                 {componenteInfo.descripcion}
+              </pre>
               </Typography>
               <Typography>
                 <ImagenComponentes2 imagen2={componenteInfo.imagen2} />
