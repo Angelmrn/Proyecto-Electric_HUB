@@ -95,6 +95,7 @@ export default function Mainpage() {
 function BuscarComp({ setSearchTerm }: { setSearchTerm: React.Dispatch<React.SetStateAction<string>> }) {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    console.log(event.target.value);
   };
 
   return (
@@ -150,12 +151,12 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
           componente.nombre.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-
+    
       const filteredByCategory = filteredByName.filter(componente =>
         selectedCategories.length === 0 || selectedCategories.includes(componente.tipo)
       );
-
-      setFilteredComponents(filteredByCategory);
+    
+      setFilteredComponents([...filteredByCategory]); // Restablecer a un nuevo array
     };
 
     filtrarComponentes();
