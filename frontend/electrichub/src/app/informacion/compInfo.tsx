@@ -35,6 +35,7 @@ export default function Mainpage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
   const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
+  const [componentesSimilares, setComponentesSimilares] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -68,7 +69,6 @@ export default function Mainpage() {
   }, []);
 
   useEffect(() => {
-
     const obtenerInformacionComponente = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
@@ -78,6 +78,28 @@ export default function Mainpage() {
         if (response.ok) {
           const data = await response.json();
           setComponenteInfo(data);
+          
+          const obtenerComponentesSimilares = async () => {
+            try {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${nombre}` , {
+                method: 'GET',
+              });
+
+              if (response.ok) {
+                const allComponents = await response.json();
+                const componentesSimilares = allComponents.filter((componente: any) => 
+                  componente.tipo === data.tipo && componente.id !== data.id
+                );
+                setComponentesSimilares(componentesSimilares);
+              } else {
+                console.error('Error al obtener componentes similares:', response.statusText);
+              }
+            } catch (error) {
+              console.error('Error al obtener componentes similares:', error);
+            }
+          };
+
+          obtenerComponentesSimilares();
         } else {
           console.error('Error al obtener información del componente:', response.statusText);
         }
@@ -87,7 +109,7 @@ export default function Mainpage() {
     };
 
     obtenerInformacionComponente();
-  }, []);
+  }, [id, tipo, nombre]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -108,10 +130,10 @@ export default function Mainpage() {
             {componenteInfo && <ImagenComponentes1 imagen1={componenteInfo.imagen1} />}
           </Typography>
           <div>
-            <TablaComponentesparecidos />
+            <TablaComponentesparecidos componentesSimilares={componentesSimilares} />
           </div>
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box',marginTop: '10rem'}}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box', marginTop: '10rem'}}>
           <MostrarInformacionComponente componenteInfo={componenteInfo} />
         </div>
       </div>
@@ -128,7 +150,6 @@ interface ComponenteInfo {
   imagen1: string;
   imagen2: string;
 }
-
 
 //----------------- IMAGEN-componentesINFO----------------
 
@@ -170,7 +191,7 @@ const ImagenComponentes2 = ({ imagen2 }: { imagen2: string }) => {
 
 //----------------- TABLA - componentesparecidos ----------------
 
-function TablaComponentesparecidos() {
+function TablaComponentesparecidos({ componentesSimilares }: { componentesSimilares: any[] }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       Componentes Parecidos
@@ -181,21 +202,22 @@ function TablaComponentesparecidos() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Nombre 1</td>
-          </tr>
-          <tr>
-            <td>Nombre 2</td>
-          </tr>
-          <tr>
-            <td>Nombre 3</td>
-          </tr>
+          {componentesSimilares.length > 0 ? (
+            componentesSimilares.map((componente) => (
+              <tr key={componente.id}>
+                <td>{componente.nombre}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={1}>No hay componentes disponibles</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
   );
 }
-
 
 function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: ComponenteInfo | null }) {
   return (

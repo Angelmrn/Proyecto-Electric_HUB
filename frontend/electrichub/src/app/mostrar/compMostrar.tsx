@@ -147,7 +147,7 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
         selectedCategories.length === 0 || selectedCategories.includes(componente.tipo)
       );
       
-      setFilteredComponents([...filteredByCategory]);
+      setFilteredComponents(filteredByCategory);
     };
 
     filtrarComponentes();
