@@ -2,27 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
 import './mostrar.css';
 import ResponsiveAppBar from '../responsiveappbar';
-
-const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
 const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
 const settings = ['Agregar Componente', 'Agregar Proyecto', 'Logout'];
@@ -131,6 +117,7 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
           const data = await response.json();
           const allComponents = Object.values(data).flat();
           setComponentes(allComponents);
+          setFilteredComponents(allComponents); // Inicialmente mostrar todos los componentes
         } else {
           console.error('Error fetching componentes:', response);
         }
@@ -144,23 +131,27 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
 
   useEffect(() => {
     // Filtrar componentes cuando cambian las categorías seleccionadas o el término de búsqueda
+    
     const filtrarComponentes = () => {
       let filteredByName = componentes;
+
       if (searchTerm !== '') {
         filteredByName = componentes.filter(componente =>
-          componente.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+          componente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          componente.id.toString() === searchTerm ||
+          componente.tipo.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
     
       const filteredByCategory = filteredByName.filter(componente =>
         selectedCategories.length === 0 || selectedCategories.includes(componente.tipo)
       );
-    
-      setFilteredComponents([...filteredByCategory]); // Restablecer a un nuevo array
+      
+      setFilteredComponents([...filteredByCategory]);
     };
 
     filtrarComponentes();
-  }, [selectedCategories, searchTerm, componentes]);
+  }, [ searchTerm]);
 
   return (
     <table className='TablaMostrarComp' style={{ marginLeft: '20vh' }}>
