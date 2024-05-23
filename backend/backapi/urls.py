@@ -27,6 +27,7 @@ urlpatterns = [
     re_path('register', views.register),
     re_path('profile', views.profile),
     re_path('upload', views.upload),
+    re_path('proyect', views.proyect),
     path('componentes', views.componentes),
     path('componentes/<int:id>/<str:tipo>/<str:nombre>/', views.obtener_informacion_componente),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

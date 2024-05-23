@@ -1,49 +1,30 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { Link } from "react-router-dom"
-import "./forms.css";
-import { Label } from '@mui/icons-material';
+import Button from '@mui/material/Button';
 import ResponsiveAppBar from '../responsiveappbar';
+import { SelectChangeEvent } from '@mui/material/Select';
 
-
-const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
-const pages = ['Tools'];
-const settings = [ 'Agregar Componente', 'Agregar Proyecto', 'Logout'];
-
-
-export default function Mainpage(){
+export default function Mainpage() {
   const [username, setUsername] = useState('');
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-
     if (localStorage.getItem('token')) {
       const fetchProfile = async () => {
         try {
           const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
             method: 'POST',
             headers: {
-              'Authorization': `Token ${localStorage.getItem('token')}`, // O cualquier otro método para enviar el token al backend
+              'Authorization': `Token ${localStorage.getItem('token')}`,
             }
           });
 
@@ -62,13 +43,13 @@ export default function Mainpage(){
       };
 
       fetchProfile();
-    }else{
+    } else {
       setIsLoggedIn(false);
     }
-    }, []);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
     setUsername('');
     setFirstName('');
@@ -77,92 +58,161 @@ export default function Mainpage(){
 
   return (
     <main className='flex min-h-screen flex-col w-full'>
-      <div className="flex h-40 shrink-0 items-start rounded-lg  md:h-80 w-full">
-        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
+      <div className="flex h-40 shrink-0 items-start rounded-lg md:h-80 w-full">
+        <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout} />
       </div>
-      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise
-            px-6 py-10 md:px-20 w-full'>
-        <div className='flex flex-col justify-center' style={{ height:'29vh'}}>
+      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20 w-full'>
+        <div className='flex flex-col justify-center' style={{ height: '29vh' }}>
           <FormularioProy />
-        </div>
-        <div className='flex flex-col justify-center' >
-          <TablaCompN />
-          <FileUploadComponent />
         </div>
       </div>
     </main>
   );
 }
 
+function FormularioProy() {
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [componentes, setComponentes] = useState<{ id: number, nombre: string, tipo: string }[]>([]);
+  const [selectedComponentes, setSelectedComponentes] = useState<{ id: number, tipo: string }[]>([]);
+  const [img1, setFileimg1] = useState<File | null>(null);
+  const navigate = useNavigate();
 
-//----------------FORMULARIO----------------
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      }
+    })
+    .then(response => response.json())
+    .then((data: { [key: string]: any }) => {
+      if (data) {
+        const allComponentes: { id: number, nombre: string, tipo: string }[] = Object.values(data).reduce((acc: any, val) => acc.concat(val), []);
+        setComponentes(allComponentes);
+      } else {
+        console.error('Error: No data received from backend');
+      }
+    })
+    .catch(error => console.error('Error fetching componentes:', error));
+  }, []);
 
-function FormularioProy (){
-    return (
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-           
-          }}
-          noValidate
-          autoComplete="off"
-        >
-           <div><h1> Formulario para agregar Proyectos </h1></div>
-          <div>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField label="Nombre" id="outlined-size-normal"/>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField
-                id="outlined-multiline-static"
-                label="Descripcion"
-                multiline
-                rows={4}
-              />
-            </Box>
-          </div>
-        </Box>
-      );
-}
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
 
-//----------------TABLA-ComponentesNecesarios----------------
-function TablaCompN (){
+    if (!nombre || !descripcion || !img1 || selectedComponentes.length === 0) {
+      alert('Por favor, rellene todos los campos')
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('imagen1', img1 as unknown as File);
+    selectedComponentes.forEach(comp => {
+      formData.append('componente[]', JSON.stringify(comp));
+    });
+
+    console.log('Nombre proyecto:', formData.get('nombre'));
+    console.log('Descripción proyecto:', formData.get('descripcion'));
+    console.log('Imagen 1:', formData.get('imagen1'));
+    console.log('Componentes seleccionados:', selectedComponentes);
+  
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/proyect`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+
+        body: formData,
+      });
+  
+      if (response.ok) {
+        console.log('Proyecto creado correctamente');
+        navigate('/mostrarProy');
+      } else {
+        console.error('Error creating proyecto');
+      }
+    } catch (error) {
+      console.error('Error creating proyecto:', error);
+    }
+  };
+  const handleComponenteSelect = (id: number, nombre: string, tipo: string) => {
+    setSelectedComponentes(prev => {
+      const isSelected = prev.some(comp => comp.id === id && comp.tipo === tipo);
+      if (isSelected) {
+        return prev.filter(comp => !(comp.id === id && comp.tipo === tipo));
+      } else {
+        return [...prev, { id, tipo, nombre }];
+      }
+    });
+  };
+
   return (
-    <div style={{ margin: '10px', width: '400px', height: '250px', marginRight:'100px', marginLeft:'5vw' }}>
-      <table className='TablaMostrarComp' style={{ width: 'auto', height: 'auto', marginTop:'0', marginLeft:'5vh' }}>
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
+      <h1>Formulario para agregar Proyectos</h1>
+      <TextField
+        label="Nombre"
+        id="outlined-size-normal"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+      />
+      <TextField
+        id="outlined-multiline-static"
+        label="Descripción"
+        multiline
+        rows={4}
+        value={descripcion}
+        onChange={(e) => setDescripcion(e.target.value)}
+      />
+      <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Seleccionar</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><input type="text" defaultValue="ID 1" /></td>
-            <td><input type="text" defaultValue="Nombre 1" /></td>
-            <td><input type="text" defaultValue="Categoria 1" /></td>
-          </tr>
-          <tr>
-            <td><input type="text" defaultValue="ID 2" /></td>
-            <td><input type="text" defaultValue="Nombre 2" /></td>
-            <td><input type="text" defaultValue="Categoria 2" /></td>
-          </tr>
-          <tr>
-            <td><input type="text" defaultValue="ID 3" /></td>
-            <td><input type="text" defaultValue="Nombre 3" /></td>
-            <td><input type="text" defaultValue="Categoria 3" /></td>
-          </tr>
-        </tbody>
+            {componentes.map((componente) => (
+              <tr key={componente.id}>
+                <td>{componente.id}</td>
+                <td>{componente.nombre}</td>
+                <td>{componente.tipo}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedComponentes.some(comp => comp.id === componente.id && comp.tipo === componente.tipo)}
+                    onChange={(e) => handleComponenteSelect(componente.id, componente.nombre, componente.tipo)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
       </table>
-    </div>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setFileimg1(e.target.files ? e.target.files[0] : null)}
+      />
+      <Button type="submit" variant="contained">Agregar Proyecto</Button>
+    </Box>
   );
 }
-
+ 
 
 //----------------SUBIR IMAGEN ----------------
 
@@ -199,11 +249,6 @@ function FileUploadComponent() {
     </div>
   );
 }
-
-
-
-
-
 
 
 

@@ -133,8 +133,12 @@ const FormularioComp= () => {
   const handleSubirComponente = async () => {
     try{
 
-      if (!nombre || !descripcion || !tipo ||!img1||!img2) {
+      if (!nombre || !descripcion || !tipo) {
         alert('Por favor llene todos los campos')
+        if (!img1 && !img2){
+          alert('Por favor seleccione una imagen')
+          return;
+        }
         return;
       }else{
         console.log('Datos:' + nombre + descripcion + tipo + 'Subiendo componente...');
