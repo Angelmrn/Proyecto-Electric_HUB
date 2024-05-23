@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import "slick-carousel/slick/slick.css";
@@ -79,9 +79,17 @@ export default function Mainpage() {
 //----------------INPUT - componentes----------------
 
 function BuscarComp({ setSearchTerm }: { setSearchTerm: React.Dispatch<React.SetStateAction<string>> }) {
+  const timeoutId = useRef<NodeJS.Timeout | null>(null);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    console.log(event.target.value);
+    const value = event.target.value;
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+    timeoutId.current = setTimeout(() => {
+      setSearchTerm(value);
+      console.log(value);
+    }, 300); // Wait 300ms after the user has stopped typing to call setSearchTerm
   };
 
   return (
@@ -131,7 +139,6 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
 
   useEffect(() => {
     // Filtrar componentes cuando cambian las categorías seleccionadas o el término de búsqueda
-    
     const filtrarComponentes = () => {
       let filteredByName = componentes;
 
@@ -141,6 +148,8 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
           componente.id.toString() === searchTerm ||
           componente.tipo.toLowerCase().includes(searchTerm.toLowerCase())
         );
+      } else {
+        filteredByName = componentes; // Si el término de búsqueda está vacío, usar todos los componentes
       }
     
       const filteredByCategory = filteredByName.filter(componente =>
@@ -151,7 +160,7 @@ function TablaComp({ selectedCategories, searchTerm }: { selectedCategories: str
     };
 
     filtrarComponentes();
-  }, [ searchTerm]);
+  }, [componentes, searchTerm, selectedCategories]);
 
   return (
     <table className='TablaMostrarComp' style={{ marginLeft: '20vh' }}>

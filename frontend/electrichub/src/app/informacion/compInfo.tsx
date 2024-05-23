@@ -1,22 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import "./informacion.css";
@@ -81,14 +68,14 @@ export default function Mainpage() {
           
           const obtenerComponentesSimilares = async () => {
             try {
-              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${nombre}` , {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/` , {
                 method: 'GET',
               });
 
               if (response.ok) {
                 const allComponents = await response.json();
                 const componentesSimilares = allComponents.filter((componente: any) => 
-                  componente.tipo === data.tipo && componente.id !== data.id
+                  componente.tipo === tipo && componente.id !== id
                 );
                 setComponentesSimilares(componentesSimilares);
               } else {
