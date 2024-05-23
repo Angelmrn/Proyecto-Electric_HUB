@@ -8,7 +8,7 @@ import Addcomp from "./forms/componentes"
 import Addproy from "./forms/proyectos"
 import Tools from "./tools/tools"
 import Compinfo from "./informacion/compInfo"
-import Proyinfo from "./informacion/ptoyInfo"
+import Proyinfo from "./informacion/proyInfo"
 import CompMostrar from "./mostrar/compMostrar"
 import ProyMostrar from "./mostrar/proyMostrar"
 

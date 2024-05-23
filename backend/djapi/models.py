@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .imagenes import *
 
 class Componente(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -117,6 +116,16 @@ class Switches(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+
+    def __str__(self):
+        return str(self.nombre)
+    
+class Proyecto(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    imagen = models.ImageField(upload_to='proyectos/', null=True, blank=True)
+    componentes = models.ManyToManyField(Componente, related_name='proyectos')
 
     def __str__(self):
         return str(self.nombre)

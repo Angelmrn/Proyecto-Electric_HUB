@@ -1,16 +1,17 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import UserSerializer, ElectroAnalogicaSerializer
+from .serializers import UserSerializer, ComponenteSerializer, ProyectoSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from djapi.models import Accesorios, Buzzers ,ElectroAnalogica, ElectroDigital, Modulos, Motores, OptoElectronica, Sensores, Switches
-from rest_framework.parsers import MultiPartParser
+from djapi.models import Accesorios, Buzzers ,ElectroAnalogica, ElectroDigital, Modulos, Motores, OptoElectronica, Sensores, Switches, Proyecto, Componente
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
+import json
 
 # ------------ INGRESAR USUARIO ------------
 @api_view(['POST'])
@@ -78,16 +79,12 @@ def profile(request):
 def upload(request):
 
     if request.method == 'POST':
-        print(request.user)
-
         usuario_id = request.user.id
         nombre = request.data.get('nombre')
         descripcion = request.data.get('descripcion')
         tipo = request.data.get('tipo')
         imagen1 = request.FILES.get('imagen1') if 'imagen1' in request.FILES else None
         imagen2 = request.FILES.get('imagen2') if 'imagen2' in request.FILES else None
-
-        print(nombre, descripcion, tipo, imagen1, imagen2)
 
         if tipo == 'Componente1':
             # pylint: disable=no-member
@@ -102,7 +99,7 @@ def upload(request):
             )
 
             accesorios.save()
-            serializer = ElectroAnalogicaSerializer(accesorios)
+            serializer = ComponenteSerializer(accesorios)
         elif tipo == 'Componente2':
             # pylint: disable=no-member
             tipo = 'Buzzer'
@@ -116,7 +113,7 @@ def upload(request):
             )
 
             buzzers.save()
-            serializer = ElectroAnalogicaSerializer(buzzers)
+            serializer = ComponenteSerializer(buzzers)
 
         elif tipo == 'Componente3':
             # pylint: disable=no-member
@@ -131,7 +128,7 @@ def upload(request):
             )
 
             electro_analogica.save()
-            serializer = ElectroAnalogicaSerializer(electro_analogica)
+            serializer = ComponenteSerializer(electro_analogica)
 
         elif tipo == 'Componente4':
             # pylint: disable=no-member
@@ -146,7 +143,7 @@ def upload(request):
             )
 
             electro_digital.save()
-            serializer = ElectroAnalogicaSerializer(electro_digital)
+            serializer = ComponenteSerializer(electro_digital)
         elif tipo == 'Componente5':
             # pylint: disable=no-member
             tipo = 'Modulo'
@@ -160,7 +157,7 @@ def upload(request):
             )
 
             modulos.save()
-            serializer = ElectroAnalogicaSerializer(modulos)
+            serializer = ComponenteSerializer(modulos)
         elif tipo == 'Componente6':
             # pylint: disable=no-member
             tipo = 'Motor'
@@ -174,7 +171,7 @@ def upload(request):
             )
 
             motores.save()
-            serializer = ElectroAnalogicaSerializer(motores)
+            serializer = ComponenteSerializer(motores)
         elif tipo == 'Componente7':
             # pylint: disable=no-member
             tipo = 'Opto Electronica'
@@ -188,7 +185,7 @@ def upload(request):
             )
 
             opto_electronica.save()
-            serializer = ElectroAnalogicaSerializer(opto_electronica)
+            serializer = ComponenteSerializer(opto_electronica)
         elif tipo == 'Componente8':
             # pylint: disable=no-member
             tipo = 'Sensor'
@@ -202,7 +199,7 @@ def upload(request):
             )
 
             sensores.save()
-            serializer = ElectroAnalogicaSerializer(sensores)
+            serializer = ComponenteSerializer(sensores)
         elif tipo == 'Componente9':
             # pylint: disable=no-member
             tipo = 'Switch'
@@ -216,9 +213,9 @@ def upload(request):
             )
 
             switches.save()
-            serializer = ElectroAnalogicaSerializer(switches)        
+            serializer = ComponenteSerializer(switches)        
         else:
-            return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Error al seleccionar el tipo del componente'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({}, status=status.HTTP_200_OK)
 
@@ -256,15 +253,15 @@ def componentes(request):
         sensores = Sensores.objects.all()
         switches = Switches.objects.all()
 
-        accesorios_serializer = ElectroAnalogicaSerializer(accesorios, many=True)
-        buzzers_serializer = ElectroAnalogicaSerializer(buzzers, many=True)
-        electro_analogica_serializer = ElectroAnalogicaSerializer(electro_analogica, many=True)
-        electro_digital_serializer = ElectroAnalogicaSerializer(electro_digital, many=True)
-        modulos_serializer = ElectroAnalogicaSerializer(modulos, many=True)
-        motores_serializer = ElectroAnalogicaSerializer(motores, many=True)
-        opto_electronica_serializer = ElectroAnalogicaSerializer(opto_electronica, many=True)
-        sensores_serializer = ElectroAnalogicaSerializer(sensores, many=True)
-        switches_serializer = ElectroAnalogicaSerializer(switches, many=True)
+        accesorios_serializer = ComponenteSerializer(accesorios, many=True)
+        buzzers_serializer = ComponenteSerializer(buzzers, many=True)
+        electro_analogica_serializer = ComponenteSerializer(electro_analogica, many=True)
+        electro_digital_serializer = ComponenteSerializer(electro_digital, many=True)
+        modulos_serializer = ComponenteSerializer(modulos, many=True)
+        motores_serializer = ComponenteSerializer(motores, many=True)
+        opto_electronica_serializer = ComponenteSerializer(opto_electronica, many=True)
+        sensores_serializer = ComponenteSerializer(sensores, many=True)
+        switches_serializer = ComponenteSerializer(switches, many=True)
 
         componentes = {
             'accesorios': accesorios_serializer.data,
@@ -306,7 +303,116 @@ def obtener_informacion_componente(request, id, tipo, nombre):
         else:
             return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = ElectroAnalogicaSerializer(componente)
+        serializer = ComponenteSerializer(componente)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# ------------ CREAR PROYECTO ------------
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def proyect(request):
+    if request.method == 'POST':
+        usuario_id = request.user.id
+        nombre = request.data.get('nombre')
+        descripcion = request.data.get('descripcion')
+        imagen = request.FILES.get('imagen1') if 'imagen1' in request.FILES else None
+        componentes_data = request.data.getlist('componente[]')
+
+        if not nombre or not descripcion:
+            return Response({'error': 'Nombre y descripción son obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
+
+        print("Nombre: ", nombre)
+        print("Descripción: ", descripcion)
+        print("Imagen: ", imagen)
+        print("Componentes: ", componentes_data)
+
+        try:
+            #pylint: disable=no-member
+            proyecto = Proyecto.objects.create(
+                usuario_id=usuario_id,
+                nombre=nombre,
+                descripcion=descripcion,
+                imagen=imagen
+            )
+
+            componentes_correctos = []
+
+            for comp_data in componentes_data:
+                try:
+                    comp_data_dict = json.loads(comp_data)
+                    print(f"Procesando componente: {comp_data_dict}")
+                    tipo = comp_data_dict.get('tipo')
+                    id_componente = comp_data_dict.get('id')
+
+                    print("Tipo del componente recibido: ",tipo)
+                    print("ID del componente recibido: ",id_componente)
+
+                    componente_especifico = None
+                    # pylint: disable=no-member
+                    if tipo == 'Accesorio':
+                        print("ID de Accesorio: ", id_componente)
+                        componente_especifico = get_object_or_404(Accesorios, id=id_componente)
+                    elif tipo == 'Buzzer':
+                        print("ID de Buzzer: ", id_componente)
+                        componente_especifico = get_object_or_404(Buzzers, id=id_componente)
+                    elif tipo == 'Electro Analogica':
+                        print("ID de Electro Analogica: ", id_componente)
+                        componente_especifico = get_object_or_404(ElectroAnalogica, id=id_componente)
+                    elif tipo == 'Electro Digital':
+                        print("ID de Electro Digital: ", id_componente)
+                        componente_especifico = get_object_or_404(ElectroDigital, id=id_componente)
+                    elif tipo == 'Modulo':
+                        print("ID de Modulo: ", id_componente)
+                        componente_especifico = get_object_or_404(Modulos, id=id_componente)
+                    elif tipo == 'Motor':
+                        print("ID de Motor: ", id_componente)
+                        componente_especifico = get_object_or_404(Motores, id=id_componente)
+                    elif tipo == 'Opto Electronica':
+                        print("ID de Opto Electronica: ", id_componente)
+                        componente_especifico = get_object_or_404(OptoElectronica, id=id_componente)
+                    elif tipo == 'Sensor':
+                        print("ID de Sensor: ", id_componente)
+                        componente_especifico = get_object_or_404(Sensores, id=id_componente)
+                    elif tipo == 'Switch':
+                        print("ID de Switch: ", id_componente)
+                        componente_especifico = get_object_or_404(Switches, id=id_componente)
+                    else:
+                        return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
+                    
+                    componente_generico = Componente.objects.create(
+                        usuario_id=usuario_id,
+                        nombre=comp_data_dict.get('nombre'),
+                        descripcion=componente_especifico.descripcion,
+                        tipo=tipo,
+                        imagen1=componente_especifico.imagen1,
+                        imagen2=componente_especifico.imagen2
+                    )
+
+                    proyecto.componentes.add(componente_generico)
+                    print("Componente agregado al proyecto: ", componente_generico)
+                    componentes_correctos.append(True)
+                except Exception as comp_err:
+                    print(f"Error procesando componente: {comp_err}")
+                    componentes_correctos.append(False)
+
+            # Verificar si todos los componentes se almacenaron correctamente
+            if all(componentes_correctos):
+                print("Todos los componentes se almacenaron correctamente, el proyecto se almaceno.")
+                proyecto.save()
+                serializer = ProyectoSerializer(proyecto)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                # Eliminar el proyecto si no se pudieron almacenar todos los componentes
+                proyecto.delete()
+                return Response({'error': 'No se pudieron almacenar todos los componentes correctamente'},
+                                status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(f"Error: {e}")
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
