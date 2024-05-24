@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -86,9 +86,8 @@ export default function Mainpage(){
         <BuscarComp />
         <div className='flex flex-row justify-between'>
           
-          <TablaComp />
+          <TablaProy />
         </div>
-        <BotonesPrueba />
       </div>
     </main>
   );
@@ -112,7 +111,35 @@ function BuscarComp() {
 
 //----------------TABLA - COMPONENTES----------------
 
-function TablaComp() {  
+function TablaProy() {  
+
+  const [proyectos, setproyectos] = useState<any[]>([]); 
+
+  useEffect(() => {
+    const ObtenerProyectos = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mostrarproyectos`, {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setproyectos(data);
+        } else {
+          console.error('Error fetching proyectos');
+        }
+      } catch (error) {
+        console.error('Error fetching proyectos:', error);
+      }
+
+    }
+
+    ObtenerProyectos();
+        
+  }, []);
+
+
+
   return (
     <table className='TablaMostrarProy'>
       <thead>
@@ -122,34 +149,20 @@ function TablaComp() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>ID 1</td>
-          <td>Nombre 1</td>
-        </tr>
-        <tr>
-          <td>ID 2</td>
-          <td>Nombre 2</td>
-        </tr>
-        <tr>
-          <td>ID 3</td>
-          <td>Nombre 3</td>
-        </tr>
-        
+        {proyectos.length > 0 ? (
+          proyectos.map((proyecto) => (
+            <tr key={proyecto.id}>
+              <td><Link to={`/proyInfo/${proyecto.id}/${proyecto.nombre}`}>{proyecto.id}</Link></td>
+              <td><Link to={`/proyInfo/${proyecto.id}/${proyecto.nombre}`}>{proyecto.nombre}</Link></td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={2}>No hay proyectos disponibles</td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
 }
 
-
-
-//----------------BOTONES - PRUEBAS----------------
-
-function BotonesPrueba() {
-  return(
-  <div>
-  <Link to='/Proyinfo'>
-    <button>, Mostrar-InfoProyectos</button>
-    </Link>
-  </div>
-  );
-}
