@@ -118,7 +118,7 @@ function TablaProy() {
   useEffect(() => {
     const ObtenerProyectos = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mostrarproyectos`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/obtenerproy`, {
           method: 'GET',
         });
 

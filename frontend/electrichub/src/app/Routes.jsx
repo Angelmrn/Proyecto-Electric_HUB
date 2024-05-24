@@ -26,7 +26,7 @@ const MyRoutes = () => {
                 <Route path = "/addProy" element = {<Addproy/>} />
                 <Route path = "/tools" element = {<Tools/>} />
                 <Route path="/compInfo/:id/:tipo/:nombre" element={<Compinfo />} />
-                <Route path = "/proyInfo" element = {<Proyinfo />} />
+                <Route path = "/proyInfo/:id/:nombre" element = {<Proyinfo />} />
                 <Route path = "/mostrarComp" element = {<CompMostrar />} />
                 <Route path = "/mostrarProy" element = {<ProyMostrar />} />
               

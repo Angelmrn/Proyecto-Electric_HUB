@@ -56,15 +56,8 @@ export default function Mainpage() {
       <div className="flex h-40 shrink-0 items-start rounded-lg md:h-80 w-full">
         <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout} />
       </div>
-<<<<<<< HEAD
-      <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20 w-full'>
-        <div className='flex flex-col top-5' style={{ height: '29vh' }}>
-          <FormularioProy />
-        </div>
-=======
       <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20 w-full' >
         <FormularioProy />
->>>>>>> main
       </div>
     </main>
   );
@@ -149,55 +142,6 @@ function FormularioProy() {
       className='flex flex-row justify-center gap-6 rounded-lg bg-customise px-auto py-auto md:px-20 w-full'
       sx={{ display: 'flex', flexDirection: 'row', width: 'auto' }}
     >
-<<<<<<< HEAD
-      <h1>Formulario para agregar Proyectos</h1>
-      <TextField 
-        label="Nombre"
-        id="outlined-size-normal"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-      />
-      <TextField
-        id="outlined-multiline-static"
-        label="Descripción"
-        multiline
-        rows={4}
-        value={descripcion}
-        onChange={(e) => setDescripcion(e.target.value)}
-      />
-      <table className='TablaComponentes'>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Tipo</th>
-            <th>Seleccionar</th>
-          </tr>
-        </thead>
-        <tbody>
-            {componentes.map((componente) => (
-              <tr key={componente.id}>
-                <td>{componente.id}</td>
-                <td>{componente.nombre}</td>
-                <td>{componente.tipo}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedComponentes.some(comp => comp.id === componente.id && comp.tipo === componente.tipo)}
-                    onChange={(e) => handleComponenteSelect(componente.id, componente.nombre, componente.tipo)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-      </table>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setFileimg1(e.target.files ? e.target.files[0] : null)}
-      />
-      <Button type="submit" variant="contained">Agregar Proyecto</Button>
-=======
       <Box
         component="form"
         sx={{
@@ -267,7 +211,6 @@ function FormularioProy() {
 </table>
         </Box>
       </Box>
->>>>>>> main
     </Box>
   );
 }

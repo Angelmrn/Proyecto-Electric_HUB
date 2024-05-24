@@ -316,6 +316,7 @@ def obtener_informacion_componente(request, id, tipo, nombre):
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def proyect(request):
+
     print("Creando proyecto")
     if request.method == 'POST':
         usuario_id = request.user.id
@@ -421,26 +422,37 @@ def proyect(request):
 
 # ------------ OBTENER PROYECTOS ------------
 @api_view(['GET'])
-def mostrarproyectos(request):
+def obtenerproy(request):
     print("Mostrando proyectos")
-    try:
-        # pylint: disable=no-member
-        proyectos = Proyecto.objects.all()
-        Proyectoserializer = ProyectoSerializer(proyectos, many=True)
-        proyectos = Proyectoserializer.data 
+    if request.method == 'GET':
+        try:
+            # pylint: disable=no-member
+            proyectos = Proyecto.objects.all()
+            Proyectoserializer = ProyectoSerializer(proyectos, many=True)
+            proyectos = Proyectoserializer.data 
 
-        return Response(proyectos, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(proyectos, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 # ------------ OBTENER INFORMACIÓN DE PROYECTO ------------
 @api_view(['GET'])
-def obtener_informacion_proyecto(request, id, nombre):
+def infop(request, id):
+    print(f"Obteniendo información del proyecto con ID: {id}")
     try:
-        proyecto = get_object_or_404(Proyecto, id=id, nombre=nombre)
-        serializer = ProyectoSerializer(proyecto)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        proyecto = get_object_or_404(Proyecto, id=id)
+        proyecto_serializer = ProyectoSerializer(proyecto)
+
+        componentes = proyecto.componentes.all()
+        componentes_serializer = ComponenteSerializer(componentes, many=True)
+
+        data = {
+            'proyecto': proyecto_serializer.data,
+            'componentes': componentes_serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
