@@ -68,14 +68,27 @@ export default function Mainpage() {
           
           const obtenerComponentesSimilares = async () => {
             try {
-              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/` , {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes` , {
                 method: 'GET',
               });
 
               if (response.ok) {
                 const allComponents = await response.json();
-                const componentesSimilares = allComponents.filter((componente: any) => 
-                  componente.tipo === tipo && componente.id !== id
+                console.log(allComponents);
+                // Combina todos los componentes en un solo array
+                const combinedComponents = [].concat(
+                  allComponents.accesorios,
+                  allComponents.buzzers,
+                  allComponents.electro_analogica,
+                  allComponents.electro_digital,
+                  allComponents.modulos,
+                  allComponents.motores,
+                  allComponents.opto_electronica,
+                  allComponents.sensores,
+                  allComponents.switches
+                );
+                const componentesSimilares = combinedComponents.filter((componente: any) => 
+                  componente.tipo === tipo && componente.id !== id && componente.nombre !== nombre
                 );
                 setComponentesSimilares(componentesSimilares);
               } else {
@@ -192,7 +205,7 @@ function TablaComponentesparecidos({ componentesSimilares }: { componentesSimila
           {componentesSimilares.length > 0 ? (
             componentesSimilares.map((componente) => (
               <tr key={componente.id}>
-                <td>{componente.nombre}</td>
+                <td><Link to={`/compInfo/${componente.id}/${componente.tipo}/${componente.nombre}`}>{componente.nombre}</Link></td>
               </tr>
             ))
           ) : (
