@@ -62,7 +62,7 @@ export default function Mainpage() {
         <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout} />
       </div>
       <div className='flex flex-col md:flex-row justify-center gap-6 rounded-lg bg-customise px-6 py-10 md:px-20 w-full'>
-        <div className='flex flex-col justify-center' style={{ height: '29vh' }}>
+        <div className='flex flex-col top-5' style={{ height: '29vh' }}>
           <FormularioProy />
         </div>
       </div>
@@ -163,7 +163,7 @@ function FormularioProy() {
       onSubmit={handleSubmit}
     >
       <h1>Formulario para agregar Proyectos</h1>
-      <TextField
+      <TextField 
         label="Nombre"
         id="outlined-size-normal"
         value={nombre}
@@ -177,7 +177,7 @@ function FormularioProy() {
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
       />
-      <table>
+      <table className='TablaComponentes'>
         <thead>
           <tr>
             <th>ID</th>

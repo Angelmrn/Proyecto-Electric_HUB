@@ -1,3 +1,10 @@
 .TablaMostrarComp input[type="text"] {
     background-color: #e3ecfcff;
+    left: 5%;
   }
+
+.TablaComponentes{
+    padding-left: 15%;
+    border: 2% solid #e3ecfcff;
+    left: 5%;
+}
