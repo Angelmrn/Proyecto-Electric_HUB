@@ -1,22 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import "./informacion.css";
@@ -35,6 +22,7 @@ export default function Mainpage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [componenteInfo, setComponenteInfo] = useState<ComponenteInfo | null>(null);
   const { id, tipo, nombre } = useParams<{ id: string, tipo: string, nombre: string }>();
+  const [componentesSimilares, setComponentesSimilares] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -68,7 +56,6 @@ export default function Mainpage() {
   }, []);
 
   useEffect(() => {
-
     const obtenerInformacionComponente = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes/${id}/${tipo}/${nombre}`, {
@@ -78,6 +65,41 @@ export default function Mainpage() {
         if (response.ok) {
           const data = await response.json();
           setComponenteInfo(data);
+          
+          const obtenerComponentesSimilares = async () => {
+            try {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes` , {
+                method: 'GET',
+              });
+
+              if (response.ok) {
+                const allComponents = await response.json();
+                console.log(allComponents);
+                // Combina todos los componentes en un solo array
+                const combinedComponents = [].concat(
+                  allComponents.accesorios,
+                  allComponents.buzzers,
+                  allComponents.electro_analogica,
+                  allComponents.electro_digital,
+                  allComponents.modulos,
+                  allComponents.motores,
+                  allComponents.opto_electronica,
+                  allComponents.sensores,
+                  allComponents.switches
+                );
+                const componentesSimilares = combinedComponents.filter((componente: any) => 
+                  componente.tipo === tipo && componente.id !== id && componente.nombre !== nombre
+                );
+                setComponentesSimilares(componentesSimilares);
+              } else {
+                console.error('Error al obtener componentes similares:', response.statusText);
+              }
+            } catch (error) {
+              console.error('Error al obtener componentes similares:', error);
+            }
+          };
+
+          obtenerComponentesSimilares();
         } else {
           console.error('Error al obtener información del componente:', response.statusText);
         }
@@ -87,7 +109,7 @@ export default function Mainpage() {
     };
 
     obtenerInformacionComponente();
-  }, []);
+  }, [id, tipo, nombre]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -108,10 +130,10 @@ export default function Mainpage() {
             {componenteInfo && <ImagenComponentes1 imagen1={componenteInfo.imagen1} />}
           </Typography>
           <div>
-            <TablaComponentesparecidos />
+            <TablaComponentesparecidos componentesSimilares={componentesSimilares} />
           </div>
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box',marginTop: '10rem'}}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 md:mt-10' style={{ width: '100vw', height: '50vh', boxSizing: 'border-box', marginTop: '10rem'}}>
           <MostrarInformacionComponente componenteInfo={componenteInfo} />
         </div>
       </div>
@@ -129,7 +151,6 @@ interface ComponenteInfo {
   imagen2: string;
 }
 
-
 //----------------- IMAGEN-componentesINFO----------------
 
 const ImagenComponentes1 = ({ imagen1 }: { imagen1: string }) => {
@@ -142,7 +163,7 @@ const ImagenComponentes1 = ({ imagen1 }: { imagen1: string }) => {
   return (
     <div className='Img1' style={{ height: '250px', width: '300px' }}>
       {imagen1 ? (
-        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+        <img src={getImageUrl(imagen1)} alt="imagenComponente" style={{  width:'250px' , height:'250px'}} />
       ) : (
         <p>No hay imagen disponible</p>
       )}
@@ -160,7 +181,7 @@ const ImagenComponentes2 = ({ imagen2 }: { imagen2: string }) => {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       {imagen2 ? (
-        <img src={getImageUrl(imagen2)} alt="imagenComponente" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+        <img src={getImageUrl(imagen2)} alt="imagenComponente" style={{  height:'200px', width:'200px',marginLeft:'30vh' }} />
       ) : (
         <p>No hay imagen disponible</p>
       )}
@@ -170,7 +191,7 @@ const ImagenComponentes2 = ({ imagen2 }: { imagen2: string }) => {
 
 //----------------- TABLA - componentesparecidos ----------------
 
-function TablaComponentesparecidos() {
+function TablaComponentesparecidos({ componentesSimilares }: { componentesSimilares: any[] }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full' style={{ height: '250px', width: '300px' }}>
       Componentes Parecidos
@@ -181,27 +202,26 @@ function TablaComponentesparecidos() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Nombre 1</td>
-          </tr>
-          <tr>
-            <td>Nombre 2</td>
-          </tr>
-          <tr>
-            <td>Nombre 3</td>
-          </tr>
+          {componentesSimilares.length > 0 ? (
+            componentesSimilares.map((componente) => (
+              <tr key={componente.id}>
+                <td><Link to={`/compInfo/${componente.id}/${componente.tipo}/${componente.nombre}`}>{componente.nombre}</Link></td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={1}>No hay componentes disponibles</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
   );
 }
 
-
 function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: ComponenteInfo | null }) {
-  
-
   return (
-    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px' }}>
+    <div className='flex flex-col justify-center gap-6 rounded-lg px-6 py-20 md:px-10 w-full mt-0' style={{ height: 'auto', width: '1000px', marginRight:'20vh' }}>
       <Card>
         <CardContent>
           {componenteInfo ? (
@@ -209,8 +229,11 @@ function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: Comp
               <Typography variant="h5" component="div">
                 {componenteInfo.nombre}
               </Typography>
+              <br></br>
               <Typography variant="body2" color="text.secondary">
+              <pre style={{ whiteSpace: 'pre-wrap' }}> 
                 {componenteInfo.descripcion}
+              </pre>
               </Typography>
               <Typography>
                 <ImagenComponentes2 imagen2={componenteInfo.imagen2} />
