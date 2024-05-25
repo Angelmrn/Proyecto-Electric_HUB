@@ -82,12 +82,50 @@ export default function Mainpage({}) {
         <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout} />
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise px-6 py-0 md:px-20 w-full'>
-        <Select />
+        <Selector />
         <Carrusel latestProjects={latestProjects} />
       </div>
     </main>
   );
 }
+
+function Selector() {
+  const [Buscar, setBuscar] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setBuscar(event.target.value as string);
+  };
+
+  const handleSearch = () => {
+    if (Buscar === 'componentes') {
+      navigate('/mostrarComp');
+    } else if (Buscar === 'proyectos') {
+      navigate('/mostrarProy');
+    }
+  };
+  return (
+    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <FormControl sx={{ width: '40%' }}>
+        <InputLabel id="demo-simple-select-label">Buscar</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={Buscar}
+          label="Buscar"
+          onChange={handleChange}
+        >
+          <MenuItem value='componentes'>Componentes</MenuItem>
+          <MenuItem value='proyectos'>Proyectos</MenuItem>
+        </Select>
+      </FormControl>
+      <button className='botonBUSCAR' onClick={handleSearch}>Buscar
+        <img src={imagen2} />
+      </button>
+    </Box>
+  );
+}
+
 
 interface LatestProject {
   imagen: string | undefined;
@@ -134,7 +172,7 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
           {latestProjects.map((project, index) => (
             <div key={index} className='bg-customise h-[400px] text-black rounded-xl'>
               <div className='rounded-t-xl flex justify-center items-center'>
-                <img src={project.imagen} alt='' className='h-44 w-64' />
+                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt='' className='h-44 w-64' />
               </div>
               <div className='flex flex-col justify-center items-center gap-4 p-2'>
                 <p>{project.name}</p>

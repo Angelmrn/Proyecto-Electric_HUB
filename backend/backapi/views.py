@@ -240,7 +240,7 @@ def delete(request):
 # ------------ OBTENER COMPONENTES ------------
 @api_view(['GET'])
 def componentes(request):
-
+    print("Mostrando componentes")
     try:
         # pylint: disable=no-member
         accesorios = Accesorios.objects.all()
@@ -281,9 +281,11 @@ def componentes(request):
 
 @api_view(['GET'])
 def obtener_informacion_componente(request, id, tipo, nombre):
+    print(f"Obteniendo información del componente con ID: {id}, Tipo: {tipo}, Nombre: {nombre}")
     try:
+        #pylint: disable=no-member
         if tipo == 'Accesorio':
-            componente = get_object_or_404(Accesorios, id=id, tipo=tipo, nombre=nombre)
+            componente = Accesorios.objects.get(id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Buzzer':
             componente = get_object_or_404(Buzzers, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Electro Analogica':

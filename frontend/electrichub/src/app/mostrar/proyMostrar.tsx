@@ -81,8 +81,8 @@ export default function Mainpage(){
         <ResponsiveAppBar isLoggedIn={isLoggedIn} username={username} first_name={first_name} handl={handleLogout}/>
       </div>
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
-            px-6 py-0 md:px-20 w-full md:mt-[0vh] sm:mt-[3vh] '>
-              MOSTRAR PROYECTOS
+            px-6 py-10 md:px-20 w-full md:mt-[0vh] sm:mt-[3vh]'>
+        
         <BuscarComp />
         <div className='flex flex-row justify-between'>
           
