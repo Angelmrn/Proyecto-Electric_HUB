@@ -86,7 +86,7 @@ const Mainpage = () => {
           <ImagenProyecto project={project} />
           <MostrarInformacionProyecto project={project} />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 ' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 ' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box'}}>
           <TablacomponentesElaboracionProyecto components={components} />
         </div>
       </div>
@@ -95,11 +95,21 @@ const Mainpage = () => {
 };
 
 function ImagenProyecto({ project }: { project: any }) {
+  const getImageUrl = (imagePath: string) => {
+    // Remove leading slash from imagePath if it exists
+    const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${normalizedPath}`;
+  };
+
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
     px-6 py-20 md:px-5 md:py-5 w-full' style={{ height: '250px', width: '300px', marginTop: '-13vh' }}>
       <label className='NombreProyecto'>{project?.nombre}</label>
-      <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt="imagenProyecto" />
+      {project?.imagen ? (
+        <img src={getImageUrl(project?.imagen)} alt="imagenProyecto" />
+      ) : (
+        <p>No hay imagen disponible</p>
+      )}
     </div>
   );
 }
@@ -115,7 +125,9 @@ function MostrarInformacionProyecto({ project }: { project: any }) {
             {project?.nombre}
           </Typography>
           <Typography variant="body2" color="text.secondary" style={{ wordWrap: 'break-word' }}>
+          <pre style={{ whiteSpace: 'pre-wrap' }}> 
             {project?.descripcion}
+          </pre>
           </Typography>
         </CardContent>
       </Card>
@@ -126,8 +138,8 @@ function MostrarInformacionProyecto({ project }: { project: any }) {
 function TablacomponentesElaboracionProyecto({ components }: { components: any[] }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ height: 'auto', width: 'auto', marginTop: 'auto' }}>
-      <table className='TablaComponentesParecidos' style={{ marginTop: '-10vh' }}>
+    px-6 py-20 md:px-10 w-full' style={{ height: 'auto', width: 'auto', marginTop: '-15vh'}}>
+      <table className='TablaComponentesParecidos'>
         <caption style={{ captionSide: 'top' }}>Componentes para elaborar el Proyecto</caption>
         <thead>
           <tr>
