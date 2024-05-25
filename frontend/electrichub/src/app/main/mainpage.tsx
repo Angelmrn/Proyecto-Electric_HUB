@@ -132,12 +132,13 @@ interface LatestProject {
   // Define the properties of each project object
   // For example:
   id: number;
-  name: string;
+  nombre: string;
   // Add more properties as needed
 }
 
 function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
   const [slidesToShow, setSlidesToShow] = useState(3);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const handleResize = () => {
@@ -156,11 +157,14 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Limitar la cantidad de proyectos a mostrar a un máximo de 5
+  const limitedProjects = latestProjects.slice(0, 5);
+
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: slidesToShow,
+    slidesToShow: Math.min(slidesToShow, limitedProjects.length), // Asegurar que no se muestren más diapositivas que proyectos
     slidesToScroll: 1
   };
 
@@ -174,9 +178,11 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
               <div className='rounded-t-xl flex justify-center items-center'>
                 <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt='' className='h-44 w-64' />
               </div>
-              <div className='flex flex-col justify-center items-center gap-4 p-2'>
-                <p>{project.name}</p>
-                <button className='BotonCARRUSEL'>Ver</button>
+              <div className='rounded-t-xl flex justify-center items-center py-3'>
+                <h2 className='text-xl'>{project.nombre}</h2>
+              </div>
+              <div className='flex flex-col justify-center items-center gap-4 p-2 py-10'>
+                <button className='BotonCARRUSEL' onClick={() => navigate(`/proyInfo/${project.id}/${project.nombre}`)}>Ver</button>
               </div>
             </div>
           ))}
