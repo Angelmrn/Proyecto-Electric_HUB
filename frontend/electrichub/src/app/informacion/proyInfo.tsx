@@ -98,7 +98,6 @@ function ImagenProyecto({ project }: { project: any }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
     px-6 py-20 md:px-5 md:py-5 w-full' style={{ height: '250px', width: '300px', marginTop: '-13vh' }}>
-      <label className='NombreProyecto'>{project?.nombre}</label>
       <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt="imagenProyecto" />
     </div>
   );

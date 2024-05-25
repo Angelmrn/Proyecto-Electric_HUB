@@ -30,6 +30,7 @@ urlpatterns = [
     re_path('upload', views.upload),
     re_path('proyect', views.proyect),
     path('obtenerproy', views.obtenerproy),
+    path('lastproy', views.lastproy),
     path('infop/<int:id>/', views.infop),
     path('componentes', views.componentes),
     path('componentes/<int:id>/<str:tipo>/<str:nombre>/', views.obtener_informacion_componente),

@@ -415,7 +415,6 @@ def proyect(request):
                                 status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(f"Error: {e}")
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -436,6 +435,25 @@ def obtenerproy(request):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+@api_view(['GET'])
+
+def lastproy(request):
+    print("Mostrando proyectos los ultimos 5 proyectos")
+    if request.method == 'GET':
+        try:
+
+            # pylint: disable=no-member
+            proyectos = Proyecto.objects.order_by('-fecha_creacion')[:5]
+            
+            # Serializar los proyectos
+            Proyectoserializer = ProyectoSerializer(proyectos, many=True)
+            proyectos = Proyectoserializer.data 
+
+            return Response(proyectos, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 # ------------ OBTENER INFORMACIÓN DE PROYECTO ------------
 @api_view(['GET'])
@@ -444,7 +462,7 @@ def infop(request, id):
     try:
         proyecto = get_object_or_404(Proyecto, id=id)
         proyecto_serializer = ProyectoSerializer(proyecto)
-
+        print(f"Proyecto: {proyecto_serializer.data}")
         componentes = proyecto.componentes.all()
         componentes_serializer = ComponenteSerializer(componentes, many=True)
 
@@ -456,3 +474,4 @@ def infop(request, id):
         return Response(data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    

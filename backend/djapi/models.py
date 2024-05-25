@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Componente(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -8,7 +9,7 @@ class Componente(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
-
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 class TipoComponente(models.Model):
     componente = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
@@ -20,6 +21,7 @@ class Accesorios(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/',null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -32,6 +34,7 @@ class Buzzers(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -44,6 +47,7 @@ class ElectroAnalogica(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -56,6 +60,7 @@ class ElectroDigital(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -68,6 +73,7 @@ class Modulos(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -80,6 +86,7 @@ class Motores(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -92,6 +99,7 @@ class OptoElectronica(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -104,6 +112,7 @@ class Sensores(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -116,6 +125,7 @@ class Switches(models.Model):
     tipo = models.CharField(max_length=100)
     imagen1 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/' ,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
@@ -124,8 +134,9 @@ class Proyecto(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='proyectos/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     componentes = models.ManyToManyField(Componente, related_name='proyectos')
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.nombre)
