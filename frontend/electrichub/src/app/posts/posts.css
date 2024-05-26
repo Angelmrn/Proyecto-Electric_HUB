@@ -1,0 +1,35 @@
+.TablaMostrarComp{
+    width: 50%;
+    border-collapse: collapse;
+    position: relative;
+    right: 18%;
+  }
+  
+  .TablaMostrarComp th, .TablaMostrarComp td {
+    border: 1px solid #1c3663ff;
+    padding: 8px;
+  }
+  
+  .TablaMostrarComp thead {
+    background-color: #1c3663ff;
+    color : #e3ecfcff;
+    
+  }
+
+  .TablaMostrarProy{
+    width: 50%;
+    border-collapse: collapse;
+    position: relative;
+    left: 28%;
+  }
+  .TablaMostrarProy th, .TablaMostrarProy td {
+    border: 1px solid #1c3663ff;
+    padding: 8px;
+  }
+  
+  .TablaMostrarProy thead {
+    background-color: #1c3663ff;
+    color : #e3ecfcff;
+    
+  }
+  

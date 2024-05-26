@@ -129,11 +129,8 @@ function Selector() {
 
 interface LatestProject {
   imagen: string | undefined;
-  // Define the properties of each project object
-  // For example:
   id: number;
   nombre: string;
-  // Add more properties as needed
 }
 
 function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
@@ -164,14 +161,17 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: Math.min(slidesToShow, limitedProjects.length), // Asegurar que no se muestren más diapositivas que proyectos
+    slidesToShow: Math.min(slidesToShow, limitedProjects.length), 
     slidesToScroll: 1
   };
 
   return (
     <div className='w-1/2 m-auto'>
       <div className='mt-10'>
-        Ultimos Proyectos Agregados
+        <h1 className='py-5'style={{alignContent: "center", justifyContent:"center"}}><strong>Ultimos Proyectos Agregados: </strong></h1>
+        {latestProjects.length === 0 ? ( // Verifica si no hay proyectos
+          <h1 className='rounded-t-xl flex justify-center items-center py-5'style={{alignContent: "center", justifyContent:"center"}}><strong>No hay proyectos disponibles.</strong></h1>
+        ) : (
         <Slider {...settings}>
           {latestProjects.map((project, index) => (
             <div key={index} className='bg-customise h-[400px] text-black rounded-xl'>
@@ -187,6 +187,7 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
             </div>
           ))}
         </Slider>
+        )}
       </div>
     </div>
   );

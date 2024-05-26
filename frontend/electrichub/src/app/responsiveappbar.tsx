@@ -24,6 +24,7 @@ const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
 const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
 const settings = [
+  { name: 'Mis Publicaciones', route: '/myPosts' },
   { name: 'Agregar Componente', route: '/addComp' },
   { name: 'Agregar Proyecto', route: '/addProy' },
   { name: 'Logout', route: '/login' },

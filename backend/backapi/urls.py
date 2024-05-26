@@ -34,6 +34,11 @@ urlpatterns = [
     path('infop/<int:id>/', views.infop),
     path('componentes', views.componentes),
     path('componentes/<int:id>/<str:tipo>/<str:nombre>/', views.obtener_informacion_componente),
+    path('myposts', views.myposts),
+    path('modificarcomp/<int:id>/<str:tipo>/<str:nombre>/', views.modificarcomp),
+    path('deletecomponent/<int:id>/<str:tipo>/', views.deletecomponent),
+    path('alterproy/<int:id>/', views.alterproy),
+    path('delproy/<int:id>/', views.delproy),
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

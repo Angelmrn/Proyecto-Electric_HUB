@@ -11,6 +11,9 @@ import Compinfo from "./informacion/compInfo"
 import Proyinfo from "./informacion/proyInfo"
 import CompMostrar from "./mostrar/compMostrar"
 import ProyMostrar from "./mostrar/proyMostrar"
+import Posts from "./posts/posts"
+import ModifyComponente from "./actualizar/altercomp"
+import ModifyProy from "./actualizar/alterproy"
 
 
 const MyRoutes = () => {
@@ -29,8 +32,9 @@ const MyRoutes = () => {
                 <Route path = "/proyInfo/:id/:nombre" element = {<Proyinfo />} />
                 <Route path = "/mostrarComp" element = {<CompMostrar />} />
                 <Route path = "/mostrarProy" element = {<ProyMostrar />} />
-              
-                
+                <Route path = "/myPosts" element = {<Posts />} />
+                <Route path = "/modifyComp/:id/:tipo/:nombre" element = {<ModifyComponente />} />
+                <Route path = "/modifyProy/:id" element = {<ModifyProy />} />
             </Routes>
         </BrowserRouter>
     );

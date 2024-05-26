@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,6 +13,9 @@ from djapi.models import Accesorios, Buzzers ,ElectroAnalogica, ElectroDigital, 
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
 import json
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import default_storage
 
 # ------------ INGRESAR USUARIO ------------
 @api_view(['POST'])
@@ -219,23 +223,99 @@ def upload(request):
 
     return Response({}, status=status.HTTP_200_OK)
 
+#------------ MODIFICAR COMPONENTES ------------
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def modificarcomp(request, id, tipo, nombre):
+    print(f"Modificando componente con ID: {id}, Tipo: {tipo}, Nombre: {nombre}")
+    print("Datos recibidos: ", request.data)
+    
+    # Buscar la instancia del componente según el tipo
+    componente_model = None
+    if tipo == 'Accesorio':
+        componente_model = Accesorios
+    elif tipo == 'Buzzer':
+        componente_model = Buzzers
+    elif tipo == 'Electro Analogica':
+        componente_model = ElectroAnalogica
+    elif tipo == 'Electro Digital':
+        componente_model = ElectroDigital
+    elif tipo == 'Modulo':
+        componente_model = Modulos
+    elif tipo == 'Motor':
+        componente_model = Motores
+    elif tipo == 'Opto Electronica':
+        componente_model = OptoElectronica
+    elif tipo == 'Sensor':
+        componente_model = Sensores
+    elif tipo == 'Switch':
+        componente_model = Switches
+    else:
+        return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-# ------------  MODIFICAR COMPONENTES ------------
-@api_view(['POST'])
-def alter(request):
+    # Obtener la instancia específica del componente
+    componente_especifico = get_object_or_404(componente_model, id=id, usuario_id=request.user.id)
 
+    # Verificar si se han subido nuevas imágenes y si son diferentes de las existentes
+    if 'fileimg1' in request.data and request.data['fileimg1']:
+        if str(request.data['fileimg1']) != str(componente_especifico.imagen1):
+            if componente_especifico.imagen1:
+                default_storage.delete(componente_especifico.imagen1.name)
+            componente_especifico.imagen1 = request.data['fileimg1']
 
-    return Response({}, status=status.HTTP_200_OK)
+    if 'fileimg2' in request.data and request.data['fileimg2']:
+        if str(request.data['fileimg2']) != str(componente_especifico.imagen2):
+            if componente_especifico.imagen2:
+                default_storage.delete(componente_especifico.imagen2.name)
+            componente_especifico.imagen2 = request.data['fileimg2']
 
+    # Serializar y guardar los datos
+    serializer = ComponenteSerializer(componente_especifico, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ------------ ELIMINAR COMPONENTES ------------
-@api_view(['POST'])
-def delete(request):
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def deletecomponent(request, id, tipo):
+    print("Eliminando componente con ID:", id)
+    print("Tipo del componente:", tipo)
+    # Seleccionar la tabla adecuada basada en el tipo del componente
+    if tipo == 'Accesorio':
+        modelo = Accesorios
+    elif tipo == 'Buzzer':
+        modelo = Buzzers
+    elif tipo == 'Electro Analogica':
+        modelo = ElectroAnalogica
+    elif tipo == 'Electro Digital':
+        modelo = ElectroDigital
+    elif tipo == 'Modulo':
+        modelo = Modulos
+    elif tipo == 'Motor':
+        modelo = Motores
+    elif tipo == 'Opto Electronica':
+        modelo = OptoElectronica
+    elif tipo == 'Sensor':
+        modelo = Sensores
+    elif tipo == 'Switch':
+        modelo = Switches
+    else:
+        return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-    return Response({}, status=status.HTTP_200_OK)
-
+    try:
+        # Obtener el componente específico de la tabla
+        componente = get_object_or_404(modelo, id=id, usuario_id=request.user.id)
+        componente.delete()
+        return JsonResponse({'message': 'Componente eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 # ------------ OBTENER COMPONENTES ------------
 @api_view(['GET'])
@@ -281,7 +361,7 @@ def componentes(request):
 
 @api_view(['GET'])
 def obtener_informacion_componente(request, id, tipo, nombre):
-    print(f"Obteniendo información del componente con ID: {id}, Tipo: {tipo}, Nombre: {nombre}")
+    print(f"Componente Seleccionado: ID = {id}, Tipo = {tipo}, Nombre = {nombre}")
     try:
         #pylint: disable=no-member
         if tipo == 'Accesorio':
@@ -306,6 +386,7 @@ def obtener_informacion_componente(request, id, tipo, nombre):
             return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ComponenteSerializer(componente)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -467,6 +548,7 @@ def infop(request, id):
         print(f"Proyecto: {proyecto_serializer.data}")
         componentes = proyecto.componentes.all()
         componentes_serializer = ComponenteSerializer(componentes, many=True)
+                
 
         data = {
             'proyecto': proyecto_serializer.data,
@@ -477,3 +559,81 @@ def infop(request, id):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
+
+# ------------ MODIFICAR PROYECTO ------------
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def alterproy(request, id):
+    print(f"Modificando proyecto con ID: {id}")
+    print("Datos recibidos: ", request.data)
+    
+    try:
+        proyecto = get_object_or_404(Proyecto, id=id, usuario_id=request.user.id)
+
+        if 'fileimg1' in request.data and request.data['fileimg1']:
+            if str(request.data['fileimg1']) != str(proyecto.imagen):
+                if proyecto.imagen:
+                    default_storage.delete(proyecto.imagen.name)
+            proyecto.imagen = request.data['fileimg1']
+
+        serializer = ProyectoSerializer(proyecto, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# ------------ ELIMINAR PROYECTO ------------
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def delproy(request, id):
+    print(f"Eliminando proyecto con ID: {id}")
+    try:
+        proyecto = get_object_or_404(Proyecto, id=id, usuario_id=request.user.id)
+        proyecto.delete()
+        return JsonResponse({'message': 'Proyecto eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#-------------- OBTENER MIS PROYECTOS Y COMPONENTES ------------
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def myposts(request):
+    print("Mostrando mis proyectos y componentes de usuario: ID = ", request.user.id)
+    try:
+        # Obtener el usuario actual
+        user = request.user
+        # Obtener los componentes del usuario actual
+        # pylint: disable=no-member
+
+        # Obtener todos los componentes del usuario actual de todas las tablas
+        user_components = []
+
+        # Recorrer todas las tablas de componentes y agregar los componentes del usuario a la lista
+        for model in [Accesorios, Buzzers, ElectroAnalogica, ElectroDigital, Modulos, Motores, OptoElectronica, Sensores, Switches]:
+            components = model.objects.filter(usuario_id=user.id)
+            user_components.extend(components)
+
+        component_serializer = ComponenteSerializer(user_components, many=True)
+
+        # Obtener los proyectos del usuario actual
+        user_projects = Proyecto.objects.filter(usuario_id=user.id)
+        project_serializer = ProyectoSerializer(user_projects, many=True)
+
+        return Response({
+            'user_components': component_serializer.data,
+            'user_projects': project_serializer.data
+            
+        }, status=status.HTTP_200_OK)
+    
+    
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
