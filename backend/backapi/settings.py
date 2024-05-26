@@ -85,9 +85,9 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
         'USER': 'root',
-        #'PASSWORD': 'AngeldanMYSQL.2003',
+        'PASSWORD': 'AngeldanMYSQL.2003',
         #'PASSWORD': 'Moran.12',
-        'PASSWORD': 'GAELROOT12',
+        #'PASSWORD': 'GAELROOT12',
         'NAME': 'electric-hub',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

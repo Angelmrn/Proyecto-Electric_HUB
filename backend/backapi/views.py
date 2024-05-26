@@ -84,6 +84,7 @@ def upload(request):
 
     if request.method == 'POST':
         usuario_id = request.user.id
+        usuario_nombre = request.user.username  # Obtener el nombre del usuario
         nombre = request.data.get('nombre')
         descripcion = request.data.get('descripcion')
         tipo = request.data.get('tipo')
@@ -95,6 +96,7 @@ def upload(request):
             tipo = 'Accesorio'
             accesorios = Accesorios.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -109,6 +111,7 @@ def upload(request):
             tipo = 'Buzzer'
             buzzers = Buzzers.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -124,6 +127,7 @@ def upload(request):
             tipo = 'Electro Analogica'
             electro_analogica = ElectroAnalogica.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -139,6 +143,7 @@ def upload(request):
             tipo = 'Electro Digital'
             electro_digital = ElectroDigital.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -153,6 +158,7 @@ def upload(request):
             tipo = 'Modulo'
             modulos = Modulos.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -167,6 +173,7 @@ def upload(request):
             tipo = 'Motor'
             motores = Motores.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -181,6 +188,7 @@ def upload(request):
             tipo = 'Opto Electronica'
             opto_electronica = OptoElectronica.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -195,6 +203,7 @@ def upload(request):
             tipo = 'Sensor'
             sensores = Sensores.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,
@@ -209,6 +218,7 @@ def upload(request):
             tipo = 'Switch'
             switches = Switches.objects.create(
                 usuario_id=usuario_id,
+                usuario_nombre=usuario_nombre,  # Guardar el nombre del usuario
                 nombre=nombre,
                 descripcion=descripcion,
                 tipo=tipo ,

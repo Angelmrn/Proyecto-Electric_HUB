@@ -86,7 +86,7 @@ const Mainpage = () => {
           <ImagenProyecto project={project} />
           <MostrarInformacionProyecto project={project} />
         </div>
-        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 ' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box' }}>
+        <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise w-full md:px-10 ' style={{ width: '100vw', height: '100vh', boxSizing: 'border-box'}}>
           <TablacomponentesElaboracionProyecto components={components} />
         </div>
       </div>
@@ -95,10 +95,23 @@ const Mainpage = () => {
 };
 
 function ImagenProyecto({ project }: { project: any }) {
+  const getImageUrl = (imagePath: string) => {
+    // Remove leading slash from imagePath if it exists
+    const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${normalizedPath}`;
+  };
+
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
     px-6 py-20 md:px-5 md:py-5 w-full' style={{ height: '250px', width: '300px', marginTop: '-13vh' }}>
-      <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt="imagenProyecto" />
+
+      <label className='NombreProyecto' style={{paddingTop:'5vh'}}>{project?.nombre}</label>
+      {project?.imagen ? (
+        <img src={getImageUrl(project?.imagen)} alt="imagenProyecto"  style={{width:'250px' , height:'250px'}}/>
+      ) : (
+        <p>No hay imagen disponible</p>
+      )}
+
     </div>
   );
 }
@@ -107,14 +120,16 @@ function ImagenProyecto({ project }: { project: any }) {
 function MostrarInformacionProyecto({ project }: { project: any }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-5 w-full' style={{ height: 'auto', width: '300px' }}>
+    px-6 py-20 md:px-5 w-full' style={{ height: 'auto', width: '300px', paddingTop:'10vh' }}>
       <Card style={{ marginTop: '-60px', width: '150%', height: 'auto' }}>
         <CardContent>
           <Typography variant="h5" component="div">
             {project?.nombre}
           </Typography>
           <Typography variant="body2" color="text.secondary" style={{ wordWrap: 'break-word' }}>
+          <pre style={{ whiteSpace: 'pre-wrap' }}> 
             {project?.descripcion}
+          </pre>
           </Typography>
         </CardContent>
       </Card>
@@ -125,8 +140,8 @@ function MostrarInformacionProyecto({ project }: { project: any }) {
 function TablacomponentesElaboracionProyecto({ components }: { components: any[] }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-10 w-full' style={{ height: 'auto', width: 'auto', marginTop: 'auto' }}>
-      <table className='TablaComponentesParecidos' style={{ marginTop: '-10vh' }}>
+    px-6 py-20 md:px-10 w-full' style={{ height: 'auto', width: 'auto', marginTop: '-15vh'}}>
+      <table className='TablaComponentesParecidos'>
         <caption style={{ captionSide: 'top' }}>Componentes para elaborar el Proyecto</caption>
         <thead>
           <tr>

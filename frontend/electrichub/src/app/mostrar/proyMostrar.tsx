@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -33,6 +33,7 @@ export default function Mainpage(){
   const [first_name, setFirstName] = useState('');
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
 
@@ -83,10 +84,10 @@ export default function Mainpage(){
       <div className='flex flex-col justify-center gap-6 rounded-lg bg-customise
             px-6 py-10 md:px-20 w-full md:mt-[0vh] sm:mt-[3vh]'>
         
-        <BuscarComp />
+        <BuscarProy setSearchTerm={setSearchTerm} />
         <div className='flex flex-row justify-between'>
           
-          <TablaProy />
+          <TablaProy searchTerm={searchTerm} />
         </div>
       </div>
     </main>
@@ -97,10 +98,29 @@ export default function Mainpage(){
 
 //----------------INPUT - componentes----------------
 
-function BuscarComp() {
+function BuscarProy({ setSearchTerm }: { setSearchTerm: React.Dispatch<React.SetStateAction<string>> }) {
+  const timeoutId = useRef<NodeJS.Timeout | null>(null);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+    timeoutId.current = setTimeout(() => {
+      setSearchTerm(value);
+      console.log(value);
+    }, 300); // Wait 300ms after the user has stopped typing to call setSearchTerm
+  };
+
   return (
-    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', ml:13, marginTop:'-10vh' }}>
-      <TextField id="outlined-basic" label="Buscar componente por id o Nombre" variant="outlined" sx={{ width: '36%' }} />
+    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '10vh' }}>
+      <TextField
+        id="outlined-basic"
+        label="Buscar Proyecto por id o Nombre"
+        variant="outlined"
+        sx={{ width: '42%' }}
+        onChange={handleSearchChange}
+      />
       <button className='botonBUSCAR'>Buscar
         <img src={imagen2} />
       </button>
@@ -109,11 +129,12 @@ function BuscarComp() {
 }
 
 
-//----------------TABLA - COMPONENTES----------------
+//----------------TABLA - PROYECTOS----------------
 
-function TablaProy() {  
+function TablaProy({  searchTerm }: {  searchTerm: string }) {  
 
   const [proyectos, setproyectos] = useState<any[]>([]); 
+  const [filteredProjects, setFilteredProjects] = useState<any[]>([]);
 
   useEffect(() => {
     const ObtenerProyectos = async () => {
@@ -124,9 +145,11 @@ function TablaProy() {
 
         if (response.ok) {
           const data = await response.json();
-          setproyectos(data);
+          const allProjects = Object.values(data).flat();
+          setproyectos(allProjects);
+          setFilteredProjects(allProjects);
         } else {
-          console.error('Error fetching proyectos');
+          console.error('Error fetching proyectos',response);
         }
       } catch (error) {
         console.error('Error fetching proyectos:', error);
@@ -138,6 +161,21 @@ function TablaProy() {
         
   }, []);
 
+  useEffect(() => {
+    const filteredProjects = () => {
+      let filteredByNameOrId = proyectos;
+      if (searchTerm !== '') {
+        filteredByNameOrId = proyectos.filter(proyecto =>
+          proyecto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          proyecto.id.toString() === searchTerm
+        );
+      } else {
+        filteredByNameOrId = proyectos;
+      }
+      setFilteredProjects(filteredByNameOrId);
+    }
+    filteredProjects();
+  }, [proyectos, searchTerm]);
 
 
   return (
@@ -149,8 +187,8 @@ function TablaProy() {
         </tr>
       </thead>
       <tbody>
-        {proyectos.length > 0 ? (
-          proyectos.map((proyecto) => (
+        {filteredProjects.length > 0 ? (
+          filteredProjects.map((proyecto) => (
             <tr key={proyecto.id}>
               <td><Link to={`/proyInfo/${proyecto.id}/${proyecto.nombre}`}>{proyecto.id}</Link></td>
               <td><Link to={`/proyInfo/${proyecto.id}/${proyecto.nombre}`}>{proyecto.nombre}</Link></td>
