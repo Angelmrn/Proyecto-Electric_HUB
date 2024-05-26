@@ -145,6 +145,8 @@ export default function Mainpage() {
 
 interface ComponenteInfo {
   nombre: string;
+  usuario_id: number;
+  usuario_nombre: string;
   descripcion: string;
   tipo: string;
   imagen1: string;
@@ -228,6 +230,9 @@ function MostrarInformacionComponente({ componenteInfo }: { componenteInfo: Comp
             <>
               <Typography variant="h5" component="div">
                 {componenteInfo.nombre}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+               Agregado por {componenteInfo.usuario_nombre}
               </Typography>
               <br></br>
               <Typography variant="body2" color="text.secondary">

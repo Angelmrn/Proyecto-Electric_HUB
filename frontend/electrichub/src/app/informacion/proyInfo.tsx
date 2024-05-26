@@ -104,16 +104,14 @@ function ImagenProyecto({ project }: { project: any }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
     px-6 py-20 md:px-5 md:py-5 w-full' style={{ height: '250px', width: '300px', marginTop: '-13vh' }}>
-<<<<<<< HEAD
-      <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project?.imagen}`} alt="imagenProyecto" />
-=======
-      <label className='NombreProyecto'>{project?.nombre}</label>
+
+      <label className='NombreProyecto' style={{paddingTop:'5vh'}}>{project?.nombre}</label>
       {project?.imagen ? (
-        <img src={getImageUrl(project?.imagen)} alt="imagenProyecto" />
+        <img src={getImageUrl(project?.imagen)} alt="imagenProyecto"  style={{width:'250px' , height:'250px'}}/>
       ) : (
         <p>No hay imagen disponible</p>
       )}
->>>>>>> a3386ae16d4a7af35b10a59e273f296c9d736165
+
     </div>
   );
 }
@@ -122,7 +120,7 @@ function ImagenProyecto({ project }: { project: any }) {
 function MostrarInformacionProyecto({ project }: { project: any }) {
   return (
     <div className='flex flex-col justify-center gap-6 rounded-lg
-    px-6 py-20 md:px-5 w-full' style={{ height: 'auto', width: '300px' }}>
+    px-6 py-20 md:px-5 w-full' style={{ height: 'auto', width: '300px', paddingTop:'10vh' }}>
       <Card style={{ marginTop: '-60px', width: '150%', height: 'auto' }}>
         <CardContent>
           <Typography variant="h5" component="div">

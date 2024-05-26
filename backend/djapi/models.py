@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class Componente(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -16,6 +17,7 @@ class TipoComponente(models.Model):
 #------------  COMPONENTE 1 ------------
 class Accesorios(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -29,6 +31,7 @@ class Accesorios(models.Model):
 #------------  COMPONENTE 2 ------------
 class Buzzers(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -42,6 +45,7 @@ class Buzzers(models.Model):
 #------------  COMPONENTE 3 ------------
 class ElectroAnalogica(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -55,6 +59,7 @@ class ElectroAnalogica(models.Model):
 #------------  COMPONENTE 4 ------------
 class ElectroDigital(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -68,6 +73,7 @@ class ElectroDigital(models.Model):
 #------------  COMPONENTE 5 ------------
 class Modulos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -81,6 +87,7 @@ class Modulos(models.Model):
 #------------  COMPONENTE 6 ------------
 class Motores(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -94,6 +101,7 @@ class Motores(models.Model):
 #------------  COMPONENTE 7 ------------
 class OptoElectronica(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -107,6 +115,7 @@ class OptoElectronica(models.Model):
 #------------  COMPONENTE 8 ------------
 class Sensores(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -120,6 +129,7 @@ class Sensores(models.Model):
 #------------  COMPONENTE 9 ------------
 class Switches(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     tipo = models.CharField(max_length=100)
@@ -132,6 +142,7 @@ class Switches(models.Model):
     
 class Proyecto(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario_nombre = models.CharField(max_length=150, default="")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True)

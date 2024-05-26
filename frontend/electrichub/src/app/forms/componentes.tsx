@@ -2,24 +2,16 @@
 import React, { useState, useEffect, useRef  } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-import AppBar from '@mui/material/AppBar';
+
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom"
-import { Label } from '@mui/icons-material';
 import ResponsiveAppBar from '../responsiveappbar';
 
 
