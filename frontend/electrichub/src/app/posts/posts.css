@@ -21,6 +21,7 @@
     border-collapse: collapse;
     position: relative;
     left: 28%;
+    
   }
   .TablaMostrarProy th, .TablaMostrarProy td {
     border: 1px solid #1c3663ff;
