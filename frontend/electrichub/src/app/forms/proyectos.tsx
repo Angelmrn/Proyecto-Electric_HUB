@@ -183,32 +183,32 @@ function FormularioProy() {
         sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',  width: 'auto', marginRight: '15vh' }}
       >
         <Box sx={{ flex: 1 }}>
-        <table style={{ borderSpacing: '10px 0' }}>
-  <thead>
-    <tr>
-      <th style={{ padding: '0 10px' }}>ID</th>
-      <th style={{ padding: '0 10px' }}>Nombre</th>
-      <th style={{ padding: '0 10px' }}>Tipo</th>
-      <th style={{ padding: '0 10px' }}>Seleccionar</th>
-    </tr>
-  </thead>
-  <tbody>
-    {componentes.map((componente) => (
-      <tr key={componente.id}>
-        <td style={{ padding: '0 10px' }}>{componente.id}</td>
-        <td style={{ padding: '0 10px' }}>{componente.nombre}</td>
-        <td style={{ padding: '0 10px' }}>{componente.tipo}</td>
-        <td style={{ padding: '0 10px' }}>
-          <input
-            type="checkbox"
-            checked={selectedComponentes.some(comp => comp.id === componente.id && comp.tipo === componente.tipo)}
-            onChange={() => handleComponenteSelect(componente.id, componente.nombre, componente.tipo)}
-          />
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+          <table style={{ borderSpacing: '10px 0' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0 10px' }}>ID</th>
+                  <th style={{ padding: '0 10px' }}>Nombre</th>
+                  <th style={{ padding: '0 10px' }}>Tipo</th>
+                  <th style={{ padding: '0 10px' }}>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {componentes.map((componente) => (
+                  <tr key={componente.id}>
+                    <td style={{ padding: '0 10px' }}>{componente.id}</td>
+                    <td style={{ padding: '0 10px' }}>{componente.nombre}</td>
+                    <td style={{ padding: '0 10px' }}>{componente.tipo}</td>
+                    <td style={{ padding: '0 10px' }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedComponentes.some(comp => comp.id === componente.id && comp.tipo === componente.tipo)}
+                        onChange={() => handleComponenteSelect(componente.id, componente.nombre, componente.tipo)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+          </table>
         </Box>
       </Box>
     </Box>

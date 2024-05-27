@@ -159,7 +159,7 @@ function Carrusel({ latestProjects }: { latestProjects: LatestProject[] }) {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: latestProjects.length > 1, // Solo será infinito si hay más de un proyecto
     speed: 500,
     slidesToShow: Math.min(slidesToShow, limitedProjects.length), 
     slidesToScroll: 1
