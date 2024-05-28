@@ -19,9 +19,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom"
 
 
-
 const imagen = '/Electric-HUB_BotonInicio_SinFondo.png';
-const imagen2 = '/Lupa.png';
 const pages = ['Tools'];
 const settings = [
   { name: 'Mis Publicaciones', route: '/myPosts' },
