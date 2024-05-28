@@ -82,17 +82,17 @@ WSGI_APPLICATION = 'backapi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        #'HOST': 'localhost',
-        'HOST': 'bv6vhldetlmjgcpjbblh-mysql.services.clever-cloud.com',
+       'HOST': 'localhost',
+         #'HOST': 'bv6vhldetlmjgcpjbblh-mysql.services.clever-cloud.com',
         'PORT': '3306',
-        #'USER': 'root',
-        'USER': 'ulfresv6hzozbfwl',
-        #'PASSWORD': 'AngeldanMYSQL.2003',
+        'USER': 'root',
+        #'USER': 'ulfresv6hzozbfwl',
+        'PASSWORD': 'AngeldanMYSQL.2003',
         #'PASSWORD': 'Moran.12',
         #'PASSWORD': 'GAELROOT12',
-        'PASSWORD': 'i1JoM3UJadBNr2e3FgHf',
-        #'NAME': 'electric-hub',
-        'NAME': 'bv6vhldetlmjgcpjbblh',
+        #'PASSWORD': 'i1JoM3UJadBNr2e3FgHf',
+        'NAME': 'electric-hub',
+        #'NAME': 'bv6vhldetlmjgcpjbblh',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
