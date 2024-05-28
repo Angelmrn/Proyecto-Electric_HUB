@@ -86,17 +86,9 @@ DATABASES = {
          #'HOST': 'bv6vhldetlmjgcpjbblh-mysql.services.clever-cloud.com',
         'PORT': '3306',
         'USER': 'root',
-<<<<<<< HEAD
-        #'USER': 'ulfresv6hzozbfwl',
-        'PASSWORD': 'AngeldanMYSQL.2003',
-        #'PASSWORD': 'Moran.12',
-        #'PASSWORD': 'GAELROOT12',
-        #'PASSWORD': 'i1JoM3UJadBNr2e3FgHf',
-=======
         #'PASSWORD': 'AngeldanMYSQL.2003',
         #'PASSWORD': 'Moran.12',
         'PASSWORD': 'GAELROOT12',
->>>>>>> Gael
         'NAME': 'electric-hub',
         #'NAME': 'bv6vhldetlmjgcpjbblh',
         'OPTIONS': {
