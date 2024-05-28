@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ResponsiveAppBar from '../responsiveappbar';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const Mainpage = () => {
   const [username, setUsername] = useState('');
@@ -76,7 +77,7 @@ const FormularioProy = () => {
   const fileInputRef1 = useRef(null);
   const [newFileImg1, setNewFileImg1] = useState(null);
   const [componentes, setComponentes] = useState([]);
-  const [componentesSeleccionados, setComponentesSeleccionados] = useState([]);
+  const [selectedComponentes, setSelectedComponentes] = useState([]);
 
   const handleChangeNombre = (event) => {
     setProyNombre(event.target.value);
@@ -92,15 +93,6 @@ const FormularioProy = () => {
     setFileimg1(file ? URL.createObjectURL(file) : '');
   };
 
-  const handleCheckboxChange = (event) => {
-    const componenteId = parseInt(event.target.name, 10);
-    if (event.target.checked) {
-      setComponentesSeleccionados([...componentesSeleccionados, componenteId]);
-    } else {
-      setComponentesSeleccionados(componentesSeleccionados.filter((id) => id !== componenteId));
-    }
-  };
-
   useEffect(() => {
     console.log('Obteniendo información del proyecto:', id);
     const obtenerInformacionProyecto = async () => {
@@ -108,22 +100,16 @@ const FormularioProy = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/infop/${id}/`, {
           method: 'GET',
         });
-
+  
         if (response.ok) {
           const data = await response.json();
+          console.log('Datos del proyecto:', data);
           const proyecto = data.proyecto;
           setProyNombre(proyecto.nombre);
           setDescripcion(proyecto.descripcion);
           setFileimg1(proyecto.imagen);
-          const componentesSeleccionadosIds = proyecto.componentes.map((componente) => componente.id);
-          setComponentesSeleccionados(componentesSeleccionadosIds);
-
-          console.log('Nombre del proyecto:', proyecto.nombre);
-          console.log('Descripción del proyecto:', proyecto.descripcion);
-          console.log('Imagen del proyecto:', proyecto.imagen);
-          console.log('Componentes seleccionados del proyecto:', componentesSeleccionadosIds);
-          console.log('Componentes del proyecto:', proyecto.componentes);
-
+          setComponentes(data.todos_componentes);
+          setSelectedComponentes(data.componentes.map(comp => ({ id: comp.id_original, tipo: comp.tipo, nombre: comp.nombre })));
         } else {
           console.error('Error al obtener información del proyecto:', response.statusText);
         }
@@ -131,32 +117,28 @@ const FormularioProy = () => {
         console.error('Error al obtener información del proyecto:', error);
       }
     };
-
+  
     obtenerInformacionProyecto();
   }, [id]);
 
   useEffect(() => {
-    const obtenerComponentes = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes`, {
-          method: 'GET',
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setComponentes(data.componentes || []);
-          console.log('Componentes obtenidos del backend:', componentes);
-        } else {
-          console.error('Error al obtener los componentes:', response.statusText);
-          setComponentes([]);
-        }
-      } catch (error) {
-        console.error('Error al obtener los componentes:', error);
-        setComponentes([]);
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/componentes`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('token')}`
       }
-    };
-
-    obtenerComponentes();
+    })
+    .then(response => response.json())
+    .then((data) => {
+      if (data) {
+        console.log('Componentes obtenidos:', data);
+        const allComponentes = Object.values(data).reduce((acc, val) => acc.concat(val), []);
+        setComponentes(allComponentes);
+      } else {
+        console.error('Error: No data received from backend');
+      }
+    })
+    .catch(error => console.error('Error fetching componentes:', error));
   }, []);
 
   const handleActualizarProyecto = async () => {
@@ -164,15 +146,24 @@ const FormularioProy = () => {
     formData.append('nombre', proyNombre);
     formData.append('descripcion', descripcion);
     if (newFileImg1 && newFileImg1 !== fileimg1) formData.append('fileimg1', newFileImg1);
-    formData.append('componentesSeleccionados', JSON.stringify(componentesSeleccionados));
-    const nombreEncoded = encodeURIComponent(proyNombre);
 
+    const componentesIdSet = new Set(selectedComponentes.map(comp => `${comp.id}-${comp.tipo}`));
+    const componentesAEnviar = selectedComponentes.filter(comp => componentesIdSet.has(`${comp.id}-${comp.tipo}`));  
+    
+    componentesAEnviar.forEach(comp => {
+      formData.append('componentes[]', JSON.stringify(comp));
+      console.log('Componentes:', comp);
+    });
+  
+    const nombreEncoded = encodeURIComponent(proyNombre);
+  
     console.log('Actualizando proyecto:', id);
     console.log('Nombre:', nombreEncoded);
     console.log('Descripción:', descripcion);
     console.log('Imagen 1:', fileimg1);
-    console.log('Componentes seleccionados:', componentesSeleccionados);
-
+    console.log('Componentes seleccionados:', componentesAEnviar);
+    console.log('Form data:', formData);
+  
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/alterproy/${id}/`, {
         method: 'PUT',
@@ -181,7 +172,7 @@ const FormularioProy = () => {
         },
         body: formData,
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         console.log('Proyecto actualizado:', data);
@@ -192,6 +183,19 @@ const FormularioProy = () => {
     } catch (error) {
       console.error('Error al actualizar el proyecto:', error);
     }
+  };
+
+  const handleComponenteSelect = (id, nombre, tipo) => {
+    setSelectedComponentes(prev => {
+      const isSelected = prev.some(comp => comp.id === id && comp.tipo === tipo);
+      if (isSelected) {
+        // Si el componente ya está seleccionado, lo eliminamos de la lista
+        return prev.filter(comp => !(comp.id === id && comp.tipo === tipo));
+      } else {
+        // Si el componente no está seleccionado, lo agregamos a la lista
+        return [...prev, { id, tipo, nombre }];
+      }
+    });
   };
 
   return (
@@ -258,7 +262,6 @@ const FormularioProy = () => {
 
       </Box>
       <Box sx={{ flex: 1 }}>
-        <h2>Componentes:</h2>
         <table style={{ borderSpacing: '10px 0' }}>
           <thead>
             <tr>
@@ -269,17 +272,16 @@ const FormularioProy = () => {
             </tr>
           </thead>
           <tbody>
-            {componentes.map((componente) => (
-              <tr key={componente.id}>
+            {componentes && componentes.map((componente) => (
+              <tr key={`${componente.id}-${componente.tipo}`}>
                 <td style={{ padding: '0 10px' }}>{componente.id}</td>
                 <td style={{ padding: '0 10px' }}>{componente.nombre}</td>
                 <td style={{ padding: '0 10px' }}>{componente.tipo}</td>
                 <td style={{ padding: '0 10px' }}>
-                  <Checkbox
-                    name={componente.id.toString()}
-                    checked={componentesSeleccionados.includes(componente.id)}
-                    onChange={handleCheckboxChange}
-                    color="primary"
+                  <input
+                    type="checkbox"
+                    checked={selectedComponentes.some(comp => comp.id === componente.id && comp.tipo === componente.tipo)}
+                    onChange={() => handleComponenteSelect(componente.id, componente.nombre, componente.tipo)}
                   />
                 </td>
               </tr>

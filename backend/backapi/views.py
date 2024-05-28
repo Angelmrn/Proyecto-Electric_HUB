@@ -284,10 +284,31 @@ def modificarcomp(request, id, tipo, nombre):
     # Serializar y guardar los datos
     serializer = ComponenteSerializer(componente_especifico, data=request.data, partial=True)
     if serializer.is_valid():
+        # Guardar los cambios en la instancia del componente
         serializer.save()
+        
+        # Obtener la instancia actualizada del componente
+        componente_actualizado = serializer.instance
+        
+        # Guardar los cambios en la tabla "componentes"
+        # pylint: disable=no-member
+        componente_generico, created = Componente.objects.update_or_create(
+            id_original=componente_actualizado.id,
+            defaults={
+                'usuario_id': componente_actualizado.usuario_id,
+                'usuario_nombre': componente_actualizado.usuario_nombre,
+                'nombre': componente_actualizado.nombre,
+                'descripcion': componente_actualizado.descripcion,
+                'tipo': componente_actualizado.tipo,
+                'imagen1': componente_actualizado.imagen1,
+                'imagen2': componente_actualizado.imagen2,
+            }
+        )
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # ------------ ELIMINAR COMPONENTES ------------
@@ -375,22 +396,49 @@ def obtener_informacion_componente(request, id, tipo, nombre):
     try:
         #pylint: disable=no-member
         if tipo == 'Accesorio':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = Accesorios.objects.get(id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Buzzer':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(Buzzers, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Electro Analogica':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(ElectroAnalogica, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Electro Digital':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(ElectroDigital, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Modulo':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(Modulos, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Motor':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(Motores, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Opto Electronica':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(OptoElectronica, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Sensor':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(Sensores, id=id, tipo=tipo, nombre=nombre)
         elif tipo == 'Switch':
+            print("ID de Accesorio: ", id)
+            print("Tipo de Accesorio: ", tipo)
+            print("Nombre de Accesorio: ", nombre)
             componente = get_object_or_404(Switches, id=id, tipo=tipo, nombre=nombre)
         else:
             return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
@@ -403,13 +451,11 @@ def obtener_informacion_componente(request, id, tipo, nombre):
     
 
 # ------------ CREAR PROYECTO ------------
-
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def proyect(request):
-
     print("Creando proyecto")
     if request.method == 'POST':
         usuario_id = request.user.id
@@ -443,9 +489,10 @@ def proyect(request):
                     print(f"Procesando componente: {comp_data_dict}")
                     tipo = comp_data_dict.get('tipo')
                     id_componente = comp_data_dict.get('id')
+                    nombre_componente = comp_data_dict.get('nombre')
 
-                    print("Tipo del componente recibido: ",tipo)
-                    print("ID del componente recibido: ",id_componente)
+                    print("Tipo del componente recibido: ", tipo)
+                    print("ID del componente recibido: ", id_componente)
 
                     componente_especifico = None
                     # pylint: disable=no-member
@@ -479,17 +526,22 @@ def proyect(request):
                     else:
                         return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
                     
-                    componente_generico = Componente.objects.create(
-                        usuario_id=usuario_id,
-                        nombre=comp_data_dict.get('nombre'),
+                    componente_generico, created = Componente.objects.get_or_create(
+                        usuario_id=componente_especifico.usuario_id,
+                        usuario_nombre=componente_especifico.usuario_nombre,
+                        nombre=nombre_componente,
                         descripcion=componente_especifico.descripcion,
                         tipo=tipo,
                         imagen1=componente_especifico.imagen1,
-                        imagen2=componente_especifico.imagen2
+                        imagen2=componente_especifico.imagen2,
+                        id_original=id_componente,
                     )
+                    if created:
+                        print(f"Nuevo componente creado y agregado al proyecto: {componente_generico}")
+                    else:
+                        print(f"Componente existente agregado al proyecto: {componente_generico}")
 
                     proyecto.componentes.add(componente_generico)
-                    print("Componente agregado al proyecto: ", componente_generico)
                     componentes_correctos.append(True)
                 except Exception as comp_err:
                     print(f"Error procesando componente: {comp_err}")
@@ -508,6 +560,7 @@ def proyect(request):
                                 status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(f"Error: {e}")
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -529,7 +582,6 @@ def obtenerproy(request):
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['GET'])
-
 def lastproy(request):
     print("Mostrando proyectos los ultimos 5 proyectos")
     if request.method == 'GET':
@@ -558,8 +610,7 @@ def infop(request, id):
         print(f"Proyecto: {proyecto_serializer.data}")
         componentes = proyecto.componentes.all()
         componentes_serializer = ComponenteSerializer(componentes, many=True)
-                
-
+        print(f"Componentes: {componentes_serializer.data}")
         data = {
             'proyecto': proyecto_serializer.data,
             'componentes': componentes_serializer.data
@@ -578,9 +629,10 @@ def infop(request, id):
 def alterproy(request, id):
     print(f"Modificando proyecto con ID: {id}")
     print("Datos recibidos: ", request.data)
-    
+
     try:
         proyecto = get_object_or_404(Proyecto, id=id, usuario_id=request.user.id)
+        print("Proyecto encontrado: ", proyecto)
 
         if 'fileimg1' in request.data and request.data['fileimg1']:
             if str(request.data['fileimg1']) != str(proyecto.imagen):
@@ -588,15 +640,96 @@ def alterproy(request, id):
                     default_storage.delete(proyecto.imagen.name)
             proyecto.imagen = request.data['fileimg1']
 
-        serializer = ProyectoSerializer(proyecto, data=request.data, partial=True)
 
+        # Almacenar componentes actuales en una lista
+        componentes_actuales_ids = list(proyecto.componentes.values_list('id_original','tipo'))
+        componentes_data = request.data.getlist('componentes[]')
+        nuevos_componentes = []
+        componentes_nuevos_ids = []
+        print("Componentes actuales: ", componentes_actuales_ids)
+
+        for comp_data in componentes_data:
+            try:
+                comp = json.loads(comp_data)
+                print(f"Procesando componente: {comp}")
+                tipo = comp.get('tipo')
+                id_componente = comp.get('id')
+                nombre_componente = comp.get('nombre')
+
+                componentes_nuevos_ids.append((id_componente, tipo))
+
+                if (id_componente, tipo) in componentes_actuales_ids:
+
+                    for comp in proyecto.componentes.all():
+                        if (comp.id_original, comp.tipo) not in componentes_nuevos_ids:
+                            print(f"Eliminando componente del proyecto: {comp.id_original} - {comp.tipo} - {comp.nombre}")
+                            proyecto.componentes.remove(comp)
+                            break
+
+                    print(f"El componente con ID {id_componente} y tipo {tipo} ya existe en el proyecto, se omite.")
+                    continue
+
+                componente_especifico = None
+                # pylint: disable=no-member
+                if tipo == 'Accesorio':
+                    componente_especifico = get_object_or_404(Accesorios, id=id_componente)
+                elif tipo == 'Buzzer':
+                    componente_especifico = get_object_or_404(Buzzers, id=id_componente)
+                elif tipo == 'Electro Analogica':
+                    componente_especifico = get_object_or_404(ElectroAnalogica, id=id_componente)
+                elif tipo == 'Electro Digital':
+                    componente_especifico = get_object_or_404(ElectroDigital, id=id_componente)
+                elif tipo == 'Modulo':
+                    componente_especifico = get_object_or_404(Modulos, id=id_componente)
+                elif tipo == 'Motor':
+                    componente_especifico = get_object_or_404(Motores, id=id_componente)
+                elif tipo == 'Opto Electronica':
+                    componente_especifico = get_object_or_404(OptoElectronica, id=id_componente)
+                elif tipo == 'Sensor':
+                    componente_especifico = get_object_or_404(Sensores, id=id_componente)
+                elif tipo == 'Switch':
+                    componente_especifico = get_object_or_404(Switches, id=id_componente)
+                else:
+                    return Response({'error': 'Tipo de componente no válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+                componente_generico, created = Componente.objects.get_or_create(
+                    usuario_id=componente_especifico.usuario_id,
+                    usuario_nombre=componente_especifico.usuario_nombre,
+                    nombre=nombre_componente,
+                    descripcion=componente_especifico.descripcion,
+                    tipo=tipo,
+                    imagen1=componente_especifico.imagen1,
+                    imagen2=componente_especifico.imagen2,
+                    id_original=id_componente,
+                )
+
+                if created:
+                    print(f"Nuevo componente creado y agregado al proyecto: {componente_generico}")
+                else:
+                    print(f"Componente existente agregado al proyecto: {componente_generico}")
+
+                nuevos_componentes.append(componente_generico)
+
+            except (ObjectDoesNotExist, KeyError, json.JSONDecodeError) as e:
+                print(f"Error al procesar componente: {e}")
+                continue
+
+        # Agregar los nuevos componentes seleccionados al proyecto
+        for comp in nuevos_componentes:
+            proyecto.componentes.add(comp)
+
+        # Guardar los cambios en el proyecto
+        proyecto.save()
+
+        serializer = ProyectoSerializer(proyecto, data=request.data, partial=True)
         if serializer.is_valid():
+            print("Datos válidos: ", serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 # ------------ ELIMINAR PROYECTO ------------
 @api_view(['DELETE'])
