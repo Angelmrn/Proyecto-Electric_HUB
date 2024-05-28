@@ -11,6 +11,8 @@ class Componente(models.Model):
     imagen1 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     fecha_creacion = models.DateTimeField(default=timezone.now)
+    id_original = models.IntegerField(null=True, blank=True)
+    
 class TipoComponente(models.Model):
     componente = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
